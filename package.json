@@ -1,0 +1,46 @@
+{
+  "name": "hydrusrv",
+  "version": "1.0.0",
+  "description": "A small application for serving media handled with hydrus server via API",
+  "keywords": [
+    "hydrus",
+    "booru",
+    "api",
+    "express",
+    "expressjs",
+    "node",
+    "nodejs"
+  ],
+  "author": "Michael Serajnik <ms@mserajnik.at>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://mserajnik@github.com/mserajnik/hydrusrv.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mserajnik/hydrusrv/issues"
+  },
+  "scripts": {
+    "start": "node ./bin/www",
+    "start-dev": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "better-sqlite3": "^4.1.0",
+    "body-parser": "^1.18.2",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "express-validator": "^5.1.2",
+    "file-type": "^7.7.0",
+    "morgan": "^1.9.0",
+    "read-chunk": "^2.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "nodemon": "^1.17.3"
+  }
+}
