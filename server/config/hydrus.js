@@ -15,13 +15,10 @@ const availableMimeTypes = {
 }
 
 const supportedMimeTypes = () => {
-  let mimeTypes = process.env.HYDRUS_SUPPORTED_MIME_TYPES.split(',')
-
-  mimeTypes = mimeTypes.filter((mimeType) => {
-    return (parseInt(mimeType) in availableMimeTypes)
-  })
-
-  return mimeTypes
+  return process.env.HYDRUS_SUPPORTED_MIME_TYPES.split(',')
+    .filter((mimeType) => {
+      return (parseInt(mimeType) in availableMimeTypes)
+    })
 }
 
 module.exports = {

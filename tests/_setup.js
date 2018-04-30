@@ -7,15 +7,18 @@ module.exports = {
     process.env.API_BASE = '/api'
     process.env.MEDIA_BASE = '/media'
 
-    process.env.REGISTRATION_ALLOWED = 'true'
+    process.env.LOGGING_ENABLED = false
+    process.env.LOGFILE_PATH = path.resolve(
+      __dirname, '../server/logs/access.log'
+    )
 
-    process.env.HYDRUS_SERVER_DB_PATH_DEV = path.resolve(
+    process.env.HYDRUS_SERVER_DB_PATH = path.resolve(
       __dirname, 'hydrus-server-dummy-304/server.db'
     )
-    process.env.HYDRUS_MASTER_DB_PATH_DEV = path.resolve(
+    process.env.HYDRUS_MASTER_DB_PATH = path.resolve(
       __dirname, 'hydrus-server-dummy-304/server.master.db'
     )
-    process.env.HYDRUS_MAPPINGS_DB_PATH_DEV = path.resolve(
+    process.env.HYDRUS_MAPPINGS_DB_PATH = path.resolve(
       __dirname, 'hydrus-server-dummy-304/server.mappings.db'
     )
 

@@ -18,7 +18,13 @@ module.exports = {
     const filePath =
       `${hydrusConfig.filesPath}/${directory}/${hash}${extension}`
 
-    const buffer = readChunk.sync(filePath, 0, 4100)
+    let buffer
+
+    try {
+      buffer = readChunk.sync(filePath, 0, 4100)
+    } catch (err) {
+      throw err
+    }
 
     return {
       path: filePath,

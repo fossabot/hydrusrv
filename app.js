@@ -1,17 +1,44 @@
+const path = require('path')
+const fs = require('fs')
 const express = require('express')
 const db = require('./server/database/hydrus')
 const bodyParser = require('body-parser')
 const logger = require('morgan')
+const config = require('./server/config/app')
 
 // create new express app
 const app = express()
 
 // connect to hydrus databases
-db.connect()
+try {
+  db.connect()
+} catch (err) {
+  console.error(
+    'Could not connect to hydrus databases. Make sure the specified ' +
+      'is correct and hydrusrv has write access to the databases.'
+  )
+
+  process.exit(1)
+}
 
 // set up logging
 if (process.env.NODE_ENV === 'development') {
   app.use(logger('dev'))
+} else if (process.env.NODE_ENV === 'production' && config.loggingEnabled) {
+  const accessLogStream = fs.createWriteStream(
+    config.logfilePath, { flags: 'a' }
+  )
+
+  accessLogStream.on('error', () => {
+    console.error(
+      'Could not write logfile. Make sure hydrusrv has write access to the ' +
+        'specified logfile location or disable logging.'
+    )
+
+    process.exit(1)
+  })
+
+  app.use(logger('combined', { stream: accessLogStream }))
 }
 
 // parse request bodies as json
