@@ -9,26 +9,14 @@ module.exports = {
         ${mappings.tags}.tag AS name
       FROM
         ${mappings.currentMappings}
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryTagIdMap}
-        ON
-          ${mappings.repositoryTagIdMap}.service_tag_id =
-          ${mappings.currentMappings}.service_tag_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.tags}
-        ON
-          ${mappings.tags}.master_tag_id =
-          ${mappings.repositoryTagIdMap}.master_tag_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryHashIdMapFiles}
-          ON
-            ${mappings.repositoryHashIdMapFiles}.service_hash_id =
-            ${mappings.currentMappings}.service_hash_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.filesInfo}
-          ON
-            ${mappings.filesInfo}.master_hash_id =
-            ${mappings.repositoryHashIdMapFiles}.master_hash_id
       WHERE
         ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
       ORDER BY
@@ -45,26 +33,14 @@ module.exports = {
         ${mappings.tags}.tag AS name
       FROM
         ${mappings.currentMappings}
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryTagIdMap}
-        ON
-          ${mappings.repositoryTagIdMap}.service_tag_id =
-          ${mappings.currentMappings}.service_tag_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.tags}
-        ON
-          ${mappings.tags}.master_tag_id =
-          ${mappings.repositoryTagIdMap}.master_tag_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryHashIdMapFiles}
-          ON
-            ${mappings.repositoryHashIdMapFiles}.service_hash_id =
-            ${mappings.currentMappings}.service_hash_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.filesInfo}
-          ON
-            ${mappings.filesInfo}.master_hash_id =
-            ${mappings.repositoryHashIdMapFiles}.master_hash_id
       WHERE
         ${mappings.filesInfo}.master_hash_id = ?
       AND
@@ -79,26 +55,14 @@ module.exports = {
         ${mappings.tags}.tag AS name
       FROM
         ${mappings.currentMappings}
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryTagIdMap}
-        ON
-          ${mappings.repositoryTagIdMap}.service_tag_id =
-          ${mappings.currentMappings}.service_tag_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.tags}
-        ON
-          ${mappings.tags}.master_tag_id =
-          ${mappings.repositoryTagIdMap}.master_tag_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryHashIdMapFiles}
-          ON
-            ${mappings.repositoryHashIdMapFiles}.service_hash_id =
-            ${mappings.currentMappings}.service_hash_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.filesInfo}
-          ON
-            ${mappings.filesInfo}.master_hash_id =
-            ${mappings.repositoryHashIdMapFiles}.master_hash_id
       WHERE
         ${mappings.tags}.tag LIKE ?
       AND
@@ -119,26 +83,14 @@ module.exports = {
         ) AS name
       FROM
         ${mappings.currentMappings}
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryTagIdMap}
-        ON
-          ${mappings.repositoryTagIdMap}.service_tag_id =
-          ${mappings.currentMappings}.service_tag_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.tags}
-        ON
-          ${mappings.tags}.master_tag_id =
-          ${mappings.repositoryTagIdMap}.master_tag_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryHashIdMapFiles}
-          ON
-            ${mappings.repositoryHashIdMapFiles}.service_hash_id =
-            ${mappings.currentMappings}.service_hash_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.filesInfo}
-          ON
-            ${mappings.filesInfo}.master_hash_id =
-            ${mappings.repositoryHashIdMapFiles}.master_hash_id
       WHERE
         ${mappings.tags}.tag LIKE ?
       AND
@@ -153,26 +105,14 @@ module.exports = {
         COUNT(DISTINCT ${mappings.tags}.tag) as count
       FROM
         ${mappings.currentMappings}
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryTagIdMap}
-        ON
-          ${mappings.repositoryTagIdMap}.service_tag_id =
-          ${mappings.currentMappings}.service_tag_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.tags}
-        ON
-          ${mappings.tags}.master_tag_id =
-          ${mappings.repositoryTagIdMap}.master_tag_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryHashIdMapFiles}
-          ON
-            ${mappings.repositoryHashIdMapFiles}.service_hash_id =
-            ${mappings.currentMappings}.service_hash_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.filesInfo}
-          ON
-            ${mappings.filesInfo}.master_hash_id =
-            ${mappings.repositoryHashIdMapFiles}.master_hash_id
       WHERE
         ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
       ORDER BY

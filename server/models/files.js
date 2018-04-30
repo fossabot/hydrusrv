@@ -19,21 +19,12 @@ module.exports = {
         ${mappings.hashes}.hash
       FROM
         ${mappings.currentFiles}
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryHashIdMapTags}
-        ON
-          ${mappings.repositoryHashIdMapTags}.service_hash_id =
-          ${mappings.currentFiles}.service_hash_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.hashes}
-        ON
-          ${mappings.hashes}.master_hash_id =
-          ${mappings.repositoryHashIdMapTags}.master_hash_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.filesInfo}
-        ON
-          ${mappings.filesInfo}.master_hash_id =
-          ${mappings.hashes}.master_hash_id
       WHERE
         ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
       GROUP BY
@@ -68,31 +59,16 @@ module.exports = {
         ${mappings.hashes}.hash
       FROM
         ${mappings.currentMappings}
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryTagIdMap}
-        ON
-          ${mappings.repositoryTagIdMap}.service_tag_id =
-          ${mappings.currentMappings}.service_tag_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.tags}
-        ON
-          ${mappings.tags}.master_tag_id =
-          ${mappings.repositoryTagIdMap}.master_tag_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryHashIdMapTags}
-        ON
-          ${mappings.repositoryHashIdMapTags}.service_hash_id =
-          ${mappings.currentMappings}.service_hash_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.hashes}
-        ON
-          ${mappings.hashes}.master_hash_id =
-          ${mappings.repositoryHashIdMapTags}.master_hash_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.filesInfo}
-        ON
-          ${mappings.filesInfo}.master_hash_id =
-          ${mappings.hashes}.master_hash_id
       WHERE
         ${mappings.tags}.tag IN (${tagPlaceholders})
       AND
@@ -125,11 +101,8 @@ module.exports = {
         ${mappings.hashes}.hash
       FROM
         ${mappings.currentMappings}
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryTagIdMap}
-        ON
-          ${mappings.repositoryTagIdMap}.service_tag_id =
-          ${mappings.currentMappings}.service_tag_id
       INNER JOIN
         ${mappings.tags}
         ON
@@ -142,31 +115,16 @@ module.exports = {
                 ${mappings.tags}.master_tag_id
               FROM
                 ${mappings.currentMappings}
-              INNER JOIN
+              NATURAL JOIN
                 ${mappings.repositoryTagIdMap}
-                ON
-                  ${mappings.repositoryTagIdMap}.service_tag_id =
-                  ${mappings.currentMappings}.service_tag_id
-              INNER JOIN
+              NATURAL JOIN
                 ${mappings.tags}
-                ON
-                  ${mappings.tags}.master_tag_id =
-                  ${mappings.repositoryTagIdMap}.master_tag_id
-              INNER JOIN
+              NATURAL JOIN
                 ${mappings.repositoryHashIdMapTags}
-                ON
-                  ${mappings.repositoryHashIdMapTags}.service_hash_id =
-                  ${mappings.currentMappings}.service_hash_id
-              INNER JOIN
+              NATURAL JOIN
                 ${mappings.hashes}
-                ON
-                  ${mappings.hashes}.master_hash_id =
-                  ${mappings.repositoryHashIdMapTags}.master_hash_id
-              INNER JOIN
+              NATURAL JOIN
                 ${mappings.filesInfo}
-                ON
-                  ${mappings.filesInfo}.master_hash_id =
-                  ${mappings.hashes}.master_hash_id
               WHERE
                 ${mappings.tags}.tag LIKE ?
               AND
@@ -174,21 +132,12 @@ module.exports = {
               ORDER BY
                 ${mappings.tags}.tag ASC
             )
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryHashIdMapTags}
-        ON
-          ${mappings.repositoryHashIdMapTags}.service_hash_id =
-          ${mappings.currentMappings}.service_hash_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.hashes}
-        ON
-          ${mappings.hashes}.master_hash_id =
-          ${mappings.repositoryHashIdMapTags}.master_hash_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.filesInfo}
-        ON
-          ${mappings.filesInfo}.master_hash_id =
-          ${mappings.hashes}.master_hash_id
       WHERE
         ${mappings.repositoryHashIdMapTags}.master_hash_id IN
           (
@@ -196,31 +145,16 @@ module.exports = {
               ${mappings.hashes}.master_hash_id AS fileId
             FROM
               ${mappings.currentMappings}
-            INNER JOIN
+            NATURAL JOIN
               ${mappings.repositoryTagIdMap}
-              ON
-                ${mappings.repositoryTagIdMap}.service_tag_id =
-                ${mappings.currentMappings}.service_tag_id
-            INNER JOIN
+            NATURAL JOIN
               ${mappings.tags}
-              ON
-                ${mappings.tags}.master_tag_id =
-                ${mappings.repositoryTagIdMap}.master_tag_id
-            INNER JOIN
+            NATURAL JOIN
               ${mappings.repositoryHashIdMapTags}
-              ON
-                ${mappings.repositoryHashIdMapTags}.service_hash_id =
-                ${mappings.currentMappings}.service_hash_id
-            INNER JOIN
+            NATURAL JOIN
               ${mappings.hashes}
-              ON
-                ${mappings.hashes}.master_hash_id =
-                ${mappings.repositoryHashIdMapTags}.master_hash_id
-            INNER JOIN
+            NATURAL JOIN
               ${mappings.filesInfo}
-              ON
-                ${mappings.filesInfo}.master_hash_id =
-                ${mappings.hashes}.master_hash_id
             WHERE
               ${mappings.tags}.tag LIKE ?
             AND
@@ -271,11 +205,8 @@ module.exports = {
         ${mappings.hashes}.hash
       FROM
         ${mappings.currentMappings}
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryTagIdMap}
-        ON
-          ${mappings.repositoryTagIdMap}.service_tag_id =
-          ${mappings.currentMappings}.service_tag_id
       INNER JOIN
         ${mappings.tags}
         ON
@@ -288,31 +219,16 @@ module.exports = {
                 ${mappings.tags}.master_tag_id
               FROM
                 ${mappings.currentMappings}
-              INNER JOIN
+              NATURAL JOIN
                 ${mappings.repositoryTagIdMap}
-                ON
-                  ${mappings.repositoryTagIdMap}.service_tag_id =
-                  ${mappings.currentMappings}.service_tag_id
-              INNER JOIN
+              NATURAL JOIN
                 ${mappings.tags}
-                ON
-                  ${mappings.tags}.master_tag_id =
-                  ${mappings.repositoryTagIdMap}.master_tag_id
-              INNER JOIN
+              NATURAL JOIN
                 ${mappings.repositoryHashIdMapTags}
-                ON
-                  ${mappings.repositoryHashIdMapTags}.service_hash_id =
-                  ${mappings.currentMappings}.service_hash_id
-              INNER JOIN
+              NATURAL JOIN
                 ${mappings.hashes}
-                ON
-                  ${mappings.hashes}.master_hash_id =
-                  ${mappings.repositoryHashIdMapTags}.master_hash_id
-              INNER JOIN
+              NATURAL JOIN
                 ${mappings.filesInfo}
-                ON
-                  ${mappings.filesInfo}.master_hash_id =
-                  ${mappings.hashes}.master_hash_id
               WHERE
                 ${mappings.tags}.tag LIKE ?
               AND
@@ -320,21 +236,12 @@ module.exports = {
               ORDER BY
                 ${mappings.tags}.tag ASC
             )
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryHashIdMapTags}
-        ON
-          ${mappings.repositoryHashIdMapTags}.service_hash_id =
-          ${mappings.currentMappings}.service_hash_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.hashes}
-        ON
-          ${mappings.hashes}.master_hash_id =
-          ${mappings.repositoryHashIdMapTags}.master_hash_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.filesInfo}
-        ON
-          ${mappings.filesInfo}.master_hash_id =
-          ${mappings.hashes}.master_hash_id
       WHERE
         ${mappings.repositoryHashIdMapTags}.master_hash_id IN
           (
@@ -342,31 +249,16 @@ module.exports = {
               ${mappings.hashes}.master_hash_id AS fileId
             FROM
               ${mappings.currentMappings}
-            INNER JOIN
+            NATURAL JOIN
               ${mappings.repositoryTagIdMap}
-              ON
-                ${mappings.repositoryTagIdMap}.service_tag_id =
-                ${mappings.currentMappings}.service_tag_id
-            INNER JOIN
+            NATURAL JOIN
               ${mappings.tags}
-              ON
-                ${mappings.tags}.master_tag_id =
-                ${mappings.repositoryTagIdMap}.master_tag_id
-            INNER JOIN
+            NATURAL JOIN
               ${mappings.repositoryHashIdMapTags}
-              ON
-                ${mappings.repositoryHashIdMapTags}.service_hash_id =
-                ${mappings.currentMappings}.service_hash_id
-            INNER JOIN
+            NATURAL JOIN
               ${mappings.hashes}
-              ON
-                ${mappings.hashes}.master_hash_id =
-                ${mappings.repositoryHashIdMapTags}.master_hash_id
-            INNER JOIN
+            NATURAL JOIN
               ${mappings.filesInfo}
-              ON
-                ${mappings.filesInfo}.master_hash_id =
-                ${mappings.hashes}.master_hash_id
             WHERE
               ${mappings.tags}.tag IN (${tagPlaceholders})
             OR
@@ -418,21 +310,12 @@ module.exports = {
         ${mappings.hashes}.hash
       FROM
         ${mappings.currentFiles}
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryHashIdMapTags}
-        ON
-          ${mappings.repositoryHashIdMapTags}.service_hash_id =
-          ${mappings.currentFiles}.service_hash_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.hashes}
-        ON
-          ${mappings.hashes}.master_hash_id =
-          ${mappings.repositoryHashIdMapTags}.master_hash_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.filesInfo}
-        ON
-          ${mappings.filesInfo}.master_hash_id =
-          ${mappings.hashes}.master_hash_id
       WHERE
         ${mappings.filesInfo}.master_hash_id = ?
       AND
@@ -454,16 +337,10 @@ module.exports = {
         count(${mappings.currentFiles}.service_hash_id) AS count
       FROM
         ${mappings.currentFiles}
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.repositoryHashIdMapTags}
-          ON
-            ${mappings.repositoryHashIdMapTags}.service_hash_id =
-            ${mappings.currentFiles}.service_hash_id
-      INNER JOIN
+      NATURAL JOIN
         ${mappings.filesInfo}
-          ON
-            ${mappings.filesInfo}.master_hash_id =
-            ${mappings.repositoryHashIdMapTags}.master_hash_id
       WHERE
         ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders});`
     ).get(hydrusConfig.supportedMimeTypes)
