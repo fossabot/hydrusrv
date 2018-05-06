@@ -1,7 +1,6 @@
-const path = require('path')
 const fs = require('fs')
 const express = require('express')
-const db = require('./server/database/hydrus')
+const db = require('./server/database/database')
 const bodyParser = require('body-parser')
 const logger = require('morgan')
 const config = require('./server/config/app')
@@ -9,13 +8,13 @@ const config = require('./server/config/app')
 // create new express app
 const app = express()
 
-// connect to hydrus databases
+// connect to databases
 try {
   db.connect()
 } catch (err) {
   console.error(
-    'Could not connect to hydrus databases. Make sure the specified ' +
-      'is correct and hydrusrv has write access to the databases.'
+    'Could not connect to databases. Make sure the specified paths are ' +
+      'correct and hydrusrv has write access to the databases.'
   )
 
   process.exit(1)
@@ -62,7 +61,7 @@ app.use((err, req, res, next) => {
 app.use((req, res, next) => {
   res.status(404).json({
     error: {
-      title: 'Error',
+      title: 'Resource not found',
       name: 'NotFoundError',
       description: 'The requested resource does not exist.'
     }

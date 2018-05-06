@@ -1,10 +1,10 @@
-const db = require('../database/hydrus')
+const db = require('../database/database')
 const hydrusConfig = require('../config/hydrus')
-const mappings = require('../config/hydrus-mappings')
+const mappings = require('../config/hydrus-db-mappings')
 
 module.exports = {
   get (page) {
-    return db.conn.prepare(
+    return db.hydrus.prepare(
       `SELECT DISTINCT
         ${mappings.tags}.tag AS name
       FROM
@@ -28,7 +28,7 @@ module.exports = {
     ).all(hydrusConfig.supportedMimeTypes)
   },
   getOfFile (fileId) {
-    return db.conn.prepare(
+    return db.hydrus.prepare(
       `SELECT
         ${mappings.tags}.tag AS name
       FROM
@@ -50,7 +50,7 @@ module.exports = {
     ).all(fileId, hydrusConfig.supportedMimeTypes)
   },
   autocomplete (partialTag) {
-    return db.conn.prepare(
+    return db.hydrus.prepare(
       `SELECT DISTINCT
         ${mappings.tags}.tag AS name
       FROM
@@ -74,7 +74,7 @@ module.exports = {
     ).all(`%${partialTag}%`, hydrusConfig.supportedMimeTypes)
   },
   getNamespaces () {
-    return db.conn.prepare(
+    return db.hydrus.prepare(
       `SELECT DISTINCT
         SUBSTR(
           ${mappings.tags}.tag,
@@ -100,7 +100,7 @@ module.exports = {
     ).all(`%:%`, hydrusConfig.supportedMimeTypes)
   },
   getTotalCount () {
-    return db.conn.prepare(
+    return db.hydrus.prepare(
       `SELECT
         COUNT(DISTINCT ${mappings.tags}.tag) as count
       FROM
@@ -116,7 +116,7 @@ module.exports = {
       WHERE
         ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
       ORDER BY
-        ${mappings.tags}.tag ASC`
+        ${mappings.tags}.tag ASC;`
     ).get(hydrusConfig.supportedMimeTypes)
   }
 }

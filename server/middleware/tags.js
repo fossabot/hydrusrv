@@ -18,7 +18,7 @@ module.exports = {
           customTitle: 'Invalid parameters',
           customName: err.array()[0].msg,
           customDescription:
-            'One or more of the required parameters were invalid or missing.'
+            'One or more of the required parameters are invalid or missing.'
         })
       }
 
@@ -42,7 +42,7 @@ module.exports = {
           customTitle: 'Invalid fields',
           customName: err.array()[0].msg,
           customDescription:
-            'One or more of the necessary fields were invalid or missing.'
+            'One or more of the necessary fields are invalid or missing.'
         })
       }
 

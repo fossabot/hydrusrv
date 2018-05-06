@@ -4,44 +4,47 @@ const middleware = require('../middleware')
 const mediaHelper = require('../helpers/media')
 
 module.exports = app => {
-  app.get(`${config.apiBase}/info`, (req, res, next) => {
-    const data = {}
+  app.get(`${config.apiBase}/info`,
+    middleware.auth.validateToken,
+    (req, res, next) => {
+      const data = {}
 
-    try {
-      data.tags = controllers.tags.getTotalTagCount()
-    } catch (err) {
-      return next(err)
-    }
+      try {
+        data.tags = controllers.tags.getTotalTagCount()
+      } catch (err) {
+        return next(err)
+      }
 
-    try {
-      data.files = controllers.files.getTotalFileCount()
-    } catch (err) {
-      return next(err)
-    }
+      try {
+        data.files = controllers.files.getTotalFileCount()
+      } catch (err) {
+        return next(err)
+      }
 
-    res.send({
-      info: {
+      res.send({
         tagCount: data.tags.count,
         fileCount: data.files.count
-      }
-    })
-  })
-
-  app.get(`${config.apiBase}/namespaces`, (req, res, next) => {
-    const data = {}
-
-    try {
-      data.namespaces = controllers.tags.getNamespaces()
-    } catch (err) {
-      return next(err)
+      })
     }
+  )
 
-    res.send({
-      namespaces: data.namespaces
-    })
-  })
+  app.get(`${config.apiBase}/namespaces`,
+    middleware.auth.validateToken,
+    (req, res, next) => {
+      const data = {}
+
+      try {
+        data.namespaces = controllers.tags.getNamespaces()
+      } catch (err) {
+        return next(err)
+      }
+
+      res.send(data.namespaces)
+    }
+  )
 
   app.get(`${config.apiBase}/tags`,
+    middleware.auth.validateToken,
     middleware.tags.get.inputValidationConfig,
     middleware.tags.get.validateInput,
     (req, res, next) => {
@@ -53,13 +56,12 @@ module.exports = app => {
         return next(err)
       }
 
-      res.send({
-        tags: data.tags
-      })
+      res.send(data.tags)
     }
   )
 
   app.post(`${config.apiBase}/autocomplete-tag`,
+    middleware.auth.validateToken,
     middleware.tags.autocomplete.inputValidationConfig,
     middleware.tags.autocomplete.validateInput,
     (req, res, next) => {
@@ -71,13 +73,12 @@ module.exports = app => {
         return next(err)
       }
 
-      res.send({
-        tags: data.tags
-      })
+      res.send(data.tags)
     }
   )
 
   app.get(`${config.apiBase}/files`,
+    middleware.auth.validateToken,
     middleware.files.get.inputValidationConfig,
     middleware.files.get.validateInput,
     (req, res, next) => {
@@ -89,13 +90,12 @@ module.exports = app => {
         return next(err)
       }
 
-      res.send({
-        files: data.files
-      })
+      res.send(data.files)
     }
   )
 
   app.get(`${config.apiBase}/files/:fileId`,
+    middleware.auth.validateToken,
     middleware.files.getSingle.inputValidationConfig,
     middleware.files.getSingle.validateInput,
     (req, res, next) => {
@@ -117,15 +117,21 @@ module.exports = app => {
         }
 
         data.file.tags = tags
+      } else {
+        return next({
+          customStatus: 404,
+          customTitle: 'Resource not found',
+          customName: 'NotFoundError',
+          customDescription: 'The requested resource does not exist.'
+        })
       }
 
-      res.send({
-        files: (data.file) ? [data.file] : []
-      })
+      res.send(data.file)
     }
   )
 
   app.get(`${config.mediaBase}/original/:mediaHash`,
+    middleware.auth.validateToken,
     middleware.media.get.inputValidationConfig,
     middleware.media.get.validateInput,
     (req, res, next) => {
@@ -146,6 +152,7 @@ module.exports = app => {
   )
 
   app.get(`${config.mediaBase}/thumbnails/:mediaHash`,
+    middleware.auth.validateToken,
     middleware.media.get.inputValidationConfig,
     middleware.media.get.validateInput,
     (req, res, next) => {
@@ -161,6 +168,166 @@ module.exports = app => {
         headers: {
           'Content-Type': fileData.mimeType
         }
+      })
+    }
+  )
+
+  app.post(`${config.apiBase}/users`,
+    middleware.auth.createUser.inputValidationConfig,
+    middleware.auth.createUser.validateInput,
+    async (req, res, next) => {
+      if (!config.registrationEnabled) {
+        return next({
+          customStatus: 400,
+          customTitle: 'Registration is disabled',
+          customName: 'RegistrationDisabledError',
+          customDescription: 'Registration is currently disabled.'
+        })
+      }
+
+      try {
+        if (controllers.auth.getUserByName(req.body.username)) {
+          return next({
+            customStatus: 400,
+            customTitle: 'User already exists',
+            customName: 'UserExistsError',
+            customDescription: 'A user with the given username already exists.'
+          })
+        }
+      } catch (err) {
+        return next(err)
+      }
+
+      try {
+        await controllers.auth.createUser(
+          req.body.username, req.body.password
+        )
+      } catch (err) {
+        return next(err)
+      }
+
+      res.send({
+        createdUser: true
+      })
+    }
+  )
+
+  app.put(`${config.apiBase}/users`,
+    middleware.auth.validateToken,
+    middleware.auth.updateUser.inputValidationConfig,
+    middleware.auth.updateUser.validateInput,
+    async (req, res, next) => {
+      if (!(req.body.username || req.body.password)) {
+        return next({
+          customStatus: 400,
+          customTitle: 'No update fields',
+          customName: 'InvalidFieldError',
+          customDescription: 'All of the possible update fields are missing.'
+        })
+      }
+
+      if (req.body.username) {
+        try {
+          if (controllers.auth.getUserByName(req.body.username)) {
+            return next({
+              customStatus: 400,
+              customTitle: 'User already exists',
+              customName: 'UserExistsError',
+              customDescription: 'A user with the given username already ' +
+                'exists.'
+            })
+          }
+        } catch (err) {
+          return next(err)
+        }
+      }
+
+      try {
+        await controllers.auth.updateUser(
+          res.locals.userId, req.body
+        )
+      } catch (err) {
+        return next(err)
+      }
+
+      res.send({
+        updatedUser: true
+      })
+    }
+  )
+
+  app.delete(`${config.apiBase}/users`,
+    middleware.auth.validateToken,
+    (req, res, next) => {
+      try {
+        controllers.auth.deleteUser(
+          res.locals.userId
+        )
+      } catch (err) {
+        return next(err)
+      }
+
+      res.send({
+        deletedUser: true
+      })
+    }
+  )
+
+  app.post(`${config.apiBase}/tokens`,
+    middleware.auth.createToken.inputValidationConfig,
+    middleware.auth.createToken.validateInput,
+    async (req, res, next) => {
+      let validUser
+
+      try {
+        validUser = await controllers.auth.getValidUser(
+          req.body.username, req.body.password
+        )
+
+        if (!validUser) {
+          return next({
+            customStatus: 400,
+            customTitle: 'Invalid user',
+            customName: 'InvalidUserError',
+            customDescription: 'The user does not exist or the provided ' +
+              'password is wrong.'
+          })
+        }
+      } catch (err) {
+        return next(err)
+      }
+
+      const data = {}
+
+      try {
+        data.token = controllers.auth.createToken(
+          validUser.id, req.body.long
+        )
+      } catch (err) {
+        return next(err)
+      }
+
+      res.send({
+        token: data.token.hash
+      })
+    }
+  )
+
+  app.delete(`${config.apiBase}/tokens`,
+    middleware.auth.validateToken,
+    middleware.auth.deleteToken.inputValidationConfig,
+    middleware.auth.deleteToken.validateInput,
+    (req, res, next) => {
+      try {
+        controllers.auth.deleteTokens(
+          res.locals.userId, res.locals.token, req.body.all
+        )
+      } catch (err) {
+        return next(err)
+      }
+
+      res.send({
+        deletedTokens: true
       })
     }
   )

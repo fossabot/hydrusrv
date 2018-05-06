@@ -7,6 +7,10 @@ module.exports = {
     process.env.API_BASE = '/api'
     process.env.MEDIA_BASE = '/media'
 
+    process.env.APP_DB_PATH = path.resolve(
+      __dirname, 'storage/app.db'
+    )
+
     process.env.LOGGING_ENABLED = false
     process.env.LOGFILE_PATH = path.resolve(
       __dirname, '../server/logs/access.log'

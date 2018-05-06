@@ -1,7 +1,7 @@
-const db = require('../database/hydrus')
+const db = require('../database/database')
 const config = require('../config/app')
 const hydrusConfig = require('../config/hydrus')
-const mappings = require('../config/hydrus-mappings')
+const mappings = require('../config/hydrus-db-mappings')
 
 const generateFilePath = (type, hash) => {
   if (type === 'original') {
@@ -13,7 +13,7 @@ const generateFilePath = (type, hash) => {
 
 module.exports = {
   get (page) {
-    const files = db.conn.prepare(
+    const files = db.hydrus.prepare(
       `SELECT
         ${mappings.hashes}.master_hash_id AS fileId,
         ${mappings.hashes}.hash
@@ -46,6 +46,38 @@ module.exports = {
 
     return files
   },
+  getById (fileId) {
+    const file = db.hydrus.prepare(
+      `SELECT
+        ${mappings.hashes}.master_hash_id AS fileId,
+        ${mappings.filesInfo}.mime AS mimeType,
+        ${mappings.filesInfo}.size,
+        ${mappings.filesInfo}.width,
+        ${mappings.filesInfo}.height,
+        ${mappings.hashes}.hash
+      FROM
+        ${mappings.currentFiles}
+      NATURAL JOIN
+        ${mappings.repositoryHashIdMapTags}
+      NATURAL JOIN
+        ${mappings.hashes}
+      NATURAL JOIN
+        ${mappings.filesInfo}
+      WHERE
+        ${mappings.filesInfo}.master_hash_id = ?
+      AND
+        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders});`
+    ).get(fileId, hydrusConfig.supportedMimeTypes)
+
+    if (file) {
+      file.mimeType = hydrusConfig.availableMimeTypes[file.mimeType]
+      file.mediaUrl = generateFilePath('original', file.hash)
+      file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
+      delete file.hash
+    }
+
+    return file
+  },
   getByTags (page, tags) {
     let tagPlaceholders = []
     tags.forEach(tag => {
@@ -53,7 +85,7 @@ module.exports = {
     })
     tagPlaceholders = tagPlaceholders.join(',')
 
-    const files = db.conn.prepare(
+    const files = db.hydrus.prepare(
       `SELECT
         ${mappings.hashes}.master_hash_id AS fileId,
         ${mappings.hashes}.hash
@@ -95,7 +127,7 @@ module.exports = {
     return files
   },
   getSortedByNamespace (page, namespace) {
-    const files = db.conn.prepare(
+    const files = db.hydrus.prepare(
       `SELECT
         ${mappings.hashes}.master_hash_id AS fileId,
         ${mappings.hashes}.hash
@@ -199,7 +231,7 @@ module.exports = {
     })
     tagPlaceholders = tagPlaceholders.join(',')
 
-    const files = db.conn.prepare(
+    const files = db.hydrus.prepare(
       `SELECT
         ${mappings.hashes}.master_hash_id AS fileId,
         ${mappings.hashes}.hash
@@ -299,40 +331,8 @@ module.exports = {
 
     return files
   },
-  getById (fileId) {
-    const file = db.conn.prepare(
-      `SELECT
-        ${mappings.hashes}.master_hash_id AS fileId,
-        ${mappings.filesInfo}.mime AS mimeType,
-        ${mappings.filesInfo}.size,
-        ${mappings.filesInfo}.width,
-        ${mappings.filesInfo}.height,
-        ${mappings.hashes}.hash
-      FROM
-        ${mappings.currentFiles}
-      NATURAL JOIN
-        ${mappings.repositoryHashIdMapTags}
-      NATURAL JOIN
-        ${mappings.hashes}
-      NATURAL JOIN
-        ${mappings.filesInfo}
-      WHERE
-        ${mappings.filesInfo}.master_hash_id = ?
-      AND
-        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})`
-    ).get(fileId, hydrusConfig.supportedMimeTypes)
-
-    if (file) {
-      file.mimeType = hydrusConfig.availableMimeTypes[file.mimeType]
-      file.mediaUrl = generateFilePath('original', file.hash)
-      file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
-      delete file.hash
-    }
-
-    return file
-  },
   getTotalCount () {
-    return db.conn.prepare(
+    return db.hydrus.prepare(
       `SELECT
         count(${mappings.currentFiles}.service_hash_id) AS count
       FROM
