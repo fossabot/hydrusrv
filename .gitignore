@@ -1,0 +1,7 @@
+/node_modules
+/storage/*.db
+/tests/storage/*.db
+.env
+*.log
+*.db-shm
+*.db-wal
