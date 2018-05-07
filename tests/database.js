@@ -1,11 +1,15 @@
+const path = require('path')
 const http = require('http')
+const fse = require('fs-extra')
 const { test } = require('ava')
 const portscanner = require('portscanner')
 const setup = require('./_setup')
 
 setup.setTestEnvironment()
 
-let app, tags, files
+let app, tags, files, users
+
+let testTokenHash
 
 test.before(t => {
   return new Promise(resolve => {
@@ -17,11 +21,20 @@ test.before(t => {
       }
 
       process.env.PORT = port
-      process.env.URL = `localhost:${port}`
+      process.env.URL = `http://localhost:${port}`
+      process.env.APP_DB_PATH = path.resolve(
+        __dirname, `storage/app_${port}.db`
+      )
+
+      fse.copySync(
+        path.resolve(__dirname, 'storage/app.db.template'),
+        path.resolve(__dirname, `storage/app_${port}.db`)
+      )
 
       app = require('../app')
       tags = require('../server/models/tags')
       files = require('../server/models/files')
+      users = require('../server/models/users')
 
       app.set('port', port)
 
@@ -31,6 +44,48 @@ test.before(t => {
       resolve()
     })
   })
+})
+
+test.serial('database: create user', async t => {
+  try {
+    await users.create('johndoe', '0123456789abcdef')
+  } catch (err) {
+    throw err
+  }
+
+  t.truthy(users.getById(1).username === 'johndoe')
+})
+
+test.serial('database: update user', async t => {
+  try {
+    await users.update(
+      1, { username: 'johndoes', password: 'abcdef0123456789' }
+    )
+  } catch (err) {
+    throw err
+  }
+
+  t.truthy(users.getById(1).username === 'johndoes')
+})
+
+test.serial('database: create token', t => {
+  testTokenHash = users.createToken(
+    1, Math.floor(Date.now() / 1000) + 86400
+  ).hash
+
+  t.truthy(testTokenHash !== false)
+})
+
+test.serial('database: delete token', t => {
+  users.deleteTokens(1, testTokenHash)
+
+  t.truthy(!users.getTokenByHash(testTokenHash))
+})
+
+test.serial('database: delete user', t => {
+  users.delete(1)
+
+  t.truthy(!users.getById(1))
 })
 
 test('database: get tags', t => {
@@ -89,19 +144,19 @@ test('database: get files', t => {
     [
       {
         fileId: 1,
-        thumbnailUrl: `localhost:${process.env.PORT}/media/thumbnails/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`
+        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`
       },
       {
         fileId: 2,
-        thumbnailUrl: `localhost:${process.env.PORT}/media/thumbnails/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55`
+        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55`
       },
       {
         fileId: 3,
-        thumbnailUrl: `localhost:${process.env.PORT}/media/thumbnails/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42`
+        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42`
       },
       {
         fileId: 4,
-        thumbnailUrl: `localhost:${process.env.PORT}/media/thumbnails/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39`
+        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39`
       }
     ]
   )
@@ -112,7 +167,7 @@ test('database: get files by tags', t => {
     files.getByTags(1, ['lorem', 'ipsum', 'dolor', 'sit', 'amet']),
     [{
       fileId: 1,
-      thumbnailUrl: `localhost:${process.env.PORT}/media/thumbnails/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`
+      thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`
     }]
   )
 })
@@ -123,19 +178,19 @@ test('database: get files sorted by namespace', t => {
     [
       {
         fileId: 5,
-        thumbnailUrl: `localhost:${process.env.PORT}/media/thumbnails/d2f5788f623cde1f0fb3dc801396fee235c67ed11d9452bfd765f1331587401d`
+        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/d2f5788f623cde1f0fb3dc801396fee235c67ed11d9452bfd765f1331587401d`
       },
       {
         fileId: 4,
-        thumbnailUrl: `localhost:${process.env.PORT}/media/thumbnails/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39`
+        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39`
       },
       {
         fileId: 3,
-        thumbnailUrl: `localhost:${process.env.PORT}/media/thumbnails/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42`
+        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42`
       },
       {
         fileId: 2,
-        thumbnailUrl: `localhost:${process.env.PORT}/media/thumbnails/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55`
+        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55`
       }
     ]
   )
@@ -149,15 +204,15 @@ test('database: get files by tags sorted by namespace', t => {
     [
       {
         fileId: 3,
-        thumbnailUrl: `localhost:${process.env.PORT}/media/thumbnails/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42`
+        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42`
       },
       {
         fileId: 2,
-        thumbnailUrl: `localhost:${process.env.PORT}/media/thumbnails/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55`
+        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55`
       },
       {
         fileId: 1,
-        thumbnailUrl: `localhost:${process.env.PORT}/media/thumbnails/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`
+        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`
       }
     ]
   )
@@ -172,8 +227,8 @@ test('database: get file by id', t => {
       size: 5012,
       width: 500,
       height: 500,
-      mediaUrl: `localhost:${process.env.PORT}/media/original/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`,
-      thumbnailUrl: `localhost:${process.env.PORT}/media/thumbnails/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`
+      mediaUrl: `http://localhost:${process.env.PORT}/media/original/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`,
+      thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`
     }
   )
 })
@@ -183,4 +238,8 @@ test('database: get total file count', t => {
     files.getTotalCount(),
     { count: 5 }
   )
+})
+
+test.after(t => {
+  fse.removeSync(path.resolve(__dirname, `storage/app_${process.env.PORT}.db`))
 })

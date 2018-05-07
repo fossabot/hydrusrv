@@ -8,9 +8,7 @@ module.exports = {
     if (!req.headers.authorization) {
       return next({
         customStatus: 403,
-        customTitle: 'Missing token',
-        customName: 'MissingTokenError',
-        customDescription: 'Required access token is missing.'
+        customName: 'MissingTokenError'
       })
     }
 
@@ -26,9 +24,7 @@ module.exports = {
     if (userId === false) {
       return next({
         customStatus: 403,
-        customTitle: 'Invalid token',
-        customName: 'InvalidTokenError',
-        customDescription: 'Access token is invalid.'
+        customName: 'InvalidTokenError'
       })
     }
 
@@ -41,17 +37,19 @@ module.exports = {
     inputValidationConfig: [
       sanitizeBody('username').trim(),
       check('username')
-        .exists().withMessage('InvalidFieldError')
-        .isString().withMessage('InvalidFieldError')
-        .isLength({ min: 1, max: 128 }).withMessage('InvalidFieldError'),
+        .exists().withMessage('MissingUsernameFieldError')
+        .isString().withMessage('InvalidUsernameFieldError')
+        .isLength({ min: 1, max: 128 }).withMessage(
+          'InvalidUsernameFieldError'
+        ),
       sanitizeBody('password').trim(),
       check('password')
-        .exists().withMessage('InvalidFieldError')
-        .isString().withMessage('InvalidFieldError')
+        .exists().withMessage('MissingPasswordFieldError')
+        .isString().withMessage('InvalidPasswordFieldError')
         .isLength({
           min: config.minPasswordLength,
           max: 128
-        }).withMessage('InvalidFieldError')
+        }).withMessage('InvalidPasswordFieldError')
     ],
     validateInput: (req, res, next) => {
       const err = validationResult(req)
@@ -59,10 +57,7 @@ module.exports = {
       if (!err.isEmpty()) {
         return next({
           customStatus: 400,
-          customTitle: 'Invalid fields',
-          customName: err.array()[0].msg,
-          customDescription:
-            'One or more of the necessary fields are invalid or missing.'
+          customName: err.array()[0].msg
         })
       }
 
@@ -74,16 +69,18 @@ module.exports = {
       sanitizeBody('username').trim(),
       check('username')
         .optional()
-        .isString().withMessage('InvalidFieldError')
-        .isLength({ min: 1, max: 128 }).withMessage('InvalidFieldError'),
+        .isString().withMessage('InvalidUsernameFieldError')
+        .isLength({ min: 1, max: 128 }).withMessage(
+          'InvalidUsernameFieldError'
+        ),
       sanitizeBody('password').trim(),
       check('password')
         .optional()
-        .isString().withMessage('InvalidFieldError')
+        .isString().withMessage('InvalidPasswordFieldError')
         .isLength({
           min: config.minPasswordLength,
           max: 128
-        }).withMessage('InvalidFieldError')
+        }).withMessage('InvalidPasswordFieldError')
     ],
     validateInput: (req, res, next) => {
       const err = validationResult(req)
@@ -91,10 +88,7 @@ module.exports = {
       if (!err.isEmpty()) {
         return next({
           customStatus: 400,
-          customTitle: 'Invalid fields',
-          customName: err.array()[0].msg,
-          customDescription:
-            'One or more of the necessary fields are invalid or missing.'
+          customName: err.array()[0].msg
         })
       }
 
@@ -105,20 +99,22 @@ module.exports = {
     inputValidationConfig: [
       sanitizeBody('username').trim(),
       check('username')
-        .exists().withMessage('InvalidFieldError')
-        .isString().withMessage('InvalidFieldError')
-        .isLength({ min: 1, max: 128 }).withMessage('InvalidFieldError'),
+        .exists().withMessage('MissingUsernameFieldError')
+        .isString().withMessage('InvalidUsernameFieldError')
+        .isLength({ min: 1, max: 128 }).withMessage(
+          'InvalidUsernameFieldError'
+        ),
       sanitizeBody('password').trim(),
       check('password')
-        .exists().withMessage('InvalidFieldError')
-        .isString().withMessage('InvalidFieldError')
+        .exists().withMessage('MissingPasswordFieldError')
+        .isString().withMessage('InvalidPasswordFieldError')
         .isLength({
           min: config.minPasswordLength,
           max: 128
-        }).withMessage('InvalidFieldError'),
+        }).withMessage('InvalidPasswordFieldError'),
       check('long')
         .optional()
-        .isBoolean().withMessage('InvalidFieldError')
+        .isBoolean().withMessage('InvalidLongFieldError')
     ],
     validateInput: (req, res, next) => {
       const err = validationResult(req)
@@ -126,10 +122,7 @@ module.exports = {
       if (!err.isEmpty()) {
         return next({
           customStatus: 400,
-          customTitle: 'Invalid fields',
-          customName: err.array()[0].msg,
-          customDescription:
-            'One or more of the necessary fields are invalid or missing.'
+          customName: err.array()[0].msg
         })
       }
 
@@ -140,7 +133,7 @@ module.exports = {
     inputValidationConfig: [
       check('all')
         .optional()
-        .isBoolean().withMessage('InvalidFieldError')
+        .isBoolean().withMessage('InvalidAllFieldError')
     ],
     validateInput: (req, res, next) => {
       const err = validationResult(req)
@@ -148,10 +141,7 @@ module.exports = {
       if (!err.isEmpty()) {
         return next({
           customStatus: 400,
-          customTitle: 'Invalid fields',
-          customName: err.array()[0].msg,
-          customDescription:
-            'One or more of the necessary fields are invalid or missing.'
+          customName: err.array()[0].msg
         })
       }
 

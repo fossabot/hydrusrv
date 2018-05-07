@@ -11,8 +11,10 @@ module.exports = {
       __dirname, 'storage/app.db'
     )
 
+    process.env.REGISTRATION_ENABLED = true
+    process.env.MIN_PASSWORD_LENGTH = 16
     process.env.LOGGING_ENABLED = false
-    process.env.LOGFILE_PATH = path.resolve(
+    process.env.OVERRIDE_LOGFILE_PATH = path.resolve(
       __dirname, '../server/logs/access.log'
     )
 

@@ -8,6 +8,6 @@ module.exports = {
   registrationEnabled: process.env.REGISTRATION_ENABLED,
   minPasswordLength: process.env.MIN_PASSWORD_LENGTH || 16,
   loggingEnabled: process.env.LOGGING_ENABLED,
-  logfilePath: process.env.LOGFILE_PATH ||
+  logfilePath: process.env.OVERRIDE_LOGFILE_PATH ||
     path.resolve(__dirname, '../../logs/access.log')
 }

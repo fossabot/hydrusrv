@@ -120,9 +120,7 @@ module.exports = app => {
       } else {
         return next({
           customStatus: 404,
-          customTitle: 'Resource not found',
-          customName: 'NotFoundError',
-          customDescription: 'The requested resource does not exist.'
+          customName: 'NotFoundError'
         })
       }
 
@@ -179,9 +177,7 @@ module.exports = app => {
       if (!config.registrationEnabled) {
         return next({
           customStatus: 400,
-          customTitle: 'Registration is disabled',
-          customName: 'RegistrationDisabledError',
-          customDescription: 'Registration is currently disabled.'
+          customName: 'RegistrationDisabledError'
         })
       }
 
@@ -189,9 +185,7 @@ module.exports = app => {
         if (controllers.auth.getUserByName(req.body.username)) {
           return next({
             customStatus: 400,
-            customTitle: 'User already exists',
-            customName: 'UserExistsError',
-            customDescription: 'A user with the given username already exists.'
+            customName: 'UsernameExistsError'
           })
         }
       } catch (err) {
@@ -220,9 +214,7 @@ module.exports = app => {
       if (!(req.body.username || req.body.password)) {
         return next({
           customStatus: 400,
-          customTitle: 'No update fields',
-          customName: 'InvalidFieldError',
-          customDescription: 'All of the possible update fields are missing.'
+          customName: 'NoUpdateFieldsError'
         })
       }
 
@@ -231,10 +223,7 @@ module.exports = app => {
           if (controllers.auth.getUserByName(req.body.username)) {
             return next({
               customStatus: 400,
-              customTitle: 'User already exists',
-              customName: 'UserExistsError',
-              customDescription: 'A user with the given username already ' +
-                'exists.'
+              customName: 'UsernameExistsError'
             })
           }
         } catch (err) {
@@ -287,10 +276,7 @@ module.exports = app => {
         if (!validUser) {
           return next({
             customStatus: 400,
-            customTitle: 'Invalid user',
-            customName: 'InvalidUserError',
-            customDescription: 'The user does not exist or the provided ' +
-              'password is wrong.'
+            customName: 'InvalidUserError'
           })
         }
       } catch (err) {

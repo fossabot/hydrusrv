@@ -6,8 +6,8 @@ module.exports = {
     inputValidationConfig: [
       sanitizeQuery('page').trim(),
       check('page')
-        .exists().withMessage('InvalidParameterError')
-        .isInt({ min: 1 }).withMessage('InvalidParameterError')
+        .exists().withMessage('MissingPageParameterError')
+        .isInt({ min: 1 }).withMessage('InvalidPageParameterError')
     ],
     validateInput: (req, res, next) => {
       const err = validationResult(req)
@@ -15,10 +15,7 @@ module.exports = {
       if (!err.isEmpty()) {
         return next({
           customStatus: 400,
-          customTitle: 'Invalid parameters',
-          customName: err.array()[0].msg,
-          customDescription:
-            'One or more of the required parameters are invalid or missing.'
+          customName: err.array()[0].msg
         })
       }
 
@@ -29,9 +26,9 @@ module.exports = {
     inputValidationConfig: [
       sanitizeBody('partialTag').trim(),
       check('partialTag')
-        .exists().withMessage('InvalidFieldError')
-        .isString().withMessage('InvalidFieldError')
-        .isLength({ min: 1 }).withMessage('InvalidFieldError')
+        .exists().withMessage('MissingPartialTagFieldError')
+        .isString().withMessage('InvalidPartialTagFieldError')
+        .isLength({ min: 1 }).withMessage('InvalidPartialTagFieldError')
     ],
     validateInput: (req, res, next) => {
       const err = validationResult(req)
@@ -39,10 +36,7 @@ module.exports = {
       if (!err.isEmpty()) {
         return next({
           customStatus: 400,
-          customTitle: 'Invalid fields',
-          customName: err.array()[0].msg,
-          customDescription:
-            'One or more of the necessary fields are invalid or missing.'
+          customName: err.array()[0].msg
         })
       }
 

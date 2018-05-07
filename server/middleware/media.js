@@ -6,9 +6,9 @@ module.exports = {
     inputValidationConfig: [
       sanitizeParam('mediaHash').trim(),
       check('mediaHash')
-        .exists().withMessage('InvalidParameterError')
-        .isString().withMessage('InvalidParameterError')
-        .isLength({ min: 1 }).withMessage('InvalidParameterError')
+        .exists().withMessage('MissingMediaHashParameterError')
+        .isString().withMessage('InvalidMediaHashParameterError')
+        .isLength({ min: 1 }).withMessage('InvalidMediaHashParameterError')
     ],
     validateInput: (req, res, next) => {
       const err = validationResult(req)
@@ -16,10 +16,7 @@ module.exports = {
       if (!err.isEmpty()) {
         return next({
           customStatus: 400,
-          customTitle: 'Invalid parameters',
-          customName: err.array()[0].msg,
-          customDescription:
-            'One or more of the required parameters are invalid or missing.'
+          customName: err.array()[0].msg
         })
       }
 

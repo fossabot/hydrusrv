@@ -6,18 +6,18 @@ module.exports = {
     inputValidationConfig: [
       sanitizeQuery('page').trim(),
       check('page')
-        .exists().withMessage('InvalidParameterError')
-        .isInt({ min: 1 }).withMessage('InvalidParameterError'),
+        .exists().withMessage('MissingPageParameterError')
+        .isInt({ min: 1 }).withMessage('InvalidPageParameterError'),
       sanitizeQuery('tags').trim(),
       check('tags')
         .optional()
-        .isArray().withMessage('InvalidParameterError')
-        .isLength({ min: 1 }).withMessage('InvalidParameterError'),
+        .isArray().withMessage('InvalidTagsParameterError')
+        .isLength({ min: 1 }).withMessage('InvalidTagsParameterError'),
       sanitizeQuery('sort').trim(),
       check('sort')
         .optional()
-        .isString().withMessage('InvalidFieldError')
-        .isLength({ min: 1 }).withMessage('InvalidFieldError')
+        .isString().withMessage('InvalidSortParameterError')
+        .isLength({ min: 1 }).withMessage('InvalidSortParameterError')
     ],
     validateInput: (req, res, next) => {
       const err = validationResult(req)
@@ -25,10 +25,7 @@ module.exports = {
       if (!err.isEmpty()) {
         return next({
           customStatus: 400,
-          customTitle: 'Invalid parameters',
-          customName: err.array()[0].msg,
-          customDescription:
-            'One or more of the required parameters are invalid or missing.'
+          customName: err.array()[0].msg
         })
       }
 
@@ -39,8 +36,8 @@ module.exports = {
     inputValidationConfig: [
       sanitizeParam('fileId').trim(),
       check('fileId')
-        .exists().withMessage('InvalidParameterError')
-        .isInt({ min: 1 }).withMessage('InvalidParameterError')
+        .exists().withMessage('MissingFileIdParameterError')
+        .isInt({ min: 1 }).withMessage('InvalidFileIdParameterError')
     ],
     validateInput: (req, res, next) => {
       const err = validationResult(req)
@@ -48,10 +45,7 @@ module.exports = {
       if (!err.isEmpty()) {
         return next({
           customStatus: 400,
-          customTitle: 'Invalid parameters',
-          customName: err.array()[0].msg,
-          customDescription:
-            'One or more of the required parameters are invalid or missing.'
+          customName: err.array()[0].msg
         })
       }
 

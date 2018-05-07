@@ -29,10 +29,10 @@ module.exports = {
     }
   },
   createToken (userId, long) {
-    let expires = Math.floor(Date.now() / 1000) + 86400 // 1 day
+    let expires = Math.floor(Date.now() / 1000) + 86400
 
     if (long) {
-      expires = Math.floor(Date.now() / 1000) + 7776000 // 90 days
+      expires = Math.floor(Date.now() / 1000) + 7776000
     }
 
     return users.createToken(userId, expires)

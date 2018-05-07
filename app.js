@@ -5,10 +5,8 @@ const bodyParser = require('body-parser')
 const logger = require('morgan')
 const config = require('./server/config/app')
 
-// create new express app
 const app = express()
 
-// connect to databases
 try {
   db.connect()
 } catch (err) {
@@ -20,7 +18,6 @@ try {
   process.exit(1)
 }
 
-// set up logging
 if (process.env.NODE_ENV === 'development') {
   app.use(logger('dev'))
 } else if (process.env.NODE_ENV === 'production' && config.loggingEnabled) {
@@ -40,31 +37,19 @@ if (process.env.NODE_ENV === 'development') {
   app.use(logger('combined', { stream: accessLogStream }))
 }
 
-// parse request bodies as json
 app.use(bodyParser.json())
 
-// define routes
 require('./server/routes')(app)
 
-// handle errors
 app.use((err, req, res, next) => {
   res.status(err.customStatus || 500).json({
-    error: {
-      title: err.customTitle || 'Error',
-      name: err.customName || 'InternalServerError',
-      description: err.customDescription || 'This should not happen.'
-    }
+    error: err.customName || 'InternalServerError'
   })
 })
 
-// handle 404
 app.use((req, res, next) => {
   res.status(404).json({
-    error: {
-      title: 'Resource not found',
-      name: 'NotFoundError',
-      description: 'The requested resource does not exist.'
-    }
+    error: 'NotFoundError'
   })
 })
 
