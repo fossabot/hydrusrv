@@ -7,10 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.1] - 2018-05-09
+
+### Fixed
+
++ Fixed check if registration is enabled
+
 ## 1.0.0 - 2018-05-07
 
 ### Added
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/1.0.0...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/1.0.1...develop
+[1.0.1]: https://github.com/mserajnik/hydrusrv/compare/1.0.0...1.0.1
