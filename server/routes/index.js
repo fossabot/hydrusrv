@@ -174,13 +174,6 @@ module.exports = app => {
     middleware.auth.createUser.inputValidationConfig,
     middleware.auth.createUser.validateInput,
     async (req, res, next) => {
-      if (!config.registrationEnabled) {
-        return next({
-          customStatus: 400,
-          customName: 'RegistrationDisabledError'
-        })
-      }
-
       try {
         if (controllers.auth.getUserByName(req.body.username)) {
           return next({
