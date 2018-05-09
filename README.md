@@ -30,6 +30,7 @@ currently in (early) development.
     + [Authentication](#authentication)
     + [Errors](#errors)
     + [Routes](#routes)
+      + [Base](#base)
       + [Users](#users)
         + [Creating users](#creating-users)
         + [Updating users](#updating-users)
@@ -98,7 +99,7 @@ might be missing.
 
 hydrusrv follows [Semantic Versioning][semantic-versioning] and any breaking
 changes that require additional attention will be released under a new major
-version (e.g., `2.0.0`). Minor versions updates (e.g., `1.1.0` or `1.2.0`) are
+version (e.g., `2.0.0`). Minor version updates (e.g., `1.1.0` or `1.2.0`) are
 therefore always safe to simply install via the routine mentioned before.
 
 When necessary, this section will be expanded with upgrade guides to new major
@@ -198,10 +199,10 @@ return an error with status code `404` when they do not exist while lists
 
 #### Authentication
 
-All the routes except the ones for registering new users and creating tokens
-are protected with a token-based authentication. In order to access these
-routes, a valid token must be provided via an `Authorization: Bearer <token>`
-header.
+All the routes except the base route (`/api`) and the ones for registering new
+users and creating tokens are protected with a token-based authentication. In
+order to access these routes, a valid token must be provided via an
+`Authorization: Bearer <token>` header.
 
 When updating or deleting users and tokens, the provided authentication token
 is also used to identify which user/token(s) are to be modified/deleted.
@@ -221,6 +222,26 @@ hydrusrv responds after the first error occurs so multiple errors might have to
 be dealt with one after another.
 
 #### Routes
+
+##### Base
+
+__Route:__ `GET /api`
+
+__Input:__ None
+
+__Output on success:__
+
+```json5
+{
+  "hydrusrv": {
+    "version": <version number of hydrusrv installation>
+  }
+}
+```
+
+__Possible errors:__
+
++ `InternalServerError`
 
 ##### Users
 
