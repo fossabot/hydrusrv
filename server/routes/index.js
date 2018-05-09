@@ -4,6 +4,14 @@ const middleware = require('../middleware')
 const mediaHelper = require('../helpers/media')
 
 module.exports = app => {
+  app.get(`${config.apiBase}`, (req, res, next) => {
+    res.send({
+      hydrusrv: {
+        version: '1.1.0'
+      }
+    })
+  })
+
   app.get(`${config.apiBase}/info`,
     middleware.auth.validateToken,
     (req, res, next) => {
