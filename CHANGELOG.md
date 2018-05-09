@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.1.1] - 2018-05-10
+
+### Fixed
+
++ Removed impossible errors when creating users from API docs
+
 ## [1.1.0] - 2018-05-10
 
 ### Added
@@ -26,6 +32,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/1.1.0...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/1.1.1...develop
+[1.1.1]: https://github.com/mserajnik/hydrusrv/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/mserajnik/hydrusrv/compare/1.0.1...1.1.0
 [1.0.1]: https://github.com/mserajnik/hydrusrv/compare/1.0.0...1.0.1
