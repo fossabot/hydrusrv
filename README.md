@@ -268,8 +268,6 @@ __Output on success:__
 
 __Possible errors:__
 
-+ `MissingTokenError`
-+ `InvalidTokenError`
 + `RegistrationDisabledError`
 + `MissingUsernameFieldError`
 + `InvalidUsernameFieldError`
