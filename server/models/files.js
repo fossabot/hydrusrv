@@ -16,6 +16,10 @@ module.exports = {
     const files = db.hydrus.prepare(
       `SELECT
         ${mappings.hashes}.master_hash_id AS fileId,
+        ${mappings.filesInfo}.mime AS mimeType,
+        ${mappings.filesInfo}.size,
+        ${mappings.filesInfo}.width,
+        ${mappings.filesInfo}.height,
         ${mappings.hashes}.hash
       FROM
         ${mappings.currentFiles}
@@ -39,6 +43,8 @@ module.exports = {
 
     if (files.length) {
       files.forEach(file => {
+        file.mimeType = hydrusConfig.availableMimeTypes[file.mimeType]
+        file.mediaUrl = generateFilePath('original', file.hash)
         file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
         delete file.hash
       })
@@ -88,6 +94,10 @@ module.exports = {
     const files = db.hydrus.prepare(
       `SELECT
         ${mappings.hashes}.master_hash_id AS fileId,
+        ${mappings.filesInfo}.mime AS mimeType,
+        ${mappings.filesInfo}.size,
+        ${mappings.filesInfo}.width,
+        ${mappings.filesInfo}.height,
         ${mappings.hashes}.hash
       FROM
         ${mappings.currentMappings}
@@ -119,6 +129,8 @@ module.exports = {
 
     if (files.length) {
       files.forEach(file => {
+        file.mimeType = hydrusConfig.availableMimeTypes[file.mimeType]
+        file.mediaUrl = generateFilePath('original', file.hash)
         file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
         delete file.hash
       })
@@ -130,6 +142,10 @@ module.exports = {
     const files = db.hydrus.prepare(
       `SELECT
         ${mappings.hashes}.master_hash_id AS fileId,
+        ${mappings.filesInfo}.mime AS mimeType,
+        ${mappings.filesInfo}.size,
+        ${mappings.filesInfo}.width,
+        ${mappings.filesInfo}.height,
         ${mappings.hashes}.hash
       FROM
         ${mappings.currentMappings}
@@ -217,6 +233,8 @@ module.exports = {
 
     if (files.length) {
       files.forEach(file => {
+        file.mimeType = hydrusConfig.availableMimeTypes[file.mimeType]
+        file.mediaUrl = generateFilePath('original', file.hash)
         file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
         delete file.hash
       })
@@ -234,6 +252,10 @@ module.exports = {
     const files = db.hydrus.prepare(
       `SELECT
         ${mappings.hashes}.master_hash_id AS fileId,
+        ${mappings.filesInfo}.mime AS mimeType,
+        ${mappings.filesInfo}.size,
+        ${mappings.filesInfo}.width,
+        ${mappings.filesInfo}.height,
         ${mappings.hashes}.hash
       FROM
         ${mappings.currentMappings}
@@ -324,6 +346,8 @@ module.exports = {
 
     if (files.length) {
       files.forEach(file => {
+        file.mimeType = hydrusConfig.availableMimeTypes[file.mimeType]
+        file.mediaUrl = generateFilePath('original', file.hash)
         file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
         delete file.hash
       })

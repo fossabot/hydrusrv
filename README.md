@@ -500,13 +500,22 @@ __Possible errors:__
 
 __Route:__ `GET /api/files?page=<page>&tags[]=<tag>&sort=<namespace>`
 
+__Info:__
+
 The `tags[]` parameter is optional and takes an arbitrary amount of tags (a
-single tag per `&tag[]=`), each one limiting the result set further. The `sort`
-parameter is also optional and used to sort the results by a given namespace
-(e.g., files with tag `creator:a` would come before `creator:b` if sorted by
-`creator`, independent of their ID which is the default sort method). Defining
-a namespace to sort by also limits the set to files that have a tag in that
-namespace (in addition to any tags already limiting the set via `tags[]`).
+single tag per `&tag[]=`), each one limiting the result set further.
+
+The `sort` parameter is also optional and used to sort the results by a given
+namespace (e.g., files with tag `creator:a` would come before `creator:b` if
+sorted by `creator`, independent of their ID which is the default sort method).
+
+Defining a namespace to sort by also limits the set to files that have a tag in
+that namespace (in addition to any tags already limiting the set via `tags[]`).
+
+This route returns the same data for each file as when
+[viewing a file](#viewing-files) but omits the tags to reduce the response size
+when dealing with possible cases where many files that each have many tags are
+displayed on a single page.
 
 __Input:__ None
 
@@ -516,6 +525,11 @@ __Output on success:__
 [
   {
     "fileId": <file ID>,
+    "mimeType": <MIME type>,
+    "size": <file size in bytes>,
+    "width": <width in pixel>,
+    "height": <height in pixel>,
+    "mediaUrl": <original media URL>,
     "thumbnailUrl": <thumbnail URL>
   }
   // […]
@@ -537,6 +551,11 @@ __Possible errors:__
 ###### Viewing files
 
 __Route:__ `GET /api/files/<file id>`
+
+__Info:__
+
+This route returns the same data as when [listing files](#listing-files) but
+also includes a files' tags.
 
 __Input:__ None
 
