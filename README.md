@@ -214,7 +214,7 @@ of several possible errors which are always in the same format:
 
 ```json5
 {
-    "error": <error name>
+  "error": <error name>
 }
 ```
 
