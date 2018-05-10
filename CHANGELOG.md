@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
++ Refactored several `if/else` constructs
+
 ### Fixed
 
 + Fixed wrong indentation in error response example
++ Fixed lines unnecessarily exceeding character limit in some cases
 
 ## [1.1.2] - 2018-05-10
 

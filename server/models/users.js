@@ -17,49 +17,34 @@ module.exports = {
     }
   },
   async update (userId, data) {
+    const placeholders = []
+    const params = []
+
     if (data.username) {
-      if (data.password) {
-        try {
-          const passwordHash = await argon2.hash(data.password)
+      placeholders.push('username = ?')
+      params.push(data.username)
+    }
 
-          db.app.prepare(
-            `UPDATE
-              users
-            SET
-              username = ?,
-              password = ?
-            WHERE
-              id = ?;`
-          ).run(data.username, passwordHash, userId)
-        } catch (err) {
-          throw err
-        }
-      } else {
-        db.app.prepare(
-          `UPDATE
-            users
-          SET
-            username = ?
-          WHERE
-            id = ?;`
-        ).run(data.username, userId)
-      }
-    } else if (data.password) {
+    if (data.password) {
+      placeholders.push('password = ?')
+
       try {
-        const passwordHash = await argon2.hash(data.password)
-
-        db.app.prepare(
-          `UPDATE
-            users
-          SET
-            password = ?
-          WHERE
-            id = ?;`
-        ).run(passwordHash, userId)
+        params.push(await argon2.hash(data.password))
       } catch (err) {
         throw err
       }
     }
+
+    params.push(userId)
+
+    db.app.prepare(
+      `UPDATE
+        users
+      SET
+        ${placeholders.join(',')}
+      WHERE
+        id = ?;`
+    ).run(...params)
   },
   delete (userId) {
     db.app.prepare(
@@ -105,9 +90,9 @@ module.exports = {
     try {
       if (await argon2.verify(user.password, password)) {
         return user
-      } else {
-        return false
       }
+
+      return false
     } catch (err) {
       throw err
     }

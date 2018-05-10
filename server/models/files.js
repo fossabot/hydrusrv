@@ -4,11 +4,11 @@ const hydrusConfig = require('../config/hydrus')
 const mappings = require('../config/hydrus-db-mappings')
 
 const generateFilePath = (type, hash) => {
-  if (type === 'original') {
-    return `${config.url}${config.mediaBase}/original/${hash.toString('hex')}`
-  } else {
+  if (type === 'thumbnail') {
     return `${config.url}${config.mediaBase}/thumbnails/${hash.toString('hex')}`
   }
+
+  return `${config.url}${config.mediaBase}/original/${hash.toString('hex')}`
 }
 
 module.exports = {
