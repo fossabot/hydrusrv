@@ -7,8 +7,13 @@ const setup = require('./_setup')
 
 setup.setTestEnvironment()
 
-let app, tags, files, users
+let app
+let tags
+let files
+let users
 
+let originalBaseUrl
+let thumbnailsBaseUrl
 let testTokenHash
 
 test.before(t => {
@@ -25,6 +30,10 @@ test.before(t => {
       process.env.APP_DB_PATH = path.resolve(
         __dirname, `storage/app_${port}.db`
       )
+
+      let mediaBaseUrl = `http://localhost:${process.env.PORT}/media`
+      originalBaseUrl = `${mediaBaseUrl}/original`
+      thumbnailsBaseUrl = `${mediaBaseUrl}/thumbnails`
 
       fse.copySync(
         path.resolve(__dirname, 'storage/app.db.template'),
@@ -148,8 +157,10 @@ test('database: get files', t => {
         size: 5012,
         width: 500,
         height: 500,
-        mediaUrl: `http://localhost:${process.env.PORT}/media/original/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`,
-        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`
+        mediaUrl: originalBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c'
       },
       {
         fileId: 2,
@@ -157,8 +168,10 @@ test('database: get files', t => {
         size: 5779,
         width: 500,
         height: 500,
-        mediaUrl: `http://localhost:${process.env.PORT}/media/original/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55`,
-        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55`
+        mediaUrl: originalBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55'
       },
       {
         fileId: 3,
@@ -166,8 +179,10 @@ test('database: get files', t => {
         size: 6117,
         width: 500,
         height: 500,
-        mediaUrl: `http://localhost:${process.env.PORT}/media/original/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42`,
-        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42`
+        mediaUrl: originalBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42'
       },
       {
         fileId: 4,
@@ -175,8 +190,10 @@ test('database: get files', t => {
         size: 6665,
         width: 500,
         height: 500,
-        mediaUrl: `http://localhost:${process.env.PORT}/media/original/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39`,
-        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39`
+        mediaUrl: originalBaseUrl +
+          '/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39'
       }
     ]
   )
@@ -191,8 +208,10 @@ test('database: get files by tags', t => {
       size: 5012,
       width: 500,
       height: 500,
-      mediaUrl: `http://localhost:${process.env.PORT}/media/original/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`,
-      thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`
+      mediaUrl: originalBaseUrl +
+        '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c',
+      thumbnailUrl: thumbnailsBaseUrl +
+        '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c'
     }]
   )
 })
@@ -207,8 +226,10 @@ test('database: get files sorted by namespace', t => {
         size: 6672,
         width: 500,
         height: 500,
-        mediaUrl: `http://localhost:${process.env.PORT}/media/original/d2f5788f623cde1f0fb3dc801396fee235c67ed11d9452bfd765f1331587401d`,
-        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/d2f5788f623cde1f0fb3dc801396fee235c67ed11d9452bfd765f1331587401d`
+        mediaUrl: originalBaseUrl +
+          '/d2f5788f623cde1f0fb3dc801396fee235c67ed11d9452bfd765f1331587401d',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/d2f5788f623cde1f0fb3dc801396fee235c67ed11d9452bfd765f1331587401d'
       },
       {
         fileId: 4,
@@ -216,8 +237,10 @@ test('database: get files sorted by namespace', t => {
         size: 6665,
         width: 500,
         height: 500,
-        mediaUrl: `http://localhost:${process.env.PORT}/media/original/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39`,
-        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39`
+        mediaUrl: originalBaseUrl +
+          '/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39'
       },
       {
         fileId: 3,
@@ -225,8 +248,10 @@ test('database: get files sorted by namespace', t => {
         size: 6117,
         width: 500,
         height: 500,
-        mediaUrl: `http://localhost:${process.env.PORT}/media/original/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42`,
-        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42`
+        mediaUrl: originalBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42'
       },
       {
         fileId: 2,
@@ -234,8 +259,10 @@ test('database: get files sorted by namespace', t => {
         size: 5779,
         width: 500,
         height: 500,
-        mediaUrl: `http://localhost:${process.env.PORT}/media/original/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55`,
-        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55`
+        mediaUrl: originalBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55'
       }
     ]
   )
@@ -253,8 +280,10 @@ test('database: get files by tags sorted by namespace', t => {
         size: 6117,
         width: 500,
         height: 500,
-        mediaUrl: `http://localhost:${process.env.PORT}/media/original/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42`,
-        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42`
+        mediaUrl: originalBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42'
       },
       {
         fileId: 2,
@@ -262,8 +291,10 @@ test('database: get files by tags sorted by namespace', t => {
         size: 5779,
         width: 500,
         height: 500,
-        mediaUrl: `http://localhost:${process.env.PORT}/media/original/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55`,
-        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55`
+        mediaUrl: originalBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55'
       },
       {
         fileId: 1,
@@ -271,8 +302,10 @@ test('database: get files by tags sorted by namespace', t => {
         size: 5012,
         width: 500,
         height: 500,
-        mediaUrl: `http://localhost:${process.env.PORT}/media/original/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`,
-        thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`
+        mediaUrl: originalBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c'
       }
     ]
   )
@@ -287,8 +320,10 @@ test('database: get file by id', t => {
       size: 5012,
       width: 500,
       height: 500,
-      mediaUrl: `http://localhost:${process.env.PORT}/media/original/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`,
-      thumbnailUrl: `http://localhost:${process.env.PORT}/media/thumbnails/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c`
+      mediaUrl: originalBaseUrl +
+        '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c',
+      thumbnailUrl: thumbnailsBaseUrl +
+        '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c'
     }
   )
 })

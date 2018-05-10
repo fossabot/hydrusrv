@@ -7,7 +7,7 @@ module.exports = app => {
   app.get(`${config.apiBase}`, (req, res, next) => {
     res.send({
       hydrusrv: {
-        version: '1.1.2'
+        version: '1.2.0'
       }
     })
   })
@@ -115,22 +115,22 @@ module.exports = app => {
         return next(err)
       }
 
-      if (data.file) {
-        let tags
-
-        try {
-          tags = controllers.tags.getTagsOfFile(req.params.fileId)
-        } catch (err) {
-          return next(err)
-        }
-
-        data.file.tags = tags
-      } else {
+      if (!data.file) {
         return next({
           customStatus: 404,
           customName: 'NotFoundError'
         })
       }
+
+      let tags
+
+      try {
+        tags = controllers.tags.getTagsOfFile(req.params.fileId)
+      } catch (err) {
+        return next(err)
+      }
+
+      data.file.tags = tags
 
       res.send(data.file)
     }
