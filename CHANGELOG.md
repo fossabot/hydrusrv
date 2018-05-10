@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
++ Added [Snyk](https://snyk.io) integration
+
 ### Changed
 
 + Refactored several `if/else` constructs

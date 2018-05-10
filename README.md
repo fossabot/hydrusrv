@@ -1,4 +1,4 @@
-# hydrusrv [![Build status][travis-image]][travis-url]
+# hydrusrv [![Build status][travis-badge]][travis-url] [![Known vulnerabilities][snyk-badge]][snyk-url]
 
 > A small application for serving media managed with
 > [hydrus server][hydrus-server] via API
@@ -679,7 +679,10 @@ You are welcome to help out!
 [MIT](LICENSE.md) © Michael Serajnik
 
 [travis-url]: https://travis-ci.org/mserajnik/hydrusrv
-[travis-image]: https://img.shields.io/travis/mserajnik/hydrusrv/master.svg
+[travis-badge]: https://img.shields.io/travis/mserajnik/hydrusrv/master.svg
+
+[snyk-url]: https://snyk.io/test/github/mserajnik/hydrusrv
+[snyk-badge]: https://snyk.io/test/github/mserajnik/hydrusrv/badge.svg
 
 [express]: https://expressjs.com/
 [hydrus-server]: http://hydrusnetwork.github.io/hydrus
