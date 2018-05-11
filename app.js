@@ -43,6 +43,11 @@ if (config.allowCrossDomain) {
   const allowCrossDomain = (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*')
     res.header('Access-Control-Allow-Headers', 'X-Requested-With')
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+
+    if (req.method === 'OPTIONS') {
+      res.send(200, '')
+    }
 
     next()
   }
