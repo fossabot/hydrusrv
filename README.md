@@ -148,6 +148,8 @@ following are all the available settings (along with their default values):
   `LOGGING_ENABLED=true` and `NODE_ENV=production`. With
   `NODE_ENV=development`, hydrusrv logs to the console instead.
   __Absolute path required.__
++ `ALLOW_CROSS_DOMAIN=true`: allows cross-domain requests (useful when the
+  application accessing the API is located on a different domain).
 + `HYDRUS_SERVER_DB_PATH=`: sets the path to the hydrus server main database
   (called `server.db`). __Absolute path required.__
 + `HYDRUS_MASTER_DB_PATH=`: sets the path to the hydrus server master database

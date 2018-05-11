@@ -52,7 +52,7 @@ module.exports = {
         }).withMessage('InvalidPasswordFieldError')
     ],
     validateInput: (req, res, next) => {
-      if (config.registrationEnabled !== 'true') {
+      if (!config.registrationEnabled) {
         return next({
           customStatus: 400,
           customName: 'RegistrationDisabledError'
