@@ -39,6 +39,17 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(bodyParser.json())
 
+if (config.allowCrossDomain) {
+  const allowCrossDomain = (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With')
+
+    next()
+  }
+
+  app.use(allowCrossDomain)
+}
+
 require('./server/routes')(app)
 
 app.use((err, req, res, next) => {
