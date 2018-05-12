@@ -1,4 +1,5 @@
 const users = require('../models/users')
+const tokens = require('../models/tokens')
 
 module.exports = {
   async createUser (username, password) {
@@ -35,17 +36,17 @@ module.exports = {
       expires = Math.floor(Date.now() / 1000) + 7776000
     }
 
-    return users.createToken(userId, expires)
+    return tokens.create(userId, expires)
   },
   deleteTokens (userId, hash, all) {
     if (all) {
-      users.deleteTokens(userId)
+      tokens.delete(userId)
     }
 
-    users.deleteTokens(userId, hash)
+    tokens.delete(userId, hash)
   },
   validateTokenAndGetUserId (hash) {
-    const token = users.getTokenByHash(hash)
+    const token = tokens.getByHash(hash)
 
     if (
       !token ||
