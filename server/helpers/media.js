@@ -1,6 +1,6 @@
 const fs = require('fs')
-const readChunk = require('read-chunk')
 const fileType = require('file-type')
+const readChunk = require('read-chunk')
 const hydrusConfig = require('../config/hydrus')
 
 module.exports = {
@@ -18,17 +18,13 @@ module.exports = {
     const filePath =
       `${hydrusConfig.filesPath}/${directory}/${hash}${extension}`
 
-    let buffer
-
     try {
-      buffer = readChunk.sync(filePath, 0, 4100)
+      return {
+        path: filePath,
+        mimeType: fileType(readChunk.sync(filePath, 0, 4100)).mime
+      }
     } catch (err) {
       throw err
-    }
-
-    return {
-      path: filePath,
-      mimeType: fileType(buffer).mime
     }
   }
 }

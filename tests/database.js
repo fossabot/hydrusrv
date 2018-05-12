@@ -1,20 +1,15 @@
 const path = require('path')
 const http = require('http')
-const fse = require('fs-extra')
 const { test } = require('ava')
+const fse = require('fs-extra')
 const portscanner = require('portscanner')
 const setup = require('./_setup')
 
 setup.setTestEnvironment()
 
-let app
-let tags
-let files
-let users
+let app, users, tokens, tags, files
 
-let originalBaseUrl
-let thumbnailsBaseUrl
-let testTokenHash
+let originalBaseUrl, thumbnailsBaseUrl, testTokenHash
 
 test.before(t => {
   return new Promise(resolve => {
@@ -41,9 +36,10 @@ test.before(t => {
       )
 
       app = require('../app')
+      users = require('../server/models/users')
+      tokens = require('../server/models/tokens')
       tags = require('../server/models/tags')
       files = require('../server/models/files')
-      users = require('../server/models/users')
 
       app.set('port', port)
 
@@ -78,7 +74,7 @@ test.serial('database: update user', async t => {
 })
 
 test.serial('database: create token', t => {
-  testTokenHash = users.createToken(
+  testTokenHash = tokens.create(
     1, Math.floor(Date.now() / 1000) + 86400
   ).hash
 
@@ -86,9 +82,9 @@ test.serial('database: create token', t => {
 })
 
 test.serial('database: delete token', t => {
-  users.deleteTokens(1, testTokenHash)
+  tokens.delete(1, testTokenHash)
 
-  t.truthy(!users.getTokenByHash(testTokenHash))
+  t.truthy(!tokens.getByHash(testTokenHash))
 })
 
 test.serial('database: delete user', t => {

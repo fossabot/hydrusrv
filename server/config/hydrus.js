@@ -16,7 +16,7 @@ const availableMimeTypes = {
 
 const supportedMimeTypes = () => {
   return process.env.HYDRUS_SUPPORTED_MIME_TYPES.split(',')
-    .filter((mimeType) => {
+    .filter(mimeType => {
       return (parseInt(mimeType) in availableMimeTypes)
     })
 }

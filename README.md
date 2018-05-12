@@ -1,4 +1,4 @@
-# hydrusrv [![Build status][travis-badge]][travis-url] [![Known vulnerabilities][snyk-badge]][snyk-url]
+# hydrusrv [![Build status][travis-badge]][travis-url] [![Known vulnerabilities][snyk-badge]][snyk-url] [![JavaScript Standard Style][standardjs-badge]][standardjs-url]
 
 > A small application for serving media managed with
 > [hydrus server][hydrus-server] via API
@@ -62,7 +62,7 @@ The easiest way to install is via cloning this repository:
 ```zsh
 user@local:~$ git clone https://github.com/mserajnik/hydrusrv.git
 user@local:~$ cd hydrusrv
-user@local:hydrusrv$ npm i
+user@local:hydrusrv$ yarn install
 ```
 
 If you encounter any errors during installation, those are likely caused by
@@ -81,7 +81,7 @@ those packages directly if you cannnot resolve your issues:
   difficult and not recommended for people who have no prior experience with
   hydrus; see [here][hydrus-server-installation] for installation instructions)
 + [Node.js][node-js] (tested on `9.10.0`+)
-+ [npm][npm] (tested on `5.6.0`+)
++ [Yarn][yarn] (tested on `1.6.0`+)
 + [node-gyp][node-gyp] (likely required for Windows, hydrusrv seems to install
   fine without it being globally installed on macOS and Linux)
 
@@ -91,11 +91,11 @@ If you have installed via cloning the repository, you can update via Git:
 
 ```zsh
 user@local:hydrusrv$ git pull
-user@local:hydrusrv$ npm i
+user@local:hydrusrv$ yarn install
 ```
 
-Always make sure to run `npm i` after updating to install any packages you
-might be missing.
+Always make sure to run `yarn install` after updating to install any packages
+you might be missing.
 
 hydrusrv follows [Semantic Versioning][semantic-versioning] and any breaking
 changes that require additional attention will be released under a new major
@@ -172,9 +172,9 @@ following are all the available settings (along with their default values):
 
 First of all, you have several options to start the server:
 
-+ `npm run start-dev`: starts the server in development mode using
++ `yarn run start-dev`: starts the server in development mode using
   [nodemon][nodemon] to watch for file changes and restarts when necessary.
-+ `npm run start`: starts the server in production mode.
++ `yarn run start`: starts the server in production mode.
 + `./bin/www`: the file that is run when using both, `start-dev` and `start`.
   You can also execute it directly to start the server in production mode.
 
@@ -686,6 +686,9 @@ You are welcome to help out!
 [snyk-url]: https://snyk.io/test/github/mserajnik/hydrusrv
 [snyk-badge]: https://snyk.io/test/github/mserajnik/hydrusrv/badge.svg
 
+[standardjs-url]: https://standardjs.com
+[standardjs-badge]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
+
 [express]: https://expressjs.com/
 [hydrus-server]: http://hydrusnetwork.github.io/hydrus
 [hydrus-server-installation]: http://hydrusnetwork.github.io/hydrus/help/server.html
@@ -694,7 +697,7 @@ You are welcome to help out!
 [better-sqlite3]: https://github.com/JoshuaWise/better-sqlite3/wiki/Troubleshooting-installation
 [node-argon2]: https://github.com/ranisalt/node-argon2#before-installing
 [node-js]: https://nodejs.org/en/
-[npm]: https://www.npmjs.com/get-npm
+[yarn]: https://yarnpkg.com/
 [node-gyp]: https://github.com/nodejs/node-gyp
 [semantic-versioning]: https://semver.org/
 [sqlite]: https://www.sqlite.org/

@@ -2,9 +2,9 @@ const hydrusConfig = require('./hydrus')
 
 let mimePlaceholders = []
 
-hydrusConfig.supportedMimeTypes.forEach(supportedMimeType => {
+for (let i = 0; i < hydrusConfig.supportedMimeTypes.length; i++) {
   mimePlaceholders.push('?')
-})
+}
 
 mimePlaceholders = mimePlaceholders.join(',')
 

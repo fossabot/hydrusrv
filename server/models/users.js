@@ -1,4 +1,3 @@
-const crypto = require('crypto')
 const argon2 = require('argon2')
 const db = require('../database/database')
 
@@ -96,60 +95,5 @@ module.exports = {
     } catch (err) {
       throw err
     }
-  },
-  createToken (userId, expires) {
-    const hash = crypto.randomBytes(
-      Math.ceil(128 / 2)
-    ).toString('hex').slice(0, 128)
-
-    const newTokenId = db.app.prepare(
-      `INSERT INTO
-        tokens (user_id, hash, expires)
-      VALUES (?, ?, ?);`
-    ).run(userId, hash, expires).lastInsertROWID
-
-    return this.getTokenById(newTokenId)
-  },
-  deleteTokens (userId, hash) {
-    let where = 'user_id'
-    let param = userId
-
-    if (hash) {
-      where = 'hash'
-      param = hash
-    }
-
-    db.app.prepare(
-      `DELETE FROM
-        tokens
-      WHERE
-        ${where} = ?;`
-    ).run(param)
-  },
-  getTokenById (tokenId) {
-    return db.app.prepare(
-      `SELECT
-        id,
-        user_id as userId,
-        hash,
-        expires
-      FROM
-        tokens
-      WHERE
-        id = ?;`
-    ).get(tokenId)
-  },
-  getTokenByHash (hash) {
-    return db.app.prepare(
-      `SELECT
-        id,
-        user_id as userId,
-        hash,
-        expires
-      FROM
-        tokens
-      WHERE
-        hash = ?;`
-    ).get(hash)
   }
 }

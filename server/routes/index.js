@@ -1,13 +1,13 @@
 const config = require('../config/app')
-const controllers = require('../controllers')
 const middleware = require('../middleware')
+const controllers = require('../controllers')
 const mediaHelper = require('../helpers/media')
 
 module.exports = app => {
   app.get(`${config.apiBase}`, (req, res, next) => {
     res.send({
       hydrusrv: {
-        version: '1.3.2'
+        version: '1.4.0'
       }
     })
   })
