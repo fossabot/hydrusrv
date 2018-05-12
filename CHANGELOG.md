@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Refactored code
 + Added separate model for tokens
++ Switched to Yarn and updated dependencies
 
 ### Fixed
 

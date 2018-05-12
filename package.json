@@ -46,7 +46,7 @@
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "express-validator": "^5.2.0",
-    "file-type": "^7.7.1",
+    "file-type": "^8.0.0",
     "morgan": "^1.9.0",
     "read-chunk": "^2.1.0"
   },
