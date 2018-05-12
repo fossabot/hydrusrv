@@ -1,7 +1,7 @@
 const path = require('path')
 const http = require('http')
-const fse = require('fs-extra')
 const { test } = require('ava')
+const fse = require('fs-extra')
 const portscanner = require('portscanner')
 const setup = require('./_setup')
 
@@ -41,9 +41,9 @@ test.before(t => {
       )
 
       app = require('../app')
+      users = require('../server/models/users')
       tags = require('../server/models/tags')
       files = require('../server/models/files')
-      users = require('../server/models/users')
 
       app.set('port', port)
 

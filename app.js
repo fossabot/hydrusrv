@@ -1,9 +1,9 @@
 const fs = require('fs')
 const express = require('express')
-const db = require('./server/database/database')
 const bodyParser = require('body-parser')
 const logger = require('morgan')
 const config = require('./server/config/app')
+const db = require('./server/database/database')
 
 const app = express()
 
@@ -11,8 +11,8 @@ try {
   db.connect()
 } catch (err) {
   console.error(
-    'Could not connect to databases. Make sure the specified paths are ' +
-      'correct and hydrusrv has write access to the databases.'
+    'Could not connect to databases. Make sure that the specified paths are ' +
+      'correct and that hydrusrv has write access to the databases.'
   )
 
   process.exit(1)
@@ -27,8 +27,8 @@ if (process.env.NODE_ENV === 'development') {
 
   accessLogStream.on('error', () => {
     console.error(
-      'Could not write logfile. Make sure hydrusrv has write access to the ' +
-        'specified logfile location or disable logging.'
+      'Could not write logfile. Make sure that hydrusrv has write access to ' +
+        'the specified logfile location or disable logging.'
     )
 
     process.exit(1)

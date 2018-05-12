@@ -42,12 +42,12 @@ module.exports = {
     ).all(hydrusConfig.supportedMimeTypes)
 
     if (files.length) {
-      files.forEach(file => {
+      for (const file of files) {
         file.mimeType = hydrusConfig.availableMimeTypes[file.mimeType]
         file.mediaUrl = generateFilePath('original', file.hash)
         file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
         delete file.hash
-      })
+      }
     }
 
     return files
@@ -86,9 +86,11 @@ module.exports = {
   },
   getByTags (page, tags) {
     let tagPlaceholders = []
-    tags.forEach(tag => {
+
+    for (let i = 0; i < tags.length; i++) {
       tagPlaceholders.push('?')
-    })
+    }
+
     tagPlaceholders = tagPlaceholders.join(',')
 
     const files = db.hydrus.prepare(
@@ -128,12 +130,12 @@ module.exports = {
     ).all(tags, hydrusConfig.supportedMimeTypes, tags.length)
 
     if (files.length) {
-      files.forEach(file => {
+      for (const file of files) {
         file.mimeType = hydrusConfig.availableMimeTypes[file.mimeType]
         file.mediaUrl = generateFilePath('original', file.hash)
         file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
         delete file.hash
-      })
+      }
     }
 
     return files
@@ -232,21 +234,23 @@ module.exports = {
     )
 
     if (files.length) {
-      files.forEach(file => {
+      for (const file of files) {
         file.mimeType = hydrusConfig.availableMimeTypes[file.mimeType]
         file.mediaUrl = generateFilePath('original', file.hash)
         file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
         delete file.hash
-      })
+      }
     }
 
     return files
   },
   getByTagsSortedByNamespace (page, tags, namespace) {
     let tagPlaceholders = []
-    tags.forEach(tag => {
+
+    for (let i = 0; i < tags.length; i++) {
       tagPlaceholders.push('?')
-    })
+    }
+
     tagPlaceholders = tagPlaceholders.join(',')
 
     const files = db.hydrus.prepare(
@@ -345,12 +349,12 @@ module.exports = {
     )
 
     if (files.length) {
-      files.forEach(file => {
+      for (const file of files) {
         file.mimeType = hydrusConfig.availableMimeTypes[file.mimeType]
         file.mediaUrl = generateFilePath('original', file.hash)
         file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
         delete file.hash
-      })
+      }
     }
 
     return files

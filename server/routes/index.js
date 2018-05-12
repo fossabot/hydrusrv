@@ -1,6 +1,6 @@
 const config = require('../config/app')
-const controllers = require('../controllers')
 const middleware = require('../middleware')
+const controllers = require('../controllers')
 const mediaHelper = require('../helpers/media')
 
 module.exports = app => {
