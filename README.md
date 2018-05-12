@@ -1,4 +1,4 @@
-# hydrusrv [![Build status][travis-badge]][travis-url] [![Known vulnerabilities][snyk-badge]][snyk-url]
+# hydrusrv [![Build status][travis-badge]][travis-url] [![Known vulnerabilities][snyk-badge]][snyk-url] [![JavaScript Standard Style][standardjs-badge]][standardjs-url]
 
 > A small application for serving media managed with
 > [hydrus server][hydrus-server] via API
@@ -685,6 +685,9 @@ You are welcome to help out!
 
 [snyk-url]: https://snyk.io/test/github/mserajnik/hydrusrv
 [snyk-badge]: https://snyk.io/test/github/mserajnik/hydrusrv/badge.svg
+
+[standardjs-url]: https://standardjs.com
+[standardjs-badge]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
 
 [express]: https://expressjs.com/
 [hydrus-server]: http://hydrusnetwork.github.io/hydrus
