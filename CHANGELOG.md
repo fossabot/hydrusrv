@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.5.1] - 2018-05-29
+
+### Fixed
+
++ Fixed getting files by tags query failing when the same tag was provided
+  multiple times
++ Fixed getting files by tags sorted by namespace query not working correctly
+  when one or more of the provided tags also contained the namespace
+
 ## [1.5.0] - 2018-05-28
 
 ### Changed
@@ -103,7 +112,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/1.5.0...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/1.5.1...develop
+[1.5.1]: https://github.com/mserajnik/hydrusrv/compare/1.5.0...1.5.1
 [1.5.0]: https://github.com/mserajnik/hydrusrv/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/mserajnik/hydrusrv/compare/1.3.2...1.4.0
 [1.3.2]: https://github.com/mserajnik/hydrusrv/compare/1.3.1...1.3.2
