@@ -79,8 +79,10 @@ module.exports = {
         username = ?;`
     ).get(username)
   },
-  async getValidUser (username, password) {
-    const user = this.getByName(username)
+  async getValid (nameOrId, password, getByName = false) {
+    const user = (getByName)
+      ? this.getByName(nameOrId)
+      : this.getById(nameOrId)
 
     if (!user) {
       return false

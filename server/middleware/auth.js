@@ -87,7 +87,11 @@ module.exports = {
         .isLength({
           min: config.minPasswordLength,
           max: 128
-        }).withMessage('InvalidPasswordFieldError')
+        }).withMessage('InvalidPasswordFieldError'),
+      sanitizeBody('currentPassword').trim(),
+      check('currentPassword')
+        .exists().withMessage('MissingCurrentPasswordFieldError')
+        .isString().withMessage('InvalidCurrentPasswordFieldError')
     ],
     validateInput: (req, res, next) => {
       const err = validationResult(req)
@@ -107,18 +111,11 @@ module.exports = {
       sanitizeBody('username').trim(),
       check('username')
         .exists().withMessage('MissingUsernameFieldError')
-        .isString().withMessage('InvalidUsernameFieldError')
-        .isLength({ min: 1, max: 128 }).withMessage(
-          'InvalidUsernameFieldError'
-        ),
+        .isString().withMessage('InvalidUsernameFieldError'),
       sanitizeBody('password').trim(),
       check('password')
         .exists().withMessage('MissingPasswordFieldError')
-        .isString().withMessage('InvalidPasswordFieldError')
-        .isLength({
-          min: config.minPasswordLength,
-          max: 128
-        }).withMessage('InvalidPasswordFieldError'),
+        .isString().withMessage('InvalidPasswordFieldError'),
       check('long')
         .optional()
         .isBoolean().withMessage('InvalidLongFieldError')
