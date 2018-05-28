@@ -12,6 +12,38 @@ const generateFilePath = (type, hash) => {
 }
 
 module.exports = {
+  getById (fileId) {
+    const file = db.hydrus.prepare(
+      `SELECT
+        ${mappings.hashes}.master_hash_id AS fileId,
+        ${mappings.filesInfo}.mime AS mimeType,
+        ${mappings.filesInfo}.size,
+        ${mappings.filesInfo}.width,
+        ${mappings.filesInfo}.height,
+        ${mappings.hashes}.hash
+      FROM
+        ${mappings.currentFiles}
+      NATURAL JOIN
+        ${mappings.repositoryHashIdMapTags}
+      NATURAL JOIN
+        ${mappings.hashes}
+      NATURAL JOIN
+        ${mappings.filesInfo}
+      WHERE
+        ${mappings.filesInfo}.master_hash_id = ?
+      AND
+        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders});`
+    ).get(fileId, hydrusConfig.supportedMimeTypes)
+
+    if (file) {
+      file.mimeType = hydrusConfig.availableMimeTypes[file.mimeType]
+      file.mediaUrl = generateFilePath('original', file.hash)
+      file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
+      delete file.hash
+    }
+
+    return file
+  },
   get (page) {
     const files = db.hydrus.prepare(
       `SELECT
@@ -52,39 +84,9 @@ module.exports = {
 
     return files
   },
-  getById (fileId) {
-    const file = db.hydrus.prepare(
-      `SELECT
-        ${mappings.hashes}.master_hash_id AS fileId,
-        ${mappings.filesInfo}.mime AS mimeType,
-        ${mappings.filesInfo}.size,
-        ${mappings.filesInfo}.width,
-        ${mappings.filesInfo}.height,
-        ${mappings.hashes}.hash
-      FROM
-        ${mappings.currentFiles}
-      NATURAL JOIN
-        ${mappings.repositoryHashIdMapTags}
-      NATURAL JOIN
-        ${mappings.hashes}
-      NATURAL JOIN
-        ${mappings.filesInfo}
-      WHERE
-        ${mappings.filesInfo}.master_hash_id = ?
-      AND
-        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders});`
-    ).get(fileId, hydrusConfig.supportedMimeTypes)
-
-    if (file) {
-      file.mimeType = hydrusConfig.availableMimeTypes[file.mimeType]
-      file.mediaUrl = generateFilePath('original', file.hash)
-      file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
-      delete file.hash
-    }
-
-    return file
-  },
   getByTags (page, tags) {
+    tags = [...new Set(tags)]
+
     let tagPlaceholders = []
 
     for (let i = 0; i < tags.length; i++) {
@@ -245,13 +247,71 @@ module.exports = {
     return files
   },
   getByTagsSortedByNamespace (page, tags, namespace) {
-    let tagPlaceholders = []
+    tags = [...new Set(tags)]
 
-    for (let i = 0; i < tags.length; i++) {
-      tagPlaceholders.push('?')
+    const namespacedTags = db.hydrus.prepare(
+      `SELECT DISTINCT
+        ${mappings.tags}.tag,
+        ${mappings.tags}.master_tag_id
+      FROM
+        ${mappings.currentMappings}
+      NATURAL JOIN
+        ${mappings.repositoryTagIdMap}
+      NATURAL JOIN
+        ${mappings.tags}
+      NATURAL JOIN
+        ${mappings.repositoryHashIdMapTags}
+      NATURAL JOIN
+        ${mappings.hashes}
+      NATURAL JOIN
+        ${mappings.filesInfo}
+      WHERE
+        ${mappings.tags}.tag LIKE ?
+      AND
+        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
+      ORDER BY
+        ${mappings.tags}.tag ASC`
+    ).all(
+      `${namespace}:%`,
+      hydrusConfig.supportedMimeTypes
+    )
+
+    const namespacedTagNames = []
+    const namespacedTagIds = []
+
+    let tagsContainNamespace = false
+
+    if (tags.findIndex(tag => tag.startsWith(`${namespace}:`)) > -1) {
+      tagsContainNamespace = true
+
+      for (let i = 0; i < namespacedTags.length; i++) {
+        if (tags.findIndex(tag => tag === namespacedTags[i].tag) > -1) {
+          namespacedTagNames.push(namespacedTags[i].tag)
+          namespacedTagIds.push(namespacedTags[i].master_tag_id)
+        }
+      }
+    } else {
+      for (let i = 0; i < namespacedTags.length; i++) {
+        namespacedTagNames.push(namespacedTags[i].tag)
+        namespacedTagIds.push(namespacedTags[i].master_tag_id)
+      }
     }
 
-    tagPlaceholders = tagPlaceholders.join(',')
+    const namespacedTagIdPlaceholders = []
+
+    for (let i = 0; i < namespacedTagIds.length; i++) {
+      namespacedTagIdPlaceholders.push('?')
+    }
+
+    const combinedTags = [...new Set([...tags, ...namespacedTagNames])]
+
+    const whereTagLikes = []
+
+    for (let i = 0; i < combinedTags.length; i++) {
+      whereTagLikes.push(
+        `${(i === 0) ? 'WHERE' : 'OR'} ${mappings.tags}.tag LIKE ?`
+      )
+    }
 
     const files = db.hydrus.prepare(
       `SELECT
@@ -271,29 +331,7 @@ module.exports = {
           ${mappings.tags}.master_tag_id =
           ${mappings.repositoryTagIdMap}.master_tag_id
         AND
-          ${mappings.tags}.master_tag_id IN
-            (
-              SELECT DISTINCT
-                ${mappings.tags}.master_tag_id
-              FROM
-                ${mappings.currentMappings}
-              NATURAL JOIN
-                ${mappings.repositoryTagIdMap}
-              NATURAL JOIN
-                ${mappings.tags}
-              NATURAL JOIN
-                ${mappings.repositoryHashIdMapTags}
-              NATURAL JOIN
-                ${mappings.hashes}
-              NATURAL JOIN
-                ${mappings.filesInfo}
-              WHERE
-                ${mappings.tags}.tag LIKE ?
-              AND
-                ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
-              ORDER BY
-                ${mappings.tags}.tag ASC
-            )
+          ${mappings.tags}.master_tag_id IN (${namespacedTagIdPlaceholders})
       NATURAL JOIN
         ${mappings.repositoryHashIdMapTags}
       NATURAL JOIN
@@ -317,10 +355,7 @@ module.exports = {
               ${mappings.hashes}
             NATURAL JOIN
               ${mappings.filesInfo}
-            WHERE
-              ${mappings.tags}.tag IN (${tagPlaceholders})
-            OR
-              ${mappings.tags}.tag LIKE ?
+            ${whereTagLikes.join(' ')}
             AND
               ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
             GROUP BY
@@ -340,12 +375,10 @@ module.exports = {
       OFFSET
         ${(page - 1) * hydrusConfig.resultsPerPage};`
     ).all(
-      `${namespace}:%`,
+      namespacedTagIds,
+      combinedTags,
       hydrusConfig.supportedMimeTypes,
-      tags,
-      `${namespace}:%`,
-      hydrusConfig.supportedMimeTypes,
-      tags.length + 1
+      (tagsContainNamespace) ? combinedTags.length : tags.length + 1
     )
 
     if (files.length) {

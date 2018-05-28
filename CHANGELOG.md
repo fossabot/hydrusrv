@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
++ Fixed getting files by tags query failing when the same tag was provided
+  multiple times
++ Fixed getting files by tags sorted by namespace query not working correctly
+  when one or more of the provided tags also contained the namespace
+
 ## [1.5.0] - 2018-05-28
 
 ### Changed
