@@ -137,7 +137,6 @@ module.exports = app => {
   )
 
   app.get(`${config.mediaBase}/original/:mediaHash`,
-    middleware.auth.validateToken,
     middleware.media.get.inputValidationConfig,
     middleware.media.get.validateInput,
     (req, res, next) => {
@@ -158,7 +157,6 @@ module.exports = app => {
   )
 
   app.get(`${config.mediaBase}/thumbnails/:mediaHash`,
-    middleware.auth.validateToken,
     middleware.media.get.inputValidationConfig,
     middleware.media.get.validateInput,
     (req, res, next) => {

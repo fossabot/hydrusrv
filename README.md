@@ -201,10 +201,10 @@ return an error with status code `404` when they do not exist while lists
 
 #### Authentication
 
-All the routes except the base route (`/api`) and the ones for registering new
-users and creating tokens are protected with a token-based authentication. In
-order to access these routes, a valid token must be provided via an
-`Authorization: Bearer <token>` header.
+All the routes except the base route (`/api`), the ones for registering new
+users and creating tokens and the ones returning the actual media files are
+protected with a token-based authentication. In order to access these routes, a
+valid token must be provided via an `Authorization: Bearer <token>` header.
 
 When updating or deleting users and tokens, the provided authentication token
 is also used to identify which user/token(s) are to be modified/deleted.
@@ -603,8 +603,6 @@ __Output on success:__ The requested media file
 
 __Possible errors:__
 
-+ `MissingTokenError`
-+ `InvalidTokenError`
 + `MissingMediaHashParameterError`
 + `InvalidMediaHashParameterError`
 + `NotFoundError`
@@ -620,8 +618,6 @@ __Output on success:__ The requested media thumbnail
 
 __Possible errors:__
 
-+ `MissingTokenError`
-+ `InvalidTokenError`
 + `MissingMediaHashParameterError`
 + `InvalidMediaHashParameterError`
 + `NotFoundError`

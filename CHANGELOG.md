@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
++ Removed the previously required token on media file and thumbnail routes –
+  this made it impossible to load files/thumbnails via `<img>` tag or the like
+  and the long hash alone should be enough to make those routes nearly
+  impossible to guess
 + Updated dependencies
 
 ## [1.4.0] - 2018-05-13
