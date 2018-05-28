@@ -287,7 +287,8 @@ __Input:__
 ```json5
 {
   "username": <new username>, // optional – at least one of the two required
-  "password": <new password> // optional – at least one of the two required
+  "password": <new password>, // optional – at least one of the two required
+  "currentPassword": <current password>
 }
 ```
 
@@ -308,6 +309,9 @@ __Possible errors:__
 + `InvalidUsernameFieldError`
 + `MissingPasswordFieldError`
 + `InvalidPasswordFieldError`
++ `MissingCurrentPasswordFieldError`
++ `InvalidCurrentPasswordFieldError`
++ `InvalidUserError`
 + `UsernameExistsError`
 + `InternalServerError`
 

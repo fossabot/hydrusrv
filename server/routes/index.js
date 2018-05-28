@@ -230,6 +230,23 @@ module.exports = app => {
         }
       }
 
+      let validUser
+
+      try {
+        validUser = await controllers.auth.getValidUser(
+          res.locals.userId, req.body.currentPassword
+        )
+
+        if (!validUser) {
+          return next({
+            customStatus: 400,
+            customName: 'InvalidUserError'
+          })
+        }
+      } catch (err) {
+        return next(err)
+      }
+
       try {
         await controllers.auth.updateUser(
           res.locals.userId, req.body
@@ -269,7 +286,7 @@ module.exports = app => {
 
       try {
         validUser = await controllers.auth.getValidUser(
-          req.body.username, req.body.password
+          req.body.username, req.body.password, true
         )
 
         if (!validUser) {

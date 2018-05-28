@@ -22,9 +22,13 @@ module.exports = {
   getUserByName (username) {
     return users.getByName(username)
   },
-  async getValidUser (username, password) {
+  async getValidUser (nameOrId, password, getByName = false) {
     try {
-      return await users.getValidUser(username, password)
+      if (getByName) {
+        return await users.getValid(nameOrId, password, true)
+      }
+
+      return await users.getValid(nameOrId, password)
     } catch (err) {
       throw err
     }
