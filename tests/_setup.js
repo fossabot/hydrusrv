@@ -7,9 +7,7 @@ module.exports = {
     process.env.API_BASE = '/api'
     process.env.MEDIA_BASE = '/media'
 
-    process.env.APP_DB_PATH = path.resolve(
-      __dirname, 'storage/app.db'
-    )
+    process.env.APP_DB_PATH = path.resolve(__dirname, 'storage/app.db')
 
     process.env.REGISTRATION_ENABLED = true
     process.env.MIN_PASSWORD_LENGTH = 16

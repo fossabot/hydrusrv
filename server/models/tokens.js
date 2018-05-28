@@ -1,5 +1,6 @@
 const crypto = require('crypto')
-const db = require('../database/database')
+
+const db = require('../database')
 
 module.exports = {
   create (userId, expires) {
@@ -8,9 +9,7 @@ module.exports = {
     ).toString('hex').slice(0, 128)
 
     const newTokenId = db.app.prepare(
-      `INSERT INTO
-        tokens (user_id, hash, expires)
-      VALUES (?, ?, ?);`
+      'INSERT INTO tokens (user_id, hash, expires) VALUES (?, ?, ?);'
     ).run(userId, hash, expires).lastInsertROWID
 
     return this.getById(newTokenId)
@@ -24,12 +23,7 @@ module.exports = {
       param = hash
     }
 
-    db.app.prepare(
-      `DELETE FROM
-        tokens
-      WHERE
-        ${where} = ?;`
-    ).run(param)
+    db.app.prepare(`DELETE FROM tokens WHERE ${where} = ?;`).run(param)
   },
   getById (tokenId) {
     return db.app.prepare(

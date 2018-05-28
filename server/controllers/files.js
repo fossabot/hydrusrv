@@ -19,7 +19,7 @@ module.exports = {
   getTotalFileCount () {
     return files.getTotalCount()
   },
-  getFileById (fileId) {
-    return files.getById(fileId)
+  getFileById (id) {
+    return files.getById(id)
   }
 }

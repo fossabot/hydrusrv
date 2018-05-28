@@ -2,8 +2,9 @@ const fs = require('fs')
 const express = require('express')
 const bodyParser = require('body-parser')
 const logger = require('morgan')
+
 const config = require('./server/config/app')
-const db = require('./server/database/database')
+const db = require('./server/database')
 
 const app = express()
 

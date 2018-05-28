@@ -1,4 +1,4 @@
-const db = require('../database/database')
+const db = require('../database')
 const hydrusConfig = require('../config/hydrus')
 const mappings = require('../config/hydrus-db-mappings')
 

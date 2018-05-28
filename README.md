@@ -528,7 +528,7 @@ __Output on success:__
 ```json5
 [
   {
-    "fileId": <file ID>,
+    "id": <file ID>,
     "mimeType": <MIME type>,
     "size": <file size in bytes>,
     "width": <width in pixel>,
@@ -568,7 +568,7 @@ __Output on success:__
 ```json5
 [
   {
-    "fileId": <file ID>,
+    "id": <file ID>,
     "mimeType": <MIME type>,
     "size": <file size in bytes>,
     "width": <width in pixel>,
@@ -590,8 +590,8 @@ __Possible errors:__
 
 + `MissingTokenError`
 + `InvalidTokenError`
-+ `MissingFileIdParameterError`
-+ `InvalidFileIdParameterError`
++ `MissingIdParameterError`
++ `InvalidIdParameterError`
 + `NotFoundError`
 + `InternalServerError`
 

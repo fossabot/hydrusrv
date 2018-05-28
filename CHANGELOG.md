@@ -9,7 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
++ Refactorod files model
 + Set more appropriate default settings
++ Added various small optimizations throughout the application
 
 ## [1.5.1] - 2018-05-29
 

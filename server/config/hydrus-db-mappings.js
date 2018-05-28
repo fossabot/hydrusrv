@@ -1,15 +1,8 @@
 const hydrusConfig = require('./hydrus')
 
-let mimePlaceholders = []
-
-for (let i = 0; i < hydrusConfig.supportedMimeTypes.length; i++) {
-  mimePlaceholders.push('?')
-}
-
-mimePlaceholders = mimePlaceholders.join(',')
-
 module.exports = {
-  mimePlaceholders,
+  mimePlaceholders: ',?'.repeat(hydrusConfig.supportedMimeTypes.length)
+    .replace(',', ''),
   tags: 'master_db.tags',
   hashes: 'master_db.hashes',
   filesInfo: 'main.files_info',

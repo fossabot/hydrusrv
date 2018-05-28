@@ -102,7 +102,7 @@ module.exports = app => {
     }
   )
 
-  app.get(`${config.apiBase}/files/:fileId`,
+  app.get(`${config.apiBase}/files/:id`,
     middleware.auth.validateToken,
     middleware.files.getSingle.inputValidationConfig,
     middleware.files.getSingle.validateInput,
@@ -110,7 +110,7 @@ module.exports = app => {
       const data = {}
 
       try {
-        data.file = controllers.files.getFileById(req.params.fileId)
+        data.file = controllers.files.getFileById(req.params.id)
       } catch (err) {
         return next(err)
       }
@@ -125,7 +125,7 @@ module.exports = app => {
       let tags
 
       try {
-        tags = controllers.tags.getTagsOfFile(req.params.fileId)
+        tags = controllers.tags.getTagsOfFile(req.params.id)
       } catch (err) {
         return next(err)
       }
