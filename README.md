@@ -141,14 +141,14 @@ following are all the available settings (along with their default values):
   new users.
 + `MIN_PASSWORD_LENGTH=16`: sets the minimum password length when creating or
   updating users.
-+ `LOGGING_ENABLED=true`: setting this to `false` disables access logging when
++ `LOGGING_ENABLED=false`: setting this to `false` disables access logging when
   `NODE_ENV=production` is set.
 + `OVERRIDE_LOGFILE_PATH=`: overrides the default logfile location
   (`logs/access.log`. Logging to a file is only enabled with
   `LOGGING_ENABLED=true` and `NODE_ENV=production`. With
   `NODE_ENV=development`, hydrusrv logs to the console instead.
   __Absolute path required.__
-+ `ALLOW_CROSS_DOMAIN=true`: allows cross-domain requests (useful when the
++ `ALLOW_CROSS_DOMAIN=false`: allows cross-domain requests (useful when the
   application accessing the API is located on a different domain).
 + `HYDRUS_SERVER_DB_PATH=`: sets the path to the hydrus server main database
   (called `server.db`). __Absolute path required.__
@@ -162,9 +162,9 @@ following are all the available settings (along with their default values):
   should use.
 + `HYDRUS_FILE_REPOSITORY=`: the ID of the hydrus server file repository
   hydrusrv should use.
-+ `HYDRUS_SUPPORTED_MIME_TYPES=1,2,3,4,14,21,23`: the IDs of the MIME types
-  hydrusrv should support. See [here][supported-mime-types] for the complete
-  list of MIME types hydrusrv can handle.
++ `HYDRUS_SUPPORTED_MIME_TYPES=1,2,3,4,9,14,18,20,21,23,25,26,27`: the IDs of
+  the MIME types hydrusrv should support. See [here][supported-mime-types] for
+  the complete list of MIME types hydrusrv can handle.
 + `HYDRUS_RESULTS_PER_PAGE=42`: the results per page when dealing with
   paginated lists (files and tags).
 
