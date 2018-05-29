@@ -10,10 +10,8 @@ module.exports = {
     `mappings_db.current_mappings_${hydrusConfig.tagRepository}`,
   repositoryTagIdMap:
     `master_db.repository_tag_id_map_${hydrusConfig.tagRepository}`,
-  repositoryHashIdMapTags:
+  repositoryHashIdMap:
     `master_db.repository_hash_id_map_${hydrusConfig.tagRepository}`,
   currentFiles:
-    `main.current_files_${hydrusConfig.fileRepository}`,
-  repositoryHashIdMapFiles:
-    `master_db.repository_hash_id_map_${hydrusConfig.fileRepository}`
+    `main.current_files_${hydrusConfig.fileRepository}`
 }

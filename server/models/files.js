@@ -24,7 +24,7 @@ module.exports = {
       FROM
         ${mappings.currentFiles}
       NATURAL JOIN
-        ${mappings.repositoryHashIdMapTags}
+        ${mappings.repositoryHashIdMap}
       NATURAL JOIN
         ${mappings.hashes}
       NATURAL JOIN
@@ -56,7 +56,7 @@ module.exports = {
       FROM
         ${mappings.currentFiles}
       NATURAL JOIN
-        ${mappings.repositoryHashIdMapTags}
+        ${mappings.repositoryHashIdMap}
       NATURAL JOIN
         ${mappings.hashes}
       NATURAL JOIN
@@ -102,7 +102,7 @@ module.exports = {
       NATURAL JOIN
         ${mappings.tags}
       NATURAL JOIN
-        ${mappings.repositoryHashIdMapTags}
+        ${mappings.repositoryHashIdMap}
       NATURAL JOIN
         ${mappings.hashes}
       NATURAL JOIN
@@ -164,7 +164,7 @@ module.exports = {
               NATURAL JOIN
                 ${mappings.tags}
               NATURAL JOIN
-                ${mappings.repositoryHashIdMapTags}
+                ${mappings.repositoryHashIdMap}
               NATURAL JOIN
                 ${mappings.hashes}
               NATURAL JOIN
@@ -177,13 +177,13 @@ module.exports = {
                 ${mappings.tags}.tag ASC
             )
       NATURAL JOIN
-        ${mappings.repositoryHashIdMapTags}
+        ${mappings.repositoryHashIdMap}
       NATURAL JOIN
         ${mappings.hashes}
       NATURAL JOIN
         ${mappings.filesInfo}
       WHERE
-        ${mappings.repositoryHashIdMapTags}.master_hash_id IN
+        ${mappings.repositoryHashIdMap}.master_hash_id IN
           (
             SELECT DISTINCT
               ${mappings.hashes}.master_hash_id AS id
@@ -194,7 +194,7 @@ module.exports = {
             NATURAL JOIN
               ${mappings.tags}
             NATURAL JOIN
-              ${mappings.repositoryHashIdMapTags}
+              ${mappings.repositoryHashIdMap}
             NATURAL JOIN
               ${mappings.hashes}
             NATURAL JOIN
@@ -251,7 +251,7 @@ module.exports = {
       NATURAL JOIN
         ${mappings.tags}
       NATURAL JOIN
-        ${mappings.repositoryHashIdMapTags}
+        ${mappings.repositoryHashIdMap}
       NATURAL JOIN
         ${mappings.hashes}
       NATURAL JOIN
@@ -278,7 +278,7 @@ module.exports = {
       NATURAL JOIN
         ${mappings.tags}
       NATURAL JOIN
-        ${mappings.repositoryHashIdMapTags}
+        ${mappings.repositoryHashIdMap}
       NATURAL JOIN
         ${mappings.hashes}
       NATURAL JOIN
@@ -334,7 +334,7 @@ module.exports = {
               NATURAL JOIN
                 ${mappings.tags}
               NATURAL JOIN
-                ${mappings.repositoryHashIdMapTags}
+                ${mappings.repositoryHashIdMap}
               NATURAL JOIN
                 ${mappings.hashes}
               NATURAL JOIN
@@ -347,7 +347,7 @@ module.exports = {
                 ${mappings.tags}.tag ASC
             )
       NATURAL JOIN
-        ${mappings.repositoryHashIdMapTags}
+        ${mappings.repositoryHashIdMap}
       NATURAL JOIN
         ${mappings.hashes}
       NATURAL JOIN
@@ -389,7 +389,7 @@ module.exports = {
       FROM
         ${mappings.currentFiles}
       NATURAL JOIN
-        ${mappings.repositoryHashIdMapTags}
+        ${mappings.repositoryHashIdMap}
       NATURAL JOIN
         ${mappings.filesInfo}
       WHERE

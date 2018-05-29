@@ -14,7 +14,7 @@ module.exports = {
       NATURAL JOIN
         ${mappings.tags}
       NATURAL JOIN
-        ${mappings.repositoryHashIdMapFiles}
+        ${mappings.repositoryHashIdMap}
       NATURAL JOIN
         ${mappings.filesInfo}
       WHERE
@@ -38,7 +38,7 @@ module.exports = {
       NATURAL JOIN
         ${mappings.tags}
       NATURAL JOIN
-        ${mappings.repositoryHashIdMapFiles}
+        ${mappings.repositoryHashIdMap}
       NATURAL JOIN
         ${mappings.filesInfo}
       WHERE
@@ -60,7 +60,7 @@ module.exports = {
       NATURAL JOIN
         ${mappings.tags}
       NATURAL JOIN
-        ${mappings.repositoryHashIdMapFiles}
+        ${mappings.repositoryHashIdMap}
       NATURAL JOIN
         ${mappings.filesInfo}
       WHERE
@@ -88,7 +88,7 @@ module.exports = {
       NATURAL JOIN
         ${mappings.tags}
       NATURAL JOIN
-        ${mappings.repositoryHashIdMapFiles}
+        ${mappings.repositoryHashIdMap}
       NATURAL JOIN
         ${mappings.filesInfo}
       WHERE
@@ -110,7 +110,7 @@ module.exports = {
       NATURAL JOIN
         ${mappings.tags}
       NATURAL JOIN
-        ${mappings.repositoryHashIdMapFiles}
+        ${mappings.repositoryHashIdMap}
       NATURAL JOIN
         ${mappings.filesInfo}
       WHERE

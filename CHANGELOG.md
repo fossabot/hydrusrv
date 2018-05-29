@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 + Set more appropriate default settings
 + Added various small optimizations throughout the application
 
+### Fixed
+
++ Fixed wrong table used in several locations
+
 ## [1.5.1] - 2018-05-29
 
 ### Fixed
