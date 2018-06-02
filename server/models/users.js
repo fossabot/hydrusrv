@@ -8,7 +8,7 @@ module.exports = {
       const passwordHash = await argon2.hash(password)
 
       db.app.prepare(
-        'INSERT INTO users (username, password, created) VALUES (?, ?, ?);'
+        'INSERT INTO users (username, password, created) VALUES (?, ?, ?)'
       ).run(username, passwordHash, Math.floor(Date.now() / 1000))
     } catch (err) {
       throw err
@@ -36,11 +36,11 @@ module.exports = {
     params.push(userId)
 
     db.app.prepare(
-      `UPDATE users SET ${placeholders.join(',')} WHERE id = ?;`
+      `UPDATE users SET ${placeholders.join(',')} WHERE id = ?`
     ).run(...params)
   },
   delete (userId) {
-    db.app.prepare('DELETE FROM users WHERE id = ?;').run(userId)
+    db.app.prepare('DELETE FROM users WHERE id = ?').run(userId)
   },
   getById (userId) {
     return db.app.prepare(
@@ -52,7 +52,7 @@ module.exports = {
       FROM
         users
       WHERE
-        id = ?;`
+        id = ?`
     ).get(userId)
   },
   getByName (username) {
@@ -65,7 +65,7 @@ module.exports = {
       FROM
         users
       WHERE
-        username = ?;`
+        username = ?`
     ).get(username)
   },
   async getValid (nameOrId, password, getByName = false) {

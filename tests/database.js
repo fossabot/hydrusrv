@@ -122,7 +122,7 @@ test('database: get tags of file', t => {
 
 test('database: tag autocompletion', t => {
   t.deepEqual(
-    tags.autocomplete('lor'),
+    tags.complete('lor'),
     [
       { name: 'dolor' },
       { name: 'lorem' }
@@ -150,7 +150,7 @@ test('database: get files', t => {
     [
       {
         id: 1,
-        mimeType: 'image/png',
+        mime: 'image/png',
         size: 5012,
         width: 500,
         height: 500,
@@ -161,7 +161,7 @@ test('database: get files', t => {
       },
       {
         id: 2,
-        mimeType: 'image/png',
+        mime: 'image/png',
         size: 5779,
         width: 500,
         height: 500,
@@ -172,7 +172,7 @@ test('database: get files', t => {
       },
       {
         id: 3,
-        mimeType: 'image/png',
+        mime: 'image/png',
         size: 6117,
         width: 500,
         height: 500,
@@ -183,7 +183,7 @@ test('database: get files', t => {
       },
       {
         id: 4,
-        mimeType: 'image/png',
+        mime: 'image/png',
         size: 6665,
         width: 500,
         height: 500,
@@ -201,7 +201,7 @@ test('database: get files by tags', t => {
     files.getByTags(1, ['lorem', 'ipsum', 'dolor', 'sit', 'amet']),
     [{
       id: 1,
-      mimeType: 'image/png',
+      mime: 'image/png',
       size: 5012,
       width: 500,
       height: 500,
@@ -215,11 +215,11 @@ test('database: get files by tags', t => {
 
 test('database: get files sorted by namespace', t => {
   t.deepEqual(
-    files.getSortedByNamespace(1, 'namespace'),
+    files.getSortedByNamespaces(1, ['namespace']),
     [
       {
         id: 5,
-        mimeType: 'image/png',
+        mime: 'image/png',
         size: 6672,
         width: 500,
         height: 500,
@@ -230,7 +230,7 @@ test('database: get files sorted by namespace', t => {
       },
       {
         id: 4,
-        mimeType: 'image/png',
+        mime: 'image/png',
         size: 6665,
         width: 500,
         height: 500,
@@ -241,7 +241,7 @@ test('database: get files sorted by namespace', t => {
       },
       {
         id: 3,
-        mimeType: 'image/png',
+        mime: 'image/png',
         size: 6117,
         width: 500,
         height: 500,
@@ -252,7 +252,7 @@ test('database: get files sorted by namespace', t => {
       },
       {
         id: 2,
-        mimeType: 'image/png',
+        mime: 'image/png',
         size: 5779,
         width: 500,
         height: 500,
@@ -267,13 +267,13 @@ test('database: get files sorted by namespace', t => {
 
 test('database: get files by tags sorted by namespace', t => {
   t.deepEqual(
-    files.getByTagsSortedByNamespace(
-      1, ['lorem', 'ipsum', 'dolor'], 'namespace'
+    files.getByTagsSortedByNamespaces(
+      1, ['lorem', 'ipsum', 'dolor'], ['namespace']
     ),
     [
       {
         id: 3,
-        mimeType: 'image/png',
+        mime: 'image/png',
         size: 6117,
         width: 500,
         height: 500,
@@ -284,7 +284,7 @@ test('database: get files by tags sorted by namespace', t => {
       },
       {
         id: 2,
-        mimeType: 'image/png',
+        mime: 'image/png',
         size: 5779,
         width: 500,
         height: 500,
@@ -295,7 +295,7 @@ test('database: get files by tags sorted by namespace', t => {
       },
       {
         id: 1,
-        mimeType: 'image/png',
+        mime: 'image/png',
         size: 5012,
         width: 500,
         height: 500,
@@ -313,7 +313,7 @@ test('database: get file by id', t => {
     files.getById(1),
     {
       id: 1,
-      mimeType: 'image/png',
+      mime: 'image/png',
       size: 5012,
       width: 500,
       height: 500,

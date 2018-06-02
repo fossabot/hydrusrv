@@ -76,7 +76,7 @@ module.exports = app => {
       const data = {}
 
       try {
-        data.tags = controllers.tags.autocompleteTag(req.body.partialTag)
+        data.tags = controllers.tags.completeTag(req.body.partialTag)
       } catch (err) {
         return next(err)
       }

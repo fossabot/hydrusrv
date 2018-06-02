@@ -16,7 +16,7 @@ module.exports = {
       sanitizeQuery('sort').trim(),
       check('sort')
         .optional()
-        .isString().withMessage('InvalidSortParameterError')
+        .isArray().withMessage('InvalidSortParameterError')
         .isLength({ min: 1 }).withMessage('InvalidSortParameterError')
     ],
     validateInput: (req, res, next) => {

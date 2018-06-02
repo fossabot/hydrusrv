@@ -1,7 +1,7 @@
 const db = require('../database')
 const config = require('../config/app')
 const hydrusConfig = require('../config/hydrus')
-const mappings = require('../config/hydrus-db-mappings')
+const tagsModel = require('./tags')
 
 const generateFilePath = (type, hash) => {
   if (type === 'thumbnail') {
@@ -13,30 +13,22 @@ const generateFilePath = (type, hash) => {
 
 module.exports = {
   getById (id) {
-    const file = db.hydrus.prepare(
+    const file = db.app.prepare(
       `SELECT
-        ${mappings.hashes}.master_hash_id AS id,
-        ${mappings.filesInfo}.mime AS mimeType,
-        ${mappings.filesInfo}.size,
-        ${mappings.filesInfo}.width,
-        ${mappings.filesInfo}.height,
-        ${mappings.hashes}.hash
+        id,
+        mime,
+        size,
+        width,
+        height,
+        hash
       FROM
-        ${mappings.currentFiles}
-      NATURAL JOIN
-        ${mappings.repositoryHashIdMap}
-      NATURAL JOIN
-        ${mappings.hashes}
-      NATURAL JOIN
-        ${mappings.filesInfo}
+        hydrusrv_files
       WHERE
-        ${mappings.filesInfo}.master_hash_id = ?
-      AND
-        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders});`
-    ).get(id, hydrusConfig.supportedMimeTypes)
+        id = ?`
+    ).get(id)
 
     if (file) {
-      file.mimeType = hydrusConfig.availableMimeTypes[file.mimeType]
+      file.mime = hydrusConfig.availableMimeTypes[file.mime]
       file.mediaUrl = generateFilePath('original', file.hash)
       file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
       delete file.hash
@@ -45,37 +37,25 @@ module.exports = {
     return file
   },
   get (page) {
-    const files = db.hydrus.prepare(
+    const files = db.app.prepare(
       `SELECT
-        ${mappings.hashes}.master_hash_id AS id,
-        ${mappings.filesInfo}.mime AS mimeType,
-        ${mappings.filesInfo}.size,
-        ${mappings.filesInfo}.width,
-        ${mappings.filesInfo}.height,
-        ${mappings.hashes}.hash
+        id,
+        mime,
+        size,
+        width,
+        height,
+        hash
       FROM
-        ${mappings.currentFiles}
-      NATURAL JOIN
-        ${mappings.repositoryHashIdMap}
-      NATURAL JOIN
-        ${mappings.hashes}
-      NATURAL JOIN
-        ${mappings.filesInfo}
-      WHERE
-        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
-      GROUP BY
-        ${mappings.hashes}.master_hash_id
-      ORDER BY
-        id ASC
+        hydrusrv_files
       LIMIT
-        ${hydrusConfig.resultsPerPage}
+        ${config.resultsPerPage}
       OFFSET
-        ${(page - 1) * hydrusConfig.resultsPerPage};`
-    ).all(hydrusConfig.supportedMimeTypes)
+        ${(page - 1) * config.resultsPerPage}`
+    ).all()
 
     if (files.length) {
       for (const file of files) {
-        file.mimeType = hydrusConfig.availableMimeTypes[file.mimeType]
+        file.mime = hydrusConfig.availableMimeTypes[file.mime]
         file.mediaUrl = generateFilePath('original', file.hash)
         file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
         delete file.hash
@@ -87,45 +67,37 @@ module.exports = {
   getByTags (page, tags) {
     tags = [...new Set(tags)]
 
-    const files = db.hydrus.prepare(
+    const files = db.app.prepare(
       `SELECT
-        ${mappings.hashes}.master_hash_id AS id,
-        ${mappings.filesInfo}.mime AS mimeType,
-        ${mappings.filesInfo}.size,
-        ${mappings.filesInfo}.width,
-        ${mappings.filesInfo}.height,
-        ${mappings.hashes}.hash
+        hydrusrv_files.id,
+        hydrusrv_files.mime,
+        hydrusrv_files.size,
+        hydrusrv_files.width,
+        hydrusrv_files.height,
+        hydrusrv_files.hash
       FROM
-        ${mappings.currentMappings}
-      NATURAL JOIN
-        ${mappings.repositoryTagIdMap}
-      NATURAL JOIN
-        ${mappings.tags}
-      NATURAL JOIN
-        ${mappings.repositoryHashIdMap}
-      NATURAL JOIN
-        ${mappings.hashes}
-      NATURAL JOIN
-        ${mappings.filesInfo}
+        hydrusrv_files
+      LEFT JOIN
+        hydrusrv_mappings
+        ON hydrusrv_mappings.file_id = hydrusrv_files.id
+      LEFT JOIN
+        hydrusrv_tags
+        ON hydrusrv_tags.id = hydrusrv_mappings.tag_id
       WHERE
-        ${mappings.tags}.tag IN (${',?'.repeat(tags.length).replace(',', '')})
-      AND
-        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
+        hydrusrv_tags.name IN (${',?'.repeat(tags.length).replace(',', '')})
       GROUP BY
-        ${mappings.hashes}.master_hash_id
+        hydrusrv_files.id
       HAVING
-        count(DISTINCT ${mappings.currentMappings}.service_tag_id) = ?
-      ORDER BY
-        id ASC
+        count(DISTINCT hydrusrv_tags.id) = ?
       LIMIT
-        ${hydrusConfig.resultsPerPage}
+        ${config.resultsPerPage}
       OFFSET
-        ${(page - 1) * hydrusConfig.resultsPerPage};`
-    ).all(tags, hydrusConfig.supportedMimeTypes, tags.length)
+        ${(page - 1) * config.resultsPerPage}`
+    ).all(tags, tags.length)
 
     if (files.length) {
       for (const file of files) {
-        file.mimeType = hydrusConfig.availableMimeTypes[file.mimeType]
+        file.mime = hydrusConfig.availableMimeTypes[file.mime]
         file.mediaUrl = generateFilePath('original', file.hash)
         file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
         delete file.hash
@@ -134,102 +106,54 @@ module.exports = {
 
     return files
   },
-  getSortedByNamespace (page, namespace) {
-    const files = db.hydrus.prepare(
-      `SELECT
-        ${mappings.hashes}.master_hash_id AS id,
-        ${mappings.filesInfo}.mime AS mimeType,
-        ${mappings.filesInfo}.size,
-        ${mappings.filesInfo}.width,
-        ${mappings.filesInfo}.height,
-        ${mappings.hashes}.hash
-      FROM
-        ${mappings.currentMappings}
-      NATURAL JOIN
-        ${mappings.repositoryTagIdMap}
-      INNER JOIN
-        ${mappings.tags}
-        ON
-          ${mappings.tags}.master_tag_id =
-          ${mappings.repositoryTagIdMap}.master_tag_id
-        AND
-          ${mappings.tags}.master_tag_id IN
-            (
-              SELECT DISTINCT
-                ${mappings.tags}.master_tag_id
-              FROM
-                ${mappings.currentMappings}
-              NATURAL JOIN
-                ${mappings.repositoryTagIdMap}
-              NATURAL JOIN
-                ${mappings.tags}
-              NATURAL JOIN
-                ${mappings.repositoryHashIdMap}
-              NATURAL JOIN
-                ${mappings.hashes}
-              NATURAL JOIN
-                ${mappings.filesInfo}
-              WHERE
-                ${mappings.tags}.tag LIKE ?
-              AND
-                ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
-              ORDER BY
-                ${mappings.tags}.tag ASC
-            )
-      NATURAL JOIN
-        ${mappings.repositoryHashIdMap}
-      NATURAL JOIN
-        ${mappings.hashes}
-      NATURAL JOIN
-        ${mappings.filesInfo}
-      WHERE
-        ${mappings.repositoryHashIdMap}.master_hash_id IN
-          (
-            SELECT DISTINCT
-              ${mappings.hashes}.master_hash_id AS id
-            FROM
-              ${mappings.currentMappings}
-            NATURAL JOIN
-              ${mappings.repositoryTagIdMap}
-            NATURAL JOIN
-              ${mappings.tags}
-            NATURAL JOIN
-              ${mappings.repositoryHashIdMap}
-            NATURAL JOIN
-              ${mappings.hashes}
-            NATURAL JOIN
-              ${mappings.filesInfo}
-            WHERE
-              ${mappings.tags}.tag LIKE ?
-            AND
-              ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
-            GROUP BY
-              ${mappings.hashes}.master_hash_id
-            HAVING
-              count(DISTINCT ${mappings.currentMappings}.service_tag_id) = ?
-            ORDER BY
-              id ASC
-          )
-      GROUP BY
-        id
-      ORDER BY
-        ${mappings.tags}.tag ASC,
-        id ASC
-      LIMIT
-        ${hydrusConfig.resultsPerPage}
-      OFFSET
-        ${(page - 1) * hydrusConfig.resultsPerPage};`
-    ).all(
-      `${namespace}:%`,
-      hydrusConfig.supportedMimeTypes,
-      `${namespace}:%`,
-      hydrusConfig.supportedMimeTypes,
-      1
+  getSortedByNamespaces (page, namespaces) {
+    namespaces = [...new Set(namespaces)]
+
+    const validNamespaces = tagsModel.getNamespaces().map(
+      namespace => namespace.name
     )
 
+    namespaces = namespaces.filter(
+      namespace => validNamespaces.includes(namespace)
+    )
+
+    if (!namespaces.length) {
+      return this.get(page)
+    }
+
+    const namespaceOrderBys = []
+
+    for (const namespace of namespaces) {
+      namespaceOrderBys.push(
+        `CASE
+          WHEN namespace_${namespace.split(' ').join('_')} IS NULL THEN 1
+          ELSE 0
+        END,
+        namespace_${namespace.split(' ').join('_')}`
+      )
+    }
+
+    const files = db.app.prepare(
+      `SELECT
+        id,
+        mime,
+        size,
+        width,
+        height,
+        hash
+      FROM
+        hydrusrv_files
+      ORDER BY
+        ${namespaceOrderBys.join(',')}, id
+      LIMIT
+        ${config.resultsPerPage}
+      OFFSET
+        ${(page - 1) * config.resultsPerPage}`
+    ).all()
+
     if (files.length) {
       for (const file of files) {
-        file.mimeType = hydrusConfig.availableMimeTypes[file.mimeType]
+        file.mime = hydrusConfig.availableMimeTypes[file.mime]
         file.mediaUrl = generateFilePath('original', file.hash)
         file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
         delete file.hash
@@ -238,142 +162,67 @@ module.exports = {
 
     return files
   },
-  getByTagsSortedByNamespace (page, tags, namespace) {
+  getByTagsSortedByNamespaces (page, tags, namespaces) {
     tags = [...new Set(tags)]
+    namespaces = [...new Set(namespaces)]
 
-    const filesHavingTags = db.hydrus.prepare(
-      `SELECT
-        ${mappings.hashes}.master_hash_id AS id
-      FROM
-        ${mappings.currentMappings}
-      NATURAL JOIN
-        ${mappings.repositoryTagIdMap}
-      NATURAL JOIN
-        ${mappings.tags}
-      NATURAL JOIN
-        ${mappings.repositoryHashIdMap}
-      NATURAL JOIN
-        ${mappings.hashes}
-      NATURAL JOIN
-        ${mappings.filesInfo}
-      WHERE
-        ${mappings.tags}.tag IN (${',?'.repeat(tags.length).replace(',', '')})
-      AND
-        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
-      GROUP BY
-        ${mappings.hashes}.master_hash_id
-      HAVING
-        count(DISTINCT ${mappings.currentMappings}.service_tag_id) = ?
-      ORDER BY
-        id ASC`
-    ).all(tags, hydrusConfig.supportedMimeTypes, tags.length)
+    const validNamespaces = tagsModel.getNamespaces().map(
+      namespace => namespace.name
+    )
 
-    const filesHavingNamespace = db.hydrus.prepare(
-      `SELECT
-        ${mappings.hashes}.master_hash_id AS id
-      FROM
-        ${mappings.currentMappings}
-      NATURAL JOIN
-        ${mappings.repositoryTagIdMap}
-      NATURAL JOIN
-        ${mappings.tags}
-      NATURAL JOIN
-        ${mappings.repositoryHashIdMap}
-      NATURAL JOIN
-        ${mappings.hashes}
-      NATURAL JOIN
-        ${mappings.filesInfo}
-      WHERE
-        ${mappings.tags}.tag LIKE ?
-      AND
-        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
-      GROUP BY
-        ${mappings.hashes}.master_hash_id
-      ORDER BY
-        id ASC`
-    ).all(`${namespace}:%`, hydrusConfig.supportedMimeTypes)
+    namespaces = namespaces.filter(
+      namespace => validNamespaces.includes(namespace)
+    )
 
-    const fileIds = []
-
-    for (const fileHavingNamespace of filesHavingNamespace) {
-      if (
-        filesHavingTags.findIndex(
-          file => file.id === fileHavingNamespace.id
-        ) > -1
-      ) {
-        fileIds.push(fileHavingNamespace.id)
-      }
+    if (!namespaces.length) {
+      return this.getByTags(page, tags)
     }
 
-    const files = db.hydrus.prepare(
+    const namespaceOrderBys = []
+
+    for (const namespace of namespaces) {
+      namespaceOrderBys.push(
+        `CASE
+          WHEN namespace_${namespace.split(' ').join('_')} IS NULL THEN 1
+          ELSE 0
+        END,
+        namespace_${namespace.split(' ').join('_')}`
+      )
+    }
+
+    const files = db.app.prepare(
       `SELECT
-        ${mappings.hashes}.master_hash_id AS id,
-        ${mappings.filesInfo}.mime AS mimeType,
-        ${mappings.filesInfo}.size,
-        ${mappings.filesInfo}.width,
-        ${mappings.filesInfo}.height,
-        ${mappings.hashes}.hash
+        hydrusrv_files.id,
+        hydrusrv_files.mime,
+        hydrusrv_files.size,
+        hydrusrv_files.width,
+        hydrusrv_files.height,
+        hydrusrv_files.hash
       FROM
-        ${mappings.currentMappings}
-      NATURAL JOIN
-        ${mappings.repositoryTagIdMap}
-      INNER JOIN
-        ${mappings.tags}
-        ON
-          ${mappings.tags}.master_tag_id =
-          ${mappings.repositoryTagIdMap}.master_tag_id
-        AND
-          ${mappings.tags}.master_tag_id IN
-            (
-              SELECT DISTINCT
-                ${mappings.tags}.master_tag_id
-              FROM
-                ${mappings.currentMappings}
-              NATURAL JOIN
-                ${mappings.repositoryTagIdMap}
-              NATURAL JOIN
-                ${mappings.tags}
-              NATURAL JOIN
-                ${mappings.repositoryHashIdMap}
-              NATURAL JOIN
-                ${mappings.hashes}
-              NATURAL JOIN
-                ${mappings.filesInfo}
-              WHERE
-                ${mappings.tags}.tag LIKE ?
-              AND
-                ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
-              ORDER BY
-                ${mappings.tags}.tag ASC
-            )
-      NATURAL JOIN
-        ${mappings.repositoryHashIdMap}
-      NATURAL JOIN
-        ${mappings.hashes}
-      NATURAL JOIN
-        ${mappings.filesInfo}
+        hydrusrv_files
+      LEFT JOIN
+        hydrusrv_mappings
+        ON hydrusrv_mappings.file_id = hydrusrv_files.id
+      LEFT JOIN
+        hydrusrv_tags
+        ON hydrusrv_tags.id = hydrusrv_mappings.tag_id
       WHERE
-        ${mappings.hashes}.master_hash_id IN (
-          ${',?'.repeat(fileIds.length).replace(',', '')}
-        )
+        hydrusrv_tags.name IN (${',?'.repeat(tags.length).replace(',', '')})
       GROUP BY
-        id
+        hydrusrv_files.id
+      HAVING
+        count(DISTINCT hydrusrv_tags.id) = ?
       ORDER BY
-        ${mappings.tags}.tag ASC,
-        id ASC
+        ${namespaceOrderBys.join(',')}, hydrusrv_files.id
       LIMIT
-        ${hydrusConfig.resultsPerPage}
+        ${config.resultsPerPage}
       OFFSET
-        ${(page - 1) * hydrusConfig.resultsPerPage};`
-    ).all(
-      `${namespace}:%`,
-      hydrusConfig.supportedMimeTypes,
-      fileIds
-    )
+        ${(page - 1) * config.resultsPerPage}`
+    ).all(tags, tags.length)
 
     if (files.length) {
       for (const file of files) {
-        file.mimeType = hydrusConfig.availableMimeTypes[file.mimeType]
+        file.mime = hydrusConfig.availableMimeTypes[file.mime]
         file.mediaUrl = generateFilePath('original', file.hash)
         file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
         delete file.hash
@@ -383,17 +232,8 @@ module.exports = {
     return files
   },
   getTotalCount () {
-    return db.hydrus.prepare(
-      `SELECT
-        count(${mappings.currentFiles}.service_hash_id) AS count
-      FROM
-        ${mappings.currentFiles}
-      NATURAL JOIN
-        ${mappings.repositoryHashIdMap}
-      NATURAL JOIN
-        ${mappings.filesInfo}
-      WHERE
-        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders});`
-    ).get(hydrusConfig.supportedMimeTypes)
+    return db.app.prepare(
+      'SELECT COUNT(id) as count FROM hydrusrv_files'
+    ).get()
   }
 }

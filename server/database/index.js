@@ -15,10 +15,10 @@ module.exports = {
     })
 
     this.hydrus.prepare(
-      `ATTACH '${hydrusConfig.masterDbPath}' AS master_db;`
+      `ATTACH '${hydrusConfig.masterDbPath}' AS master_db`
     ).run()
     this.hydrus.prepare(
-      `ATTACH '${hydrusConfig.mappingsDbPath}' AS mappings_db;`
+      `ATTACH '${hydrusConfig.mappingsDbPath}' AS mappings_db`
     ).run()
   }
 }

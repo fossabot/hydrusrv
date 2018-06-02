@@ -1,122 +1,63 @@
 const db = require('../database')
-const hydrusConfig = require('../config/hydrus')
-const mappings = require('../config/hydrus-db-mappings')
+const config = require('../config/app')
 
 module.exports = {
   get (page) {
-    return db.hydrus.prepare(
-      `SELECT DISTINCT
-        ${mappings.tags}.tag AS name
+    return db.app.prepare(
+      `SELECT
+        name
       FROM
-        ${mappings.currentMappings}
-      NATURAL JOIN
-        ${mappings.repositoryTagIdMap}
-      NATURAL JOIN
-        ${mappings.tags}
-      NATURAL JOIN
-        ${mappings.repositoryHashIdMap}
-      NATURAL JOIN
-        ${mappings.filesInfo}
-      WHERE
-        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
+        hydrusrv_tags
       ORDER BY
-        ${mappings.tags}.tag ASC
+        name
       LIMIT
-        ${hydrusConfig.resultsPerPage}
+        ${config.resultsPerPage}
       OFFSET
-        ${(page - 1) * hydrusConfig.resultsPerPage};`
-    ).all(hydrusConfig.supportedMimeTypes)
+        ${(page - 1) * config.resultsPerPage}`
+    ).all()
   },
   getOfFile (fileId) {
-    return db.hydrus.prepare(
+    return db.app.prepare(
       `SELECT
-        ${mappings.tags}.tag AS name
+        hydrusrv_tags.name
       FROM
-        ${mappings.currentMappings}
-      NATURAL JOIN
-        ${mappings.repositoryTagIdMap}
-      NATURAL JOIN
-        ${mappings.tags}
-      NATURAL JOIN
-        ${mappings.repositoryHashIdMap}
-      NATURAL JOIN
-        ${mappings.filesInfo}
+        hydrusrv_tags
+      LEFT JOIN
+        hydrusrv_mappings
+        ON
+          hydrusrv_mappings.tag_id = hydrusrv_tags.id
+      LEFT JOIN
+        hydrusrv_files
+        ON
+          hydrusrv_files.id = hydrusrv_mappings.file_id
       WHERE
-        ${mappings.filesInfo}.master_hash_id = ?
-      AND
-        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
+        hydrusrv_files.id = ?
       ORDER BY
-        ${mappings.tags}.tag ASC;`
-    ).all(fileId, hydrusConfig.supportedMimeTypes)
+        hydrusrv_tags.name`
+    ).all(fileId)
   },
-  autocomplete (partialTag) {
-    return db.hydrus.prepare(
-      `SELECT DISTINCT
-        ${mappings.tags}.tag AS name
+  complete (partialTag) {
+    return db.app.prepare(
+      `SELECT
+        name
       FROM
-        ${mappings.currentMappings}
-      NATURAL JOIN
-        ${mappings.repositoryTagIdMap}
-      NATURAL JOIN
-        ${mappings.tags}
-      NATURAL JOIN
-        ${mappings.repositoryHashIdMap}
-      NATURAL JOIN
-        ${mappings.filesInfo}
+        hydrusrv_tags
       WHERE
-        ${mappings.tags}.tag LIKE ?
-      AND
-        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
+        name LIKE ?
       ORDER BY
-        ${mappings.tags}.tag ASC
+        name
       LIMIT
-        10;`
-    ).all(`%${partialTag}%`, hydrusConfig.supportedMimeTypes)
+        10`
+    ).all(`%${partialTag}%`)
   },
   getNamespaces () {
-    return db.hydrus.prepare(
-      `SELECT DISTINCT
-        SUBSTR(
-          ${mappings.tags}.tag,
-          INSTR(${mappings.tags}.tag, ':'),
-          -INSTR(${mappings.tags}.tag, ':')
-        ) AS name
-      FROM
-        ${mappings.currentMappings}
-      NATURAL JOIN
-        ${mappings.repositoryTagIdMap}
-      NATURAL JOIN
-        ${mappings.tags}
-      NATURAL JOIN
-        ${mappings.repositoryHashIdMap}
-      NATURAL JOIN
-        ${mappings.filesInfo}
-      WHERE
-        ${mappings.tags}.tag LIKE ?
-      AND
-        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
-      ORDER BY
-        ${mappings.tags}.tag ASC;`
-    ).all(`%:%`, hydrusConfig.supportedMimeTypes)
+    return db.app.prepare(
+      'SELECT name FROM hydrusrv_namespaces ORDER BY name'
+    ).all()
   },
   getTotalCount () {
-    return db.hydrus.prepare(
-      `SELECT
-        COUNT(DISTINCT ${mappings.tags}.tag) as count
-      FROM
-        ${mappings.currentMappings}
-      NATURAL JOIN
-        ${mappings.repositoryTagIdMap}
-      NATURAL JOIN
-        ${mappings.tags}
-      NATURAL JOIN
-        ${mappings.repositoryHashIdMap}
-      NATURAL JOIN
-        ${mappings.filesInfo}
-      WHERE
-        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
-      ORDER BY
-        ${mappings.tags}.tag ASC;`
-    ).get(hydrusConfig.supportedMimeTypes)
+    return db.app.prepare(
+      'SELECT COUNT(name) as count FROM hydrusrv_tags'
+    ).get()
   }
 }

@@ -111,9 +111,11 @@ versions.
 
 After installing, the first thing you want to do is duplicating the application
 database template you can find under `storage/app.db.template`. This
-[SQLite][sqlite] database is used to store users and tokens for authentication.
-The default (and recommended) location of the database is `storage/app.db`, but
-you are free to put it wherever you want and can rename it to your liking.
+[SQLite][sqlite] database is used to store a temporary copy of the hydrus
+server data in an optimized form (for faster on-demand querying). It also holds
+users and tokens for authentication. The default (and recommended) location of
+the database is `storage/app.db`, but you are free to put it wherever you want
+and can rename it to your liking.
 
 Next, you also need to duplicate `.env.example` to `.env`. This file is used to
 configure hydrusrv and needs to be located in the root directory of the
@@ -142,13 +144,15 @@ following are all the available settings (along with their default values):
 + `MIN_PASSWORD_LENGTH=16`: sets the minimum password length when creating or
   updating users.
 + `DATA_UPDATE_INTERVAL=3600`: sets the interval (in seconds) at which hydrusrv
-  should sync its data with hydrus server. Updates are locked, so it is not
-  possible to set this value too low – the minimum time between updates will
-  always be the time it takes to complete the update. However, reading from
-  hydrus server happens in a transaction to prevent it from changing any data
-  during the read process (which would threaten the integrity). Therefore, this
-  value should still not be set too low, otherwise hydrus server will not have
-  enough breathing room.
+  should sync its data with hydrus server (after the initial sync when starting
+  hydrusrv). Updates are locked, so it is not possible to set this value too
+  low – the minimum time between updates will always be the time it takes to
+  complete the update. However, reading from hydrus server happens in a
+  transaction to prevent it from changing any data during the read process
+  (which would threaten the integrity). Therefore, this value should still not
+  be set too low, otherwise hydrus server will not have enough breathing room.
++ `RESULTS_PER_PAGE=42`: the results per page when dealing with paginated lists
+  (files and tags).
 + `LOGGING_ENABLED=false`: setting this to `false` disables access logging when
   `NODE_ENV=production` is set.
 + `OVERRIDE_LOGFILE_PATH=`: overrides the default logfile location
@@ -173,8 +177,6 @@ following are all the available settings (along with their default values):
 + `HYDRUS_SUPPORTED_MIME_TYPES=1,2,3,4,9,14,18,20,21,23,25,26,27`: the IDs of
   the MIME types hydrusrv should support. See [here][supported-mime-types] for
   the complete list of MIME types hydrusrv can handle.
-+ `HYDRUS_RESULTS_PER_PAGE=42`: the results per page when dealing with
-  paginated lists (files and tags).
 
 ### Running the server
 
@@ -510,19 +512,24 @@ __Possible errors:__
 
 ###### Listing files
 
-__Route:__ `GET /api/files?page=<page>&tags[]=<tag>&sort=<namespace>`
+__Route:__ `GET /api/files?page=<page>&tags[]=<tag>&sort[]=<namespace>`
 
 __Info:__
 
 The `tags[]` parameter is optional and takes an arbitrary amount of tags (a
 single tag per `&tag[]=`), each one limiting the result set further.
 
-The `sort` parameter is also optional and used to sort the results by a given
-namespace (e.g., files with tag `creator:a` would come before `creator:b` if
-sorted by `creator`, independent of their ID which is the default sort method).
+The `sort` parameter is also optional and is used to sort the results by the
+given namespaces (e.g., files with tag `creator:a` would come before
+`creator:b` if sorted by `creator`, independent of their ID which is the
+default sort method). Providing multiple namespaces to sort by is possible, the
+order in which they are provided then defines the "sub sorting". E.g.,
+`&sort[]=<namespaceA>&sort[]=<namespaceB>&sort[]=<namespaceC>` would cause
+files to be sorted by `namespaceA`, then `namespaceB`, then `namespaceC` and
+finally their ID (default).
 
-Defining a namespace to sort by also limits the set to files that have a tag in
-that namespace (in addition to any tags already limiting the set via `tags[]`).
+Files not having one or more of the given sort namespaces are _not_ omitted
+from the results but will be sorted to the end of the (sub) set.
 
 This route returns the same data for each file as when
 [viewing a file](#viewing-files) but omits the tags to reduce the response size
@@ -537,7 +544,7 @@ __Output on success:__
 [
   {
     "id": <file ID>,
-    "mimeType": <MIME type>,
+    "mime": <MIME type>,
     "size": <file size in bytes>,
     "width": <width in pixel>,
     "height": <height in pixel>,
@@ -577,7 +584,7 @@ __Output on success:__
 [
   {
     "id": <file ID>,
-    "mimeType": <MIME type>,
+    "mime": <MIME type>,
     "size": <file size in bytes>,
     "width": <width in pixel>,
     "height": <height in pixel>,

@@ -14,7 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-+ Refactored files model
++ Rewrote database queries to use the new temporary data tables
++ Optimized sorting via multiple namespaces (thanks to the new temporary data
+  tables)
 + Set more appropriate default settings
 + Added various small optimizations throughout the application
 
