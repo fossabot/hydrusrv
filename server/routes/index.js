@@ -1,7 +1,7 @@
 const config = require('../config/app')
 const middleware = require('../middleware')
 const controllers = require('../controllers')
-const mediaHelper = require('../helpers/media')
+const media = require('../helpers/media')
 
 module.exports = app => {
   app.get(`${config.apiBase}`, (req, res, next) => {
@@ -140,11 +140,11 @@ module.exports = app => {
     middleware.media.get.inputValidationConfig,
     middleware.media.get.validateInput,
     (req, res, next) => {
-      if (!mediaHelper.mediaFileExists('original', req.params.mediaHash)) {
+      if (!media.fileExists('original', req.params.mediaHash)) {
         return next()
       }
 
-      const fileData = mediaHelper.getMediaFileData(
+      const fileData = media.getFileData(
         'original', req.params.mediaHash
       )
 
@@ -160,11 +160,11 @@ module.exports = app => {
     middleware.media.get.inputValidationConfig,
     middleware.media.get.validateInput,
     (req, res, next) => {
-      if (!mediaHelper.mediaFileExists('thumbnail', req.params.mediaHash)) {
+      if (!media.fileExists('thumbnail', req.params.mediaHash)) {
         return next()
       }
 
-      const fileData = mediaHelper.getMediaFileData(
+      const fileData = media.getFileData(
         'thumbnail', req.params.mediaHash
       )
 

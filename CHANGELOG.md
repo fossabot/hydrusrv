@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
++ Added temporary data table creation to allow for faster on-demand queries and
+  more extensive sorting options
+
 ### Changed
 
-+ Refactorod files model
++ Refactored files model
 + Set more appropriate default settings
 + Added various small optimizations throughout the application
 

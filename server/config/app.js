@@ -7,6 +7,7 @@ module.exports = {
   mediaBase: process.env.MEDIA_BASE || '/media',
   registrationEnabled: (process.env.REGISTRATION_ENABLED === 'true'),
   minPasswordLength: process.env.MIN_PASSWORD_LENGTH || 16,
+  dataUpdateInterval: process.env.DATA_UPDATE_INTERVAL || 3600,
   loggingEnabled: (process.env.LOGGING_ENABLED === 'true'),
   logfilePath: process.env.OVERRIDE_LOGFILE_PATH ||
     path.resolve(__dirname, '../../logs/access.log'),

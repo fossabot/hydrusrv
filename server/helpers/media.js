@@ -5,7 +5,7 @@ const readChunk = require('read-chunk')
 const hydrusConfig = require('../config/hydrus')
 
 module.exports = {
-  mediaFileExists (type, hash) {
+  fileExists (type, hash) {
     const directory = hash.substring(0, 2)
     const extension = (type === 'thumbnail') ? '.thumbnail' : ''
     const filePath =
@@ -13,7 +13,7 @@ module.exports = {
 
     return fs.existsSync(filePath)
   },
-  getMediaFileData (type, hash) {
+  getFileData (type, hash) {
     const directory = hash.substring(0, 2)
     const extension = (type === 'thumbnail') ? '.thumbnail' : ''
     const filePath =

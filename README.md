@@ -141,6 +141,14 @@ following are all the available settings (along with their default values):
   new users.
 + `MIN_PASSWORD_LENGTH=16`: sets the minimum password length when creating or
   updating users.
++ `DATA_UPDATE_INTERVAL=3600`: sets the interval (in seconds) at which hydrusrv
+  should sync its data with hydrus server. Updates are locked, so it is not
+  possible to set this value too low – the minimum time between updates will
+  always be the time it takes to complete the update. However, reading from
+  hydrus server happens in a transaction to prevent it from changing any data
+  during the read process (which would threaten the integrity). Therefore, this
+  value should still not be set too low, otherwise hydrus server will not have
+  enough breathing room.
 + `LOGGING_ENABLED=false`: setting this to `false` disables access logging when
   `NODE_ENV=production` is set.
 + `OVERRIDE_LOGFILE_PATH=`: overrides the default logfile location
