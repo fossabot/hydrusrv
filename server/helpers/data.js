@@ -279,6 +279,8 @@ module.exports = {
       FROM
         ${mappings.currentMappings}
       NATURAL JOIN
+        ${mappings.currentFiles}
+      NATURAL JOIN
         ${mappings.repositoryHashIdMap}
       NATURAL JOIN
         ${mappings.filesInfo}

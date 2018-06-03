@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
++ Joined current files table when selecting mappings to prevent possible
+  foreign key constraint errors after deleting files because hydrus server
+  has not already updated the current mappings
+
 ### Fixed
 
 + Fixed broken anchor in readme
