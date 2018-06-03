@@ -278,8 +278,10 @@ module.exports = {
         ${hydrusTables.currentMappings}.service_tag_id AS tagId
       FROM
         ${hydrusTables.currentMappings}
-      NATURAL JOIN
+      INNER JOIN
         ${hydrusTables.currentFiles}
+        ON ${hydrusTables.currentFiles}.service_hash_id =
+          ${hydrusTables.currentMappings}.service_hash_id
       NATURAL JOIN
         ${hydrusTables.repositoryHashIdMap}
       NATURAL JOIN
