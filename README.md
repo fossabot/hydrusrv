@@ -22,6 +22,7 @@ currently in (early) development.
 + [Install](#install)
   + [Dependencies](#dependencies)
   + [Updating](#updating)
+    + [Upgrading from 1.x to 2.x](#upgrading-from-1.x-to-2.x)
 + [Usage](#usage)
   + [Configuration](#configuration)
   + [Running the server](#running-the-server)
@@ -104,6 +105,29 @@ therefore always safe to simply install via the routine mentioned before.
 
 When necessary, this section will be expanded with upgrade guides to new major
 versions.
+
+#### Upgrading from 1.x to 2.x
+
+Upgrading from `1.x` to `2.x` can be done via `git pull && yarn install` and
+requires only a few setting changes and considerations.
+
+The main difference between `2.x` and `1.x` is that `2.x` uses a temporary copy
+of the hydrus server data in its own application database instead of directly
+querying the hydrus server database on demand for increased performance and
+better extensibility.
+
+The setting `HYDRUS_RESULTS_PER_PAGE` has therefore been renamed to just
+`RESULTS_PER_PAGE` while a new setting called `DATA_UPDATE_INTERVAL` controls
+how often hydrusrv should sync the temporary data with hydrus server (after the
+initial sync when it starts).
+
+This change now allows for sorting by an arbitrary number of namespaces instead
+of just one while at the same time no longer limiting the result set by the
+provided sort namespaces (which was an unfortunate side effect that was
+unavoidable in `1.x` without killing the performance).
+
+The `sort` parameter has therefore been changed to `sort[]` and can be provided
+multiple times, just like `tags[]`.
 
 ## Usage
 
