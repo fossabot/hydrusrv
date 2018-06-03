@@ -22,7 +22,7 @@ currently in (early) development.
 + [Install](#install)
   + [Dependencies](#dependencies)
   + [Updating](#updating)
-    + [Upgrading from 1.x to 2.x](#upgrading-from-1.x-to-2.x)
+    + [Upgrading from 1.x to 2.x](#upgrading-from-1x-to-2x)
 + [Usage](#usage)
   + [Configuration](#configuration)
   + [Running the server](#running-the-server)
