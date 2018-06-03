@@ -8,7 +8,6 @@ module.exports = {
       return
     }
 
-    console.time('update')
     db.app.updatingData = true
 
     db.hydrus.prepare('BEGIN').run()
@@ -33,7 +32,6 @@ module.exports = {
     this.replaceCurrentTempTables()
 
     db.app.updatingData = false
-    console.timeEnd('update')
   },
   replaceCurrentTempTables () {
     db.app.prepare('DROP TABLE IF EXISTS hydrusrv_namespaces').run()
