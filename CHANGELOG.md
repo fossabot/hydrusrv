@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.0.0] - 2018-06-03
+
 ### Added
 
 + Added temporary data table creation to allow for faster on-demand queries and
@@ -129,7 +131,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/1.5.1...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/2.0.0...develop
+[2.0.0]: https://github.com/mserajnik/hydrusrv/compare/1.5.1...2.0.0
 [1.5.1]: https://github.com/mserajnik/hydrusrv/compare/1.5.0...1.5.1
 [1.5.0]: https://github.com/mserajnik/hydrusrv/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/mserajnik/hydrusrv/compare/1.3.2...1.4.0
