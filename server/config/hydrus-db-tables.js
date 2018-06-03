@@ -1,8 +1,6 @@
 const hydrusConfig = require('./hydrus')
 
 module.exports = {
-  mimePlaceholders: ',?'.repeat(hydrusConfig.supportedMimeTypes.length)
-    .replace(',', ''),
   tags: 'master_db.tags',
   hashes: 'master_db.hashes',
   filesInfo: 'main.files_info',

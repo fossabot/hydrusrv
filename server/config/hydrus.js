@@ -27,5 +27,8 @@ module.exports = {
   tagRepository: process.env.HYDRUS_TAG_REPOSITORY,
   fileRepository: process.env.HYDRUS_FILE_REPOSITORY,
   availableMimeTypes: availableMimeTypes,
-  supportedMimeTypes: supportedMimeTypes()
+  supportedMimeTypes: supportedMimeTypes(),
+  mimePlaceholders: ',?'.repeat(supportedMimeTypes().length).replace(
+    ',', ''
+  )
 }

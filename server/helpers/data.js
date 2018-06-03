@@ -1,6 +1,6 @@
 const db = require('../database')
 const hydrusConfig = require('../config/hydrus')
-const mappings = require('../config/hydrus-db-mappings')
+const hydrusTables = require('../config/hydrus-db-tables')
 
 module.exports = {
   sync () {
@@ -178,24 +178,24 @@ module.exports = {
     return db.hydrus.prepare(
       `SELECT DISTINCT
         SUBSTR(
-          ${mappings.tags}.tag,
-          INSTR(${mappings.tags}.tag, ':'),
-          -INSTR(${mappings.tags}.tag, ':')
+          ${hydrusTables.tags}.tag,
+          INSTR(${hydrusTables.tags}.tag, ':'),
+          -INSTR(${hydrusTables.tags}.tag, ':')
         ) AS name
       FROM
-        ${mappings.currentMappings}
+        ${hydrusTables.currentMappings}
       NATURAL JOIN
-        ${mappings.repositoryTagIdMap}
+        ${hydrusTables.repositoryTagIdMap}
       NATURAL JOIN
-        ${mappings.tags}
+        ${hydrusTables.tags}
       NATURAL JOIN
-        ${mappings.repositoryHashIdMap}
+        ${hydrusTables.repositoryHashIdMap}
       NATURAL JOIN
-        ${mappings.filesInfo}
+        ${hydrusTables.filesInfo}
       WHERE
-        ${mappings.tags}.tag LIKE ?
+        ${hydrusTables.tags}.tag LIKE ?
       AND
-        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})
+        ${hydrusTables.filesInfo}.mime IN (${hydrusConfig.mimePlaceholders})
       ORDER BY
         name`
     ).pluck().all(`%:%`, hydrusConfig.supportedMimeTypes)
@@ -203,62 +203,62 @@ module.exports = {
   getTags () {
     return db.hydrus.prepare(
       `SELECT DISTINCT
-        ${mappings.currentMappings}.service_tag_id AS id,
-        ${mappings.tags}.tag AS name
+        ${hydrusTables.currentMappings}.service_tag_id AS id,
+        ${hydrusTables.tags}.tag AS name
       FROM
-        ${mappings.currentMappings}
+        ${hydrusTables.currentMappings}
       NATURAL JOIN
-        ${mappings.repositoryTagIdMap}
+        ${hydrusTables.repositoryTagIdMap}
       NATURAL JOIN
-        ${mappings.tags}
+        ${hydrusTables.tags}
       NATURAL JOIN
-        ${mappings.repositoryHashIdMap}
+        ${hydrusTables.repositoryHashIdMap}
       NATURAL JOIN
-        ${mappings.filesInfo}
+        ${hydrusTables.filesInfo}
       WHERE
-        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})`
+        ${hydrusTables.filesInfo}.mime IN (${hydrusConfig.mimePlaceholders})`
     ).all(hydrusConfig.supportedMimeTypes)
   },
   getFiles (namespaces) {
     const files = db.hydrus.prepare(
       `SELECT
-        ${mappings.currentFiles}.service_hash_id AS id,
-        ${mappings.filesInfo}.mime AS mimeType,
-        ${mappings.filesInfo}.size,
-        ${mappings.filesInfo}.width,
-        ${mappings.filesInfo}.height,
-        ${mappings.hashes}.hash
+        ${hydrusTables.currentFiles}.service_hash_id AS id,
+        ${hydrusTables.filesInfo}.mime AS mimeType,
+        ${hydrusTables.filesInfo}.size,
+        ${hydrusTables.filesInfo}.width,
+        ${hydrusTables.filesInfo}.height,
+        ${hydrusTables.hashes}.hash
       FROM
-        ${mappings.currentFiles}
+        ${hydrusTables.currentFiles}
       NATURAL JOIN
-        ${mappings.repositoryHashIdMap}
+        ${hydrusTables.repositoryHashIdMap}
       NATURAL JOIN
-        ${mappings.hashes}
+        ${hydrusTables.hashes}
       NATURAL JOIN
-        ${mappings.filesInfo}
+        ${hydrusTables.filesInfo}
       WHERE
-        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})`
+        ${hydrusTables.filesInfo}.mime IN (${hydrusConfig.mimePlaceholders})`
     ).all(hydrusConfig.supportedMimeTypes)
 
     for (const namespace of namespaces) {
       for (const file of files) {
         const tags = db.hydrus.prepare(
           `SELECT
-            ${mappings.tags}.tag
+            ${hydrusTables.tags}.tag
           FROM
-            ${mappings.currentMappings}
+            ${hydrusTables.currentMappings}
           NATURAL JOIN
-            ${mappings.repositoryTagIdMap}
+            ${hydrusTables.repositoryTagIdMap}
           NATURAL JOIN
-            ${mappings.tags}
+            ${hydrusTables.tags}
           NATURAL JOIN
-            ${mappings.repositoryHashIdMap}
+            ${hydrusTables.repositoryHashIdMap}
           WHERE
-            ${mappings.tags}.tag LIKE ?
+            ${hydrusTables.tags}.tag LIKE ?
           AND
-            ${mappings.repositoryHashIdMap}.service_hash_id = ?
+            ${hydrusTables.repositoryHashIdMap}.service_hash_id = ?
           ORDER BY
-            ${mappings.tags}.tag
+            ${hydrusTables.tags}.tag
           LIMIT
             1`
         ).all(`${namespace}:%`, file.id)
@@ -274,16 +274,20 @@ module.exports = {
   getMappings () {
     return db.hydrus.prepare(
       `SELECT
-        ${mappings.currentMappings}.service_hash_id AS fileId,
-        ${mappings.currentMappings}.service_tag_id AS tagId
+        ${hydrusTables.currentMappings}.service_hash_id AS fileId,
+        ${hydrusTables.currentMappings}.service_tag_id AS tagId
       FROM
-        ${mappings.currentMappings}
+        ${hydrusTables.currentMappings}
+      INNER JOIN
+        ${hydrusTables.currentFiles}
+        ON ${hydrusTables.currentFiles}.service_hash_id =
+          ${hydrusTables.currentMappings}.service_hash_id
       NATURAL JOIN
-        ${mappings.repositoryHashIdMap}
+        ${hydrusTables.repositoryHashIdMap}
       NATURAL JOIN
-        ${mappings.filesInfo}
+        ${hydrusTables.filesInfo}
       WHERE
-        ${mappings.filesInfo}.mime IN (${mappings.mimePlaceholders})`
+        ${hydrusTables.filesInfo}.mime IN (${hydrusConfig.mimePlaceholders})`
     ).all(hydrusConfig.supportedMimeTypes)
   }
 }

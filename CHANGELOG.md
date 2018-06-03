@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.1.0] - 2018-06-03
+
+### Added
+
++ Joined current files table when selecting mappings to prevent possible
+  foreign key constraint errors after deleting files because hydrus server
+  has not already updated the current mappings
+
+### Changed
+
++ Renamed mappings configuration to avoid confusion
+
+### Fixed
+
++ Fixed broken anchor in readme
+
 ## [2.0.1] - 2018-06-03
 
 ### Fixed
@@ -137,7 +153,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/2.0.1...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/2.1.0...develop
+[2.1.0]: https://github.com/mserajnik/hydrusrv/compare/2.0.1...2.1.0
 [2.0.1]: https://github.com/mserajnik/hydrusrv/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/mserajnik/hydrusrv/compare/1.5.1...2.0.0
 [1.5.1]: https://github.com/mserajnik/hydrusrv/compare/1.5.0...1.5.1
