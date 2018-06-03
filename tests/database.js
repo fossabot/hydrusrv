@@ -3,6 +3,7 @@ const http = require('http')
 const { test } = require('ava')
 const fse = require('fs-extra')
 const portscanner = require('portscanner')
+
 const setup = require('./_setup')
 
 setup.setTestEnvironment()
@@ -121,7 +122,7 @@ test('database: get tags of file', t => {
 
 test('database: tag autocompletion', t => {
   t.deepEqual(
-    tags.autocomplete('lor'),
+    tags.complete('lor'),
     [
       { name: 'dolor' },
       { name: 'lorem' }
@@ -148,8 +149,8 @@ test('database: get files', t => {
     files.get(1),
     [
       {
-        fileId: 1,
-        mimeType: 'image/png',
+        id: 1,
+        mime: 'image/png',
         size: 5012,
         width: 500,
         height: 500,
@@ -159,8 +160,8 @@ test('database: get files', t => {
           '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c'
       },
       {
-        fileId: 2,
-        mimeType: 'image/png',
+        id: 2,
+        mime: 'image/png',
         size: 5779,
         width: 500,
         height: 500,
@@ -170,8 +171,8 @@ test('database: get files', t => {
           '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55'
       },
       {
-        fileId: 3,
-        mimeType: 'image/png',
+        id: 3,
+        mime: 'image/png',
         size: 6117,
         width: 500,
         height: 500,
@@ -181,8 +182,8 @@ test('database: get files', t => {
           '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42'
       },
       {
-        fileId: 4,
-        mimeType: 'image/png',
+        id: 4,
+        mime: 'image/png',
         size: 6665,
         width: 500,
         height: 500,
@@ -199,8 +200,8 @@ test('database: get files by tags', t => {
   t.deepEqual(
     files.getByTags(1, ['lorem', 'ipsum', 'dolor', 'sit', 'amet']),
     [{
-      fileId: 1,
-      mimeType: 'image/png',
+      id: 1,
+      mime: 'image/png',
       size: 5012,
       width: 500,
       height: 500,
@@ -214,11 +215,11 @@ test('database: get files by tags', t => {
 
 test('database: get files sorted by namespace', t => {
   t.deepEqual(
-    files.getSortedByNamespace(1, 'namespace'),
+    files.getSortedByNamespaces(1, ['namespace']),
     [
       {
-        fileId: 5,
-        mimeType: 'image/png',
+        id: 5,
+        mime: 'image/png',
         size: 6672,
         width: 500,
         height: 500,
@@ -228,8 +229,8 @@ test('database: get files sorted by namespace', t => {
           '/d2f5788f623cde1f0fb3dc801396fee235c67ed11d9452bfd765f1331587401d'
       },
       {
-        fileId: 4,
-        mimeType: 'image/png',
+        id: 4,
+        mime: 'image/png',
         size: 6665,
         width: 500,
         height: 500,
@@ -239,8 +240,8 @@ test('database: get files sorted by namespace', t => {
           '/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39'
       },
       {
-        fileId: 3,
-        mimeType: 'image/png',
+        id: 3,
+        mime: 'image/png',
         size: 6117,
         width: 500,
         height: 500,
@@ -250,8 +251,8 @@ test('database: get files sorted by namespace', t => {
           '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42'
       },
       {
-        fileId: 2,
-        mimeType: 'image/png',
+        id: 2,
+        mime: 'image/png',
         size: 5779,
         width: 500,
         height: 500,
@@ -266,13 +267,13 @@ test('database: get files sorted by namespace', t => {
 
 test('database: get files by tags sorted by namespace', t => {
   t.deepEqual(
-    files.getByTagsSortedByNamespace(
-      1, ['lorem', 'ipsum', 'dolor'], 'namespace'
+    files.getByTagsSortedByNamespaces(
+      1, ['lorem', 'ipsum', 'dolor'], ['namespace']
     ),
     [
       {
-        fileId: 3,
-        mimeType: 'image/png',
+        id: 3,
+        mime: 'image/png',
         size: 6117,
         width: 500,
         height: 500,
@@ -282,8 +283,8 @@ test('database: get files by tags sorted by namespace', t => {
           '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42'
       },
       {
-        fileId: 2,
-        mimeType: 'image/png',
+        id: 2,
+        mime: 'image/png',
         size: 5779,
         width: 500,
         height: 500,
@@ -293,8 +294,8 @@ test('database: get files by tags sorted by namespace', t => {
           '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55'
       },
       {
-        fileId: 1,
-        mimeType: 'image/png',
+        id: 1,
+        mime: 'image/png',
         size: 5012,
         width: 500,
         height: 500,
@@ -311,8 +312,8 @@ test('database: get file by id', t => {
   t.deepEqual(
     files.getById(1),
     {
-      fileId: 1,
-      mimeType: 'image/png',
+      id: 1,
+      mime: 'image/png',
       size: 5012,
       width: 500,
       height: 500,

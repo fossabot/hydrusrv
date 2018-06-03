@@ -7,12 +7,12 @@ module.exports = {
     process.env.API_BASE = '/api'
     process.env.MEDIA_BASE = '/media'
 
-    process.env.APP_DB_PATH = path.resolve(
-      __dirname, 'storage/app.db'
-    )
+    process.env.APP_DB_PATH = path.resolve(__dirname, 'storage/app.db')
 
     process.env.REGISTRATION_ENABLED = true
     process.env.MIN_PASSWORD_LENGTH = 16
+    process.env.DATA_UPDATE_INTERVAL = 3600
+    process.env.RESULTS_PER_PAGE = 4
     process.env.LOGGING_ENABLED = false
     process.env.OVERRIDE_LOGFILE_PATH = path.resolve(
       __dirname, '../server/logs/access.log'
@@ -34,6 +34,5 @@ module.exports = {
     process.env.HYDRUS_TAG_REPOSITORY = 2
     process.env.HYDRUS_FILE_REPOSITORY = 3
     process.env.HYDRUS_SUPPORTED_MIME_TYPES = '1,2,3,4,14,21,23'
-    process.env.HYDRUS_RESULTS_PER_PAGE = 4
   }
 }

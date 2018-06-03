@@ -16,7 +16,7 @@ module.exports = {
       sanitizeQuery('sort').trim(),
       check('sort')
         .optional()
-        .isString().withMessage('InvalidSortParameterError')
+        .isArray().withMessage('InvalidSortParameterError')
         .isLength({ min: 1 }).withMessage('InvalidSortParameterError')
     ],
     validateInput: (req, res, next) => {
@@ -34,10 +34,10 @@ module.exports = {
   },
   getSingle: {
     inputValidationConfig: [
-      sanitizeParam('fileId').trim(),
-      check('fileId')
-        .exists().withMessage('MissingFileIdParameterError')
-        .isInt({ min: 1 }).withMessage('InvalidFileIdParameterError')
+      sanitizeParam('id').trim(),
+      check('id')
+        .exists().withMessage('MissingIdParameterError')
+        .isInt({ min: 1 }).withMessage('InvalidIdParameterError')
     ],
     validateInput: (req, res, next) => {
       const err = validationResult(req)

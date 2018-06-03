@@ -2,8 +2,10 @@ const fs = require('fs')
 const express = require('express')
 const bodyParser = require('body-parser')
 const logger = require('morgan')
+
 const config = require('./server/config/app')
-const db = require('./server/database/database')
+const db = require('./server/database')
+const data = require('./server/helpers/data')
 
 const app = express()
 
@@ -12,11 +14,33 @@ try {
 } catch (err) {
   console.error(
     'Could not connect to databases. Make sure that the specified paths are ' +
-      'correct and that hydrusrv has write access to the databases.'
+      'correct and that hydrusrv has write access to the databases. ' +
+      `Error:\n${err}`
   )
 
   process.exit(1)
 }
+
+try {
+  data.sync()
+} catch (err) {
+  console.error('Could not create temporary data tables. Make sure hydrus ' +
+    'server is not in the middle of writing data when starting hydrusrv. ' +
+    `Error:\n${err}`
+  )
+
+  process.exit(1)
+}
+
+setInterval(() => {
+  try {
+    data.sync()
+  } catch (err) {
+    console.error(`Could not create temporary data tables. Error:\n${err}`)
+
+    process.exit(1)
+  }
+}, config.dataUpdateInterval * 1000)
 
 if (process.env.NODE_ENV === 'development') {
   app.use(logger('dev'))

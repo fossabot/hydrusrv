@@ -1,4 +1,5 @@
 const Database = require('better-sqlite3')
+
 const appConfig = require('../config/app-db')
 const hydrusConfig = require('../config/hydrus-db')
 
@@ -14,10 +15,10 @@ module.exports = {
     })
 
     this.hydrus.prepare(
-      `ATTACH '${hydrusConfig.masterDbPath}' AS master_db;`
+      `ATTACH '${hydrusConfig.masterDbPath}' AS master_db`
     ).run()
     this.hydrus.prepare(
-      `ATTACH '${hydrusConfig.mappingsDbPath}' AS mappings_db;`
+      `ATTACH '${hydrusConfig.mappingsDbPath}' AS mappings_db`
     ).run()
   }
 }

@@ -1,13 +1,13 @@
 const config = require('../config/app')
 const middleware = require('../middleware')
 const controllers = require('../controllers')
-const mediaHelper = require('../helpers/media')
+const media = require('../helpers/media')
 
 module.exports = app => {
   app.get(`${config.apiBase}`, (req, res, next) => {
     res.send({
       hydrusrv: {
-        version: '1.5.1'
+        version: '2.0.0'
       }
     })
   })
@@ -76,7 +76,7 @@ module.exports = app => {
       const data = {}
 
       try {
-        data.tags = controllers.tags.autocompleteTag(req.body.partialTag)
+        data.tags = controllers.tags.completeTag(req.body.partialTag)
       } catch (err) {
         return next(err)
       }
@@ -102,7 +102,7 @@ module.exports = app => {
     }
   )
 
-  app.get(`${config.apiBase}/files/:fileId`,
+  app.get(`${config.apiBase}/files/:id`,
     middleware.auth.validateToken,
     middleware.files.getSingle.inputValidationConfig,
     middleware.files.getSingle.validateInput,
@@ -110,7 +110,7 @@ module.exports = app => {
       const data = {}
 
       try {
-        data.file = controllers.files.getFileById(req.params.fileId)
+        data.file = controllers.files.getFileById(req.params.id)
       } catch (err) {
         return next(err)
       }
@@ -125,7 +125,7 @@ module.exports = app => {
       let tags
 
       try {
-        tags = controllers.tags.getTagsOfFile(req.params.fileId)
+        tags = controllers.tags.getTagsOfFile(req.params.id)
       } catch (err) {
         return next(err)
       }
@@ -140,11 +140,11 @@ module.exports = app => {
     middleware.media.get.inputValidationConfig,
     middleware.media.get.validateInput,
     (req, res, next) => {
-      if (!mediaHelper.mediaFileExists('original', req.params.mediaHash)) {
+      if (!media.fileExists('original', req.params.mediaHash)) {
         return next()
       }
 
-      const fileData = mediaHelper.getMediaFileData(
+      const fileData = media.getFileData(
         'original', req.params.mediaHash
       )
 
@@ -160,11 +160,11 @@ module.exports = app => {
     middleware.media.get.inputValidationConfig,
     middleware.media.get.validateInput,
     (req, res, next) => {
-      if (!mediaHelper.mediaFileExists('thumbnail', req.params.mediaHash)) {
+      if (!media.fileExists('thumbnail', req.params.mediaHash)) {
         return next()
       }
 
-      const fileData = mediaHelper.getMediaFileData(
+      const fileData = media.getFileData(
         'thumbnail', req.params.mediaHash
       )
 

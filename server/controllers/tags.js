@@ -7,8 +7,8 @@ module.exports = {
   getTagsOfFile (fileId) {
     return tags.getOfFile(fileId)
   },
-  autocompleteTag (partialTag) {
-    return tags.autocomplete(partialTag)
+  completeTag (partialTag) {
+    return tags.complete(partialTag)
   },
   getNamespaces () {
     return tags.getNamespaces()

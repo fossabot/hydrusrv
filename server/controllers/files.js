@@ -4,14 +4,14 @@ module.exports = {
   getFiles (query) {
     if (query.tags) {
       if (query.sort) {
-        return files.getByTagsSortedByNamespace(
+        return files.getByTagsSortedByNamespaces(
           query.page, query.tags, query.sort
         )
       }
 
       return files.getByTags(query.page, query.tags)
     } else if (query.sort) {
-      return files.getSortedByNamespace(query.page, query.sort)
+      return files.getSortedByNamespaces(query.page, query.sort)
     }
 
     return files.get(query.page)
@@ -19,7 +19,7 @@ module.exports = {
   getTotalFileCount () {
     return files.getTotalCount()
   },
-  getFileById (fileId) {
-    return files.getById(fileId)
+  getFileById (id) {
+    return files.getById(id)
   }
 }
