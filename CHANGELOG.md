@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.2.0] - 2018-06-30
+
 ### Added
 
 + Added (pseudo)-random sorting – it stays the same for any given query until
@@ -165,7 +167,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/2.1.0...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/2.2.0...develop
+[2.2.0]: https://github.com/mserajnik/hydrusrv/compare/2.1.0...2.2.0
 [2.1.0]: https://github.com/mserajnik/hydrusrv/compare/2.0.1...2.1.0
 [2.0.1]: https://github.com/mserajnik/hydrusrv/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/mserajnik/hydrusrv/compare/1.5.1...2.0.0
