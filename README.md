@@ -126,9 +126,6 @@ of just one while at the same time no longer limiting the result set by the
 provided sort namespaces (which was an unfortunate side effect that was
 unavoidable in `1.x` without killing the performance).
 
-The `sort` parameter has therefore been changed to `sort[]` and can be provided
-multiple times, just like `tags[]`.
-
 ## Usage
 
 ### Configuration
@@ -536,21 +533,26 @@ __Possible errors:__
 
 ###### Listing files
 
-__Route:__ `GET /api/files?page=<page>&tags[]=<tag>&sort[]=<namespace>`
+__Route:__ `GET /api/files?page=<page>&tags[]=<tag>&sort=<method>&namespace[]=<namespace>`
 
 __Info:__
 
 The `tags[]` parameter is optional and takes an arbitrary amount of tags (a
-single tag per `&tag[]=`), each one limiting the result set further.
+single tag per `tag[]=`), each one limiting the result set further.
 
-The `sort` parameter is also optional and is used to sort the results by the
-given namespaces (e.g., files with tag `creator:a` would come before
-`creator:b` if sorted by `creator`, independent of their ID which is the
-default sort method). Providing multiple namespaces to sort by is possible, the
-order in which they are provided then defines the "sub sorting". E.g.,
-`&sort[]=<namespaceA>&sort[]=<namespaceB>&sort[]=<namespaceC>` would cause
-files to be sorted by `namespaceA`, then `namespaceB`, then `namespaceC` and
-finally their ID (default).
+The `sort` parameter is also optional and is used to sort the results either
+randomly (with given value `random`) or by the given namespaces (with given
+value `namespace`) instead of their ID (which is the default sort method).
+
+If `sort=namespace` is provided, at least one namespace must be provided via
+`namespace[]=<namespace>`. This then sorts the results by that namespace (e.g.,
+files with tag `creator:a` come before `creator:b` if sorted by `creator`).
+
+Providing multiple namespaces to sort by is possible, the order in which they
+are provided then defines the "sub sorting". E.g.,
+`sort=namespace&namespace[]=<namespaceA>&namespace[]=<namespaceB>&namespace[]=<namespaceC>`
+causes files to be sorted by `namespaceA`, then `namespaceB`, then `namespaceC`
+and finally their ID (default).
 
 Files not having one or more of the given sort namespaces are _not_ omitted
 from the results but will be sorted to the end of the (sub) set.
@@ -589,6 +591,8 @@ __Possible errors:__
 + `InvalidTagsParameterError`
 + `MissingSortParameterError`
 + `InvalidSortParameterError`
++ `MissingNamespaceParameterError`
++ `InvalidNamespaceParameterError`
 + `InternalServerError`
 
 ###### Viewing files

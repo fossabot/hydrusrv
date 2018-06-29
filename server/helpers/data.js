@@ -101,7 +101,8 @@ module.exports = {
         size INTEGER NOT NULL,
         width INTEGER NOT NULL,
         height INTEGER NOT NULL,
-        hash BLOB_BYTES UNIQUE NOT NULL
+        hash BLOB_BYTES UNIQUE NOT NULL,
+        random TEXT NOT NULL
         ${(namespaceColumns.length) ? ',' + namespaceColumns.join(',') : ''}
       )`
     ).run()
@@ -131,9 +132,11 @@ module.exports = {
           size,
           width,
           height,
-          hash
+          hash,
+          random
           ${(namespaceColumns.length) ? ',' + namespaceColumns.join(',') : ''}
         ) VALUES (
+          ?,
           ?,
           ?,
           ?,
@@ -149,6 +152,7 @@ module.exports = {
         file.width,
         file.height,
         file.hash,
+        (Math.floor(Math.random() * 10000) + 10000).toString().substring(1),
         ...namespaceParameters
       )
     }

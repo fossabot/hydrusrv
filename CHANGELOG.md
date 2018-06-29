@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
++ Added (pseudo)-random sorting – it stays the same for any given query until
+  hydrusrv updates its temporary data
+
 ### Changed
 
 + Updated dependencies
