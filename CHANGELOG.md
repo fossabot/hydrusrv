@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
++ Removed version number from hydrus server dummy and adjusted wording to avoid
+  confusion
 + Updated dependencies
 
 ## [2.1.0] - 2018-06-03

@@ -684,16 +684,15 @@ features others might want to see. Some of these could be:
 + hydrus server supports many more MIME types than the ones I have limited
   hydrusrv to. This is due to the fact that determining the MIME type of a file
   is rather difficult in hydrus server and I wanted to keep it as simple as
-  possible (I personally only need support for the basic media types).
+  possible.
 + The available API routes are currently limited to what I personally need. I
   might expand these in the future (e.g., user listing, token listing etc.) but
   I am also happy to accept pull requests.
 + hydrus client/server is updated frequently (usually once a week) and while I
-  will try to keep hydrusrv up-to-date with any database changes (that
-  thankfully do not occur very frequently), I cannot promise anything. However,
-  you can always figure out the latest hydrus server version hydrusrv has been
-  tested with by taking a look in the `tests` directory. The number at the end
-  of the `tests/hydrus-server-dummy-xxx` directory indicates the version.
+  try to keep hydrusrv up-to-date with any database changes (that thankfully do
+  not occur very frequently), I suggest keeping an old copy of hydrus server
+  when updating in case anything breaks if you are "dependent" on hydrusrv
+  working. In addition, please [let me know][issues-url] if that happens.
 
 ## Donate
 
