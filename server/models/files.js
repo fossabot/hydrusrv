@@ -106,6 +106,80 @@ module.exports = {
 
     return files
   },
+  getSortedRandomly (page) {
+    const files = db.app.prepare(
+      `SELECT
+        id,
+        mime,
+        size,
+        width,
+        height,
+        hash
+      FROM
+        hydrusrv_files
+      ORDER BY
+        random
+      LIMIT
+        ${config.resultsPerPage}
+      OFFSET
+        ${(page - 1) * config.resultsPerPage}`
+    ).all()
+
+    if (files.length) {
+      for (const file of files) {
+        file.mime = hydrusConfig.availableMimeTypes[file.mime]
+        file.mediaUrl = generateFilePath('original', file.hash)
+        file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
+        delete file.hash
+      }
+    }
+
+    return files
+  },
+  getByTagsSortedRandomly (page, tags) {
+    tags = [...new Set(tags)]
+
+    const files = db.app.prepare(
+      `SELECT
+        hydrusrv_files.id,
+        hydrusrv_files.mime,
+        hydrusrv_files.size,
+        hydrusrv_files.width,
+        hydrusrv_files.height,
+        hydrusrv_files.hash
+      FROM
+        hydrusrv_files
+      LEFT JOIN
+        hydrusrv_mappings
+        ON hydrusrv_mappings.file_id = hydrusrv_files.id
+      LEFT JOIN
+        hydrusrv_tags
+        ON hydrusrv_tags.id = hydrusrv_mappings.tag_id
+      WHERE
+        hydrusrv_tags.name IN (${',?'.repeat(tags.length).replace(',', '')})
+      GROUP BY
+        hydrusrv_files.id
+      HAVING
+        count(DISTINCT hydrusrv_tags.id) = ?
+      ORDER BY
+        hydrusrv_files.random
+      LIMIT
+        ${config.resultsPerPage}
+      OFFSET
+        ${(page - 1) * config.resultsPerPage}`
+    ).all(tags, tags.length)
+
+    if (files.length) {
+      for (const file of files) {
+        file.mime = hydrusConfig.availableMimeTypes[file.mime]
+        file.mediaUrl = generateFilePath('original', file.hash)
+        file.thumbnailUrl = generateFilePath('thumbnail', file.hash)
+        delete file.hash
+      }
+    }
+
+    return files
+  },
   getSortedByNamespaces (page, namespaces) {
     namespaces = [...new Set(namespaces)]
 

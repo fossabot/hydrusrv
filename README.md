@@ -126,9 +126,6 @@ of just one while at the same time no longer limiting the result set by the
 provided sort namespaces (which was an unfortunate side effect that was
 unavoidable in `1.x` without killing the performance).
 
-The `sort` parameter has therefore been changed to `sort[]` and can be provided
-multiple times, just like `tags[]`.
-
 ## Usage
 
 ### Configuration
@@ -536,21 +533,26 @@ __Possible errors:__
 
 ###### Listing files
 
-__Route:__ `GET /api/files?page=<page>&tags[]=<tag>&sort[]=<namespace>`
+__Route:__ `GET /api/files?page=<page>&tags[]=<tag>&sort=<method>&namespace[]=<namespace>`
 
 __Info:__
 
 The `tags[]` parameter is optional and takes an arbitrary amount of tags (a
-single tag per `&tag[]=`), each one limiting the result set further.
+single tag per `tag[]=`), each one limiting the result set further.
 
-The `sort` parameter is also optional and is used to sort the results by the
-given namespaces (e.g., files with tag `creator:a` would come before
-`creator:b` if sorted by `creator`, independent of their ID which is the
-default sort method). Providing multiple namespaces to sort by is possible, the
-order in which they are provided then defines the "sub sorting". E.g.,
-`&sort[]=<namespaceA>&sort[]=<namespaceB>&sort[]=<namespaceC>` would cause
-files to be sorted by `namespaceA`, then `namespaceB`, then `namespaceC` and
-finally their ID (default).
+The `sort` parameter is also optional and is used to sort the results either
+randomly (with given value `random`) or by the given namespaces (with given
+value `namespace`) instead of their ID (which is the default sort method).
+
+If `sort=namespace` is provided, at least one namespace must be provided via
+`namespace[]=<namespace>`. This then sorts the results by that namespace (e.g.,
+files with tag `creator:a` come before `creator:b` if sorted by `creator`).
+
+Providing multiple namespaces to sort by is possible, the order in which they
+are provided then defines the "sub sorting". E.g.,
+`sort=namespace&namespace[]=<namespaceA>&namespace[]=<namespaceB>&namespace[]=<namespaceC>`
+causes files to be sorted by `namespaceA`, then `namespaceB`, then `namespaceC`
+and finally their ID (default).
 
 Files not having one or more of the given sort namespaces are _not_ omitted
 from the results but will be sorted to the end of the (sub) set.
@@ -589,6 +591,8 @@ __Possible errors:__
 + `InvalidTagsParameterError`
 + `MissingSortParameterError`
 + `InvalidSortParameterError`
++ `MissingNamespaceParameterError`
++ `InvalidNamespaceParameterError`
 + `InternalServerError`
 
 ###### Viewing files
@@ -680,16 +684,15 @@ features others might want to see. Some of these could be:
 + hydrus server supports many more MIME types than the ones I have limited
   hydrusrv to. This is due to the fact that determining the MIME type of a file
   is rather difficult in hydrus server and I wanted to keep it as simple as
-  possible (I personally only need support for the basic media types).
+  possible.
 + The available API routes are currently limited to what I personally need. I
   might expand these in the future (e.g., user listing, token listing etc.) but
   I am also happy to accept pull requests.
 + hydrus client/server is updated frequently (usually once a week) and while I
-  will try to keep hydrusrv up-to-date with any database changes (that
-  thankfully do not occur very frequently), I cannot promise anything. However,
-  you can always figure out the latest hydrus server version hydrusrv has been
-  tested with by taking a look in the `tests` directory. The number at the end
-  of the `tests/hydrus-server-dummy-xxx` directory indicates the version.
+  try to keep hydrusrv up-to-date with any database changes (that thankfully do
+  not occur very frequently), I suggest keeping an old copy of hydrus server
+  when updating in case anything breaks if you are "dependent" on hydrusrv
+  working. In addition, please [let me know][issues-url] if that happens.
 
 ## Donate
 

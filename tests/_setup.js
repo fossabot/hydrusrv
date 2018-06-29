@@ -19,17 +19,17 @@ module.exports = {
     )
 
     process.env.HYDRUS_SERVER_DB_PATH = path.resolve(
-      __dirname, 'hydrus-server-dummy-304/server.db'
+      __dirname, 'hydrus-server-dummy/server.db'
     )
     process.env.HYDRUS_MASTER_DB_PATH = path.resolve(
-      __dirname, 'hydrus-server-dummy-304/server.master.db'
+      __dirname, 'hydrus-server-dummy/server.master.db'
     )
     process.env.HYDRUS_MAPPINGS_DB_PATH = path.resolve(
-      __dirname, 'hydrus-server-dummy-304/server.mappings.db'
+      __dirname, 'hydrus-server-dummy/server.mappings.db'
     )
 
     process.env.HYDRUS_FILES_PATH = path.resolve(
-      __dirname, 'hydrus-server-dummy-304/server_files'
+      __dirname, 'hydrus-server-dummy/server_files'
     )
     process.env.HYDRUS_TAG_REPOSITORY = 2
     process.env.HYDRUS_FILE_REPOSITORY = 3
