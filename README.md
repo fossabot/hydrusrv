@@ -203,9 +203,9 @@ following are all the available settings (along with their default values):
 
 First of all, you have several options to start the server:
 
-+ `yarn run start-dev`: starts the server in development mode using
++ `yarn start-dev`: starts the server in development mode using
   [nodemon][nodemon] to watch for file changes and restarts when necessary.
-+ `yarn run start`: starts the server in production mode.
++ `yarn start`: starts the server in production mode.
 + `./bin/www`: the file that is run when using both, `start-dev` and `start`.
   You can also execute it directly to start the server in production mode.
 
