@@ -16,9 +16,7 @@ const availableMimeTypes = {
 
 const supportedMimeTypes = () => {
   return process.env.HYDRUS_SUPPORTED_MIME_TYPES.split(',').filter(
-    mimeType => {
-      return (parseInt(mimeType) in availableMimeTypes)
-    }
+    mimeType => (parseInt(mimeType) in availableMimeTypes)
   )
 }
 
@@ -27,8 +25,5 @@ module.exports = {
   tagRepository: process.env.HYDRUS_TAG_REPOSITORY,
   fileRepository: process.env.HYDRUS_FILE_REPOSITORY,
   availableMimeTypes: availableMimeTypes,
-  supportedMimeTypes: supportedMimeTypes(),
-  mimePlaceholders: ',?'.repeat(supportedMimeTypes().length).replace(
-    ',', ''
-  )
+  supportedMimeTypes: supportedMimeTypes()
 }

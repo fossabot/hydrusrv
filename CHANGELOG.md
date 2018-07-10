@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Updated dependencies
 
+### Fixed
+
++ Fixed hydrusrv ignoring files without tags completely
+
 ## [2.2.0] - 2018-06-30
 
 ### Added
