@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
++ Switched to an Alpine-based Node image for a smaller resulting image size
+
 ## [2.4.0] - 2018-07-15
 
 ### Added
