@@ -203,15 +203,26 @@ following are all the available settings (along with their default values):
 
 First of all, you have several options to start the server:
 
-+ `yarn run start-dev`: starts the server in development mode using
++ `yarn start-dev`: starts the server in development mode using
   [nodemon][nodemon] to watch for file changes and restarts when necessary.
-+ `yarn run start`: starts the server in production mode.
++ `yarn start`: starts the server in production mode.
 + `./bin/www`: the file that is run when using both, `start-dev` and `start`.
   You can also execute it directly to start the server in production mode.
 
 For running in production mode, you will likely want to set up both a reverse
 proxy (I recommend [nginx][nginx]) and a way to autostart hydrusrv when booting
 your machine (I personally use [Supervisor][supervisor]).
+
+You can also run with [Docker][docker]. A simple `Dockerfile` is included. Make
+sure to mount both the application database and the hydrus server files
+directory and databases from your host and set the `PORT` in `.env` to the same
+as in the `Dockerfile` (the default is `8000`). You may also want to adjust the
+logging (by default it would just log inside the container, losing the logs
+when you rebuild the image).
+
+I have created [another repository][hydrusrv-docker] that shows you how to run
+hydrus server and hydrusrv together using [Docker Compose][docker-compose] in
+a production-ready example.
 
 When running in production mode, I highly recommend using HTTP/2.
 
@@ -747,6 +758,9 @@ You are welcome to help out!
 [supported-mime-types]: https://github.com/mserajnik/hydrusrv/blob/master/server/config/hydrus.js#L2-L14
 [nodemon]: https://github.com/remy/nodemon
 [supervisor]: http://supervisord.org/
+[docker]: https://www.docker.com/
+[hydrusrv-docker]: https://github.com/mserajnik/hydrusrv-docker
+[docker-compose]: https://docs.docker.com/compose/
 
 [paypal-url]: https://www.paypal.me/mserajnik
 [paypal-image]: https://www.paypalobjects.com/webstatic/en_US/i/btn/png/blue-rect-paypal-26px.png
