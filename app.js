@@ -77,7 +77,9 @@ if (config.allowCrossDomain) {
     )
 
     if (req.method === 'OPTIONS') {
-      res.send(200, '')
+      res.status(200).send('')
+
+      return
     }
 
     next()
