@@ -1,4 +1,6 @@
-FROM node:latest
+FROM mhart/alpine-node:latest
+
+RUN apk --update add build-base python
 
 WORKDIR /usr/src/app
 
