@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.4.0] - 2018-07-15
+
+### Added
+
++ Added default values for `HYDRUS_TAG_REPOSITORY` and `HYDRUS_FILE_REPOSITORY`
+
+### Removed
+
++ Removed unnecessary details about Docker deployment
+
+### Fixed
+
++ Fixed hydrusrv trying to move to next route after setting `OPTIONS` response
+
 ## [2.3.0] - 2018-07-15
 
 ### Added
@@ -185,7 +199,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/2.3.0...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/2.4.0...develop
+[2.4.0]: https://github.com/mserajnik/hydrusrv/compare/2.3.0...2.4.0
 [2.3.0]: https://github.com/mserajnik/hydrusrv/compare/2.2.0...2.3.0
 [2.2.0]: https://github.com/mserajnik/hydrusrv/compare/2.1.0...2.2.0
 [2.1.0]: https://github.com/mserajnik/hydrusrv/compare/2.0.1...2.1.0

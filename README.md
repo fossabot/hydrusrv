@@ -213,16 +213,10 @@ For running in production mode, you will likely want to set up both a reverse
 proxy (I recommend [nginx][nginx]) and a way to autostart hydrusrv when booting
 your machine (I personally use [Supervisor][supervisor]).
 
-You can also run with [Docker][docker]. A simple `Dockerfile` is included. Make
-sure to mount both the application database and the hydrus server files
-directory and databases from your host and set the `PORT` in `.env` to the same
-as in the `Dockerfile` (the default is `8000`). You may also want to adjust the
-logging (by default it would just log inside the container, losing the logs
-when you rebuild the image).
-
-I have created [another repository][hydrusrv-docker] that shows you how to run
-hydrus server and hydrusrv together using [Docker Compose][docker-compose] in
-a production-ready example.
+You can also deploy with [Docker][docker]. I have created
+[another repository][hydrusrv-docker] that shows you how to run hydrus server
+and hydrusrv together using [Docker Compose][docker-compose] in a
+production-ready example.
 
 When running in production mode, I highly recommend using HTTP/2.
 
