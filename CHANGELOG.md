@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Removed
+
++ Removed unnecessary details about Docker deployment
+
 ### Fixed
 
 + Fixed hydrusrv trying to move to next route after setting `OPTIONS` response
