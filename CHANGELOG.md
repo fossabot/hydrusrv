@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   creating temporary tables. This change causes hydrusrv to keep running
   (instead of crashing) and to try again after the period set via
   `DATA_UPDATE_INTERVAL`
++ Added Docker compatibility
 
 ### Changed
 
