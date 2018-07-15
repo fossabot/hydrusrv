@@ -1,37 +1,55 @@
+const config = require('../config/app')
 const db = require('../database')
 const hydrusConfig = require('../config/hydrus')
 const hydrusTables = require('../config/hydrus-db-tables')
 
 module.exports = {
   sync () {
-    if (db.app.updatingData) {
+    if (db.updatingData) {
       return
     }
 
-    db.app.updatingData = true
+    db.updatingData = true
 
-    db.hydrus.prepare('BEGIN').run()
+    let hydrusInitialized = true
 
-    const namespaces = this.getNamespaces()
-    const tags = this.getTags()
-    const files = this.getFiles(namespaces)
-    const mappings = this.getMappings()
+    let namespaces, tags, files, mappings
 
-    db.hydrus.prepare('COMMIT').run()
+    try {
+      db.hydrus.prepare('BEGIN').run()
+
+      namespaces = this.getNamespaces()
+      tags = this.getTags()
+      files = this.getFiles(namespaces)
+      mappings = this.getMappings()
+    } catch (err) {
+      hydrusInitialized = false
+
+      console.warn(
+        'hydrus server has no repositories set up yet. hydrusrv will not be ' +
+          'able to serve any files. It will try updating again after the ' +
+          'period set via `DATA_UPDATE_INTERVAL` ' +
+          `(${config.dataUpdateInterval} seconds).`
+      )
+    } finally {
+      db.hydrus.prepare('COMMIT').run()
+    }
 
     this.createTempNamespacesTable()
     this.createTempTagsTable()
     this.createTempFilesTable(namespaces)
     this.createTempMappingsTable()
 
-    this.fillTempNamespacesTable(namespaces)
-    this.fillTempTagsTable(tags)
-    this.fillTempFilesTable(files, namespaces)
-    this.fillTempMappingsTable(mappings)
+    if (hydrusInitialized) {
+      this.fillTempNamespacesTable(namespaces)
+      this.fillTempTagsTable(tags)
+      this.fillTempFilesTable(files, namespaces)
+      this.fillTempMappingsTable(mappings)
+    }
 
     this.replaceCurrentTempTables()
 
-    db.app.updatingData = false
+    db.updatingData = false
   },
   replaceCurrentTempTables () {
     db.app.prepare('DROP TABLE IF EXISTS hydrusrv_namespaces').run()
@@ -88,10 +106,12 @@ module.exports = {
   createTempFilesTable (namespaces) {
     const namespaceColumns = []
 
-    for (const namespace of namespaces) {
-      namespaceColumns.push(
-        `namespace_${namespace.split(' ').join('_')} TEXT`
-      )
+    if (Array.isArray(namespaces)) {
+      for (const namespace of namespaces) {
+        namespaceColumns.push(
+          `namespace_${namespace.split(' ').join('_')} TEXT`
+        )
+      }
     }
 
     db.app.prepare(

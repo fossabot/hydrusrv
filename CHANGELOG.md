@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
++ Added check if hydrus server has already set up its repositories when
+  creating temporary tables. This change causes hydrusrv to keep running
+  (instead of crashing) and to try again after the period set via
+  `DATA_UPDATE_INTERVAL`
+
 ### Changed
 
 + Updated dependencies
