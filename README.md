@@ -191,9 +191,9 @@ following are all the available settings (along with their default values):
   database (called `server.mappings.db`). __Absolute path required.__
 + `HYDRUS_FILES_PATH=`: sets the path to the hydrus server files directory
   (called `server_files`).  __Absolute path required.__
-+ `HYDRUS_TAG_REPOSITORY=`: the ID of the hydrus server tag repository hydrusrv
-  should use.
-+ `HYDRUS_FILE_REPOSITORY=`: the ID of the hydrus server file repository
++ `HYDRUS_TAG_REPOSITORY=2`: the ID of the hydrus server tag repository
+  hydrusrv should use.
++ `HYDRUS_FILE_REPOSITORY=3`: the ID of the hydrus server file repository
   hydrusrv should use.
 + `HYDRUS_SUPPORTED_MIME_TYPES=1,2,3,4,9,14,18,20,21,23,25,26,27`: the IDs of
   the MIME types hydrusrv should support. See [here][supported-mime-types] for
