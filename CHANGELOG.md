@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
++ Added correct default values for `HYDRUS_TAG_REPOSITORY` and
+  `HYDRUS_FILE_REPOSITORY` in readme
+
 ## [2.5.0] - 2018-07-15
 
 ### Changed
