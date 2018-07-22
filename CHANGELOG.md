@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.5.2] - 2018-07-22
+
 ### Fixed
 
 + Fixed potential issues with incorrect data by locking the database when
@@ -219,7 +221,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/2.5.1...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/2.5.2...develop
+[2.5.2]: https://github.com/mserajnik/hydrusrv/compare/2.5.1...2.5.2
 [2.5.1]: https://github.com/mserajnik/hydrusrv/compare/2.5.0...2.5.1
 [2.5.0]: https://github.com/mserajnik/hydrusrv/compare/2.4.0...2.5.0
 [2.4.0]: https://github.com/mserajnik/hydrusrv/compare/2.3.0...2.4.0
