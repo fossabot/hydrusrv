@@ -11,43 +11,40 @@ module.exports = {
 
     db.updatingData = true
 
-    let hydrusInitialized = true
+    let updateSuccessful = true
 
     let namespaces, tags, files, mappings
 
     try {
-      db.hydrus.prepare('BEGIN').run()
-
       namespaces = this.getNamespaces()
       tags = this.getTags()
       files = this.getFiles(namespaces)
-      mappings = this.getMappings()
+      mappings = this.getMappings(files.map(file => file.id))
+
+      this.createTempNamespacesTable()
+      this.createTempTagsTable()
+      this.createTempFilesTable(namespaces)
+      this.createTempMappingsTable()
     } catch (err) {
-      hydrusInitialized = false
+      updateSuccessful = false
 
       console.warn(
-        'hydrus server has no repositories set up yet. hydrusrv will not be ' +
-          'able to serve any files. It will try updating again after the ' +
-          'period set via `DATA_UPDATE_INTERVAL` ' +
-          `(${config.dataUpdateInterval} seconds).`
+        'hydrus server has no repositories set up yet or there has been an ' +
+          'error (this can for example happen if hydrus server was in the ' +
+          'process of writing while hydrusrv tried to read data). It will ' +
+          'try updating again after the period set via ' +
+          `\`DATA_UPDATE_INTERVAL\` (${config.dataUpdateInterval} seconds).`
       )
-    } finally {
-      db.hydrus.prepare('COMMIT').run()
     }
 
-    this.createTempNamespacesTable()
-    this.createTempTagsTable()
-    this.createTempFilesTable(namespaces)
-    this.createTempMappingsTable()
-
-    if (hydrusInitialized) {
+    if (updateSuccessful) {
       this.fillTempNamespacesTable(namespaces)
       this.fillTempTagsTable(tags)
       this.fillTempFilesTable(files, namespaces)
       this.fillTempMappingsTable(mappings)
-    }
 
-    this.replaceCurrentTempTables()
+      this.replaceCurrentTempTables()
+    }
 
     db.updatingData = false
   },
@@ -244,126 +241,9 @@ module.exports = {
     ).all()
   },
   getFiles (namespaces) {
-    const serviceHashIds = db.hydrus.prepare(
+    const filesWithTags = db.hydrus.prepare(
       `SELECT
-        ${hydrusTables.currentFiles}.service_hash_id AS id
-      FROM
-        ${hydrusTables.currentFiles}`
-    ).all().map(row => row.id)
-
-    let possibleRowsA = db.hydrus.prepare(
-      `SELECT
-        ${hydrusTables.repositoryHashIdMapFiles}.service_hash_id
-          AS serviceHashId,
-        ${hydrusTables.repositoryHashIdMapFiles}.master_hash_id
-          AS masterHashId,
-        ${hydrusTables.repositoryHashIdMapFiles}.hash_id_timestamp
-          AS timestamp
-      FROM
-        ${hydrusTables.repositoryHashIdMapFiles}
-      WHERE
-        ${hydrusTables.repositoryHashIdMapFiles}.service_hash_id
-          IN (${serviceHashIds})`
-    ).all()
-
-    let possibleRowsB = db.hydrus.prepare(
-      `SELECT
-        ${hydrusTables.repositoryHashIdMapTags}.service_hash_id
-          AS serviceHashId,
-        ${hydrusTables.repositoryHashIdMapTags}.master_hash_id
-          AS masterHashId,
-        ${hydrusTables.repositoryHashIdMapTags}.hash_id_timestamp
-          AS timestamp
-      FROM
-        ${hydrusTables.repositoryHashIdMapTags}
-      WHERE
-        ${hydrusTables.repositoryHashIdMapTags}.service_hash_id
-          IN (${serviceHashIds})`
-    ).all()
-
-    let finalRows = []
-
-    let usedServiceHashIds = []
-    let usedMasterHashIds = []
-
-    for (let i = 0; i < possibleRowsA.length; i++) {
-      const a = possibleRowsA[i]
-
-      for (let j = 0; j < possibleRowsB.length; j++) {
-        const b = possibleRowsB[j]
-
-        if (
-          a.serviceHashId === b.serviceHashId &&
-          (!usedServiceHashIds.includes(a.serviceHashId))
-        ) {
-          if (a.timestamp > b.timestamp) {
-            finalRows.push(a)
-          } else {
-            finalRows.push(b)
-          }
-
-          possibleRowsA.splice(i, 1)
-          possibleRowsB.splice(j, 1)
-
-          usedServiceHashIds.push(a.serviceHashId)
-          usedServiceHashIds.push(b.serviceHashId)
-          usedMasterHashIds.push(a.masterHashId)
-          usedMasterHashIds.push(b.masterHashId)
-        }
-
-        if (
-          a.masterHashId === b.masterHashId &&
-          (!usedMasterHashIds.includes(a.masterHashId))
-        ) {
-          if (a.timestamp > b.timestamp) {
-            finalRows.push(a)
-          } else {
-            finalRows.push(b)
-          }
-
-          possibleRowsA.splice(i, 1)
-          possibleRowsB.splice(j, 1)
-
-          usedServiceHashIds.push(a.serviceHashId)
-          usedServiceHashIds.push(b.serviceHashId)
-          usedMasterHashIds.push(a.masterHashId)
-          usedMasterHashIds.push(b.masterHashId)
-        }
-      }
-    }
-
-    usedServiceHashIds = [...new Set(usedServiceHashIds)]
-    usedMasterHashIds = [...new Set(usedMasterHashIds)]
-
-    possibleRowsA = possibleRowsA.filter(
-      row => (!usedServiceHashIds.includes(row.serviceHashId))
-    )
-    possibleRowsA = possibleRowsA.filter(
-      row => (!usedMasterHashIds.includes(row.masterHashId))
-    )
-
-    possibleRowsB = possibleRowsA.filter(
-      row => (!usedServiceHashIds.includes(row.serviceHashId))
-    )
-    possibleRowsB = possibleRowsA.filter(
-      row => (!usedMasterHashIds.includes(row.masterHashId))
-    )
-
-    finalRows = finalRows.concat(possibleRowsA)
-    finalRows = finalRows.concat(possibleRowsB)
-
-    const mappedServiceHashIds = []
-
-    for (const finalRow of finalRows) {
-      mappedServiceHashIds[finalRow.masterHashId] = finalRow.serviceHashId
-    }
-
-    const masterHashIds = finalRows.map(
-      row => row.masterHashId
-    )
-
-    const files = db.hydrus.prepare(
-      `SELECT
+        ${hydrusTables.currentFiles}.service_hash_id AS id,
         ${hydrusTables.hashes}.master_hash_id AS masterHashId,
         ${hydrusTables.hashes}.hash,
         ${hydrusTables.filesInfo}.mime AS mimeType,
@@ -374,15 +254,47 @@ module.exports = {
         ${hydrusTables.hashes}
       NATURAL JOIN
         ${hydrusTables.filesInfo}
+      NATURAL JOIN
+        ${hydrusTables.repositoryHashIdMapTags}
+      NATURAL JOIN
+        ${hydrusTables.currentFiles}
       WHERE
-        ${hydrusTables.hashes}.master_hash_id IN (${masterHashIds})
+        ${hydrusTables.filesInfo}.mime IN (${hydrusConfig.supportedMimeTypes})`
+    ).all()
+
+    const confirmedServiceHashIds = filesWithTags.map(row => row.id)
+    const confirmedMasterHashIds = filesWithTags.map(row => row.masterHashId)
+
+    const filesWithoutTags = db.hydrus.prepare(
+      `SELECT
+        ${hydrusTables.currentFiles}.service_hash_id AS id,
+        ${hydrusTables.hashes}.master_hash_id AS masterHashId,
+        ${hydrusTables.hashes}.hash,
+        ${hydrusTables.filesInfo}.mime AS mimeType,
+        ${hydrusTables.filesInfo}.size,
+        ${hydrusTables.filesInfo}.width,
+        ${hydrusTables.filesInfo}.height
+      FROM
+        ${hydrusTables.hashes}
+      NATURAL JOIN
+        ${hydrusTables.filesInfo}
+      NATURAL JOIN
+        ${hydrusTables.repositoryHashIdMapFiles}
+      NATURAL JOIN
+        ${hydrusTables.currentFiles}
+      WHERE
+        ${hydrusTables.hashes}.master_hash_id NOT IN (
+          ${confirmedMasterHashIds}
+        )
+      AND
+        ${hydrusTables.currentFiles}.service_hash_id NOT IN (
+          ${confirmedServiceHashIds}
+        )
       AND
         ${hydrusTables.filesInfo}.mime IN (${hydrusConfig.supportedMimeTypes})`
     ).all()
 
-    for (const file of files) {
-      file.id = mappedServiceHashIds[file.masterHashId]
-    }
+    const files = filesWithTags.concat(filesWithoutTags)
 
     for (const namespace of namespaces) {
       for (const file of files) {
@@ -415,23 +327,21 @@ module.exports = {
 
     return files
   },
-  getMappings () {
+  getMappings (fileIds) {
     return db.hydrus.prepare(
       `SELECT
         ${hydrusTables.currentMappings}.service_hash_id AS fileId,
         ${hydrusTables.currentMappings}.service_tag_id AS tagId
       FROM
         ${hydrusTables.currentMappings}
+      NATURAL JOIN
+        ${hydrusTables.repositoryHashIdMapTags}
       INNER JOIN
         ${hydrusTables.currentFiles}
         ON ${hydrusTables.currentFiles}.service_hash_id =
-          ${hydrusTables.currentMappings}.service_hash_id
-      NATURAL JOIN
-        ${hydrusTables.repositoryHashIdMapTags}
-      NATURAL JOIN
-        ${hydrusTables.filesInfo}
+          ${hydrusTables.repositoryHashIdMapTags}.service_hash_id
       WHERE
-        ${hydrusTables.filesInfo}.mime IN (${hydrusConfig.supportedMimeTypes})`
+        ${hydrusTables.currentMappings}.service_hash_id IN (${fileIds})`
     ).all()
   }
 }

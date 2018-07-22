@@ -13,26 +13,15 @@ try {
   db.connect()
 } catch (err) {
   console.error(
-    'Could not connect to databases. Make sure that the specified paths are ' +
-      'correct and that hydrusrv has write access to the databases. ' +
-      `Error:\n${err}`
+    'Could not connect to the databases. Make sure that the specified paths ' +
+      'are correct and that the user running hydrusrv has the necessary ' +
+      `permissions. Error:\n${err}`
   )
 
   process.exit(1)
 }
 
-try {
-  data.sync()
-} catch (err) {
-  console.error('Could not create temporary data tables. Make sure hydrus ' +
-    'server is not in the middle of writing data when starting hydrusrv. ' +
-    `Error:\n${err}`
-  )
-
-  process.exit(1)
-}
-
-setInterval(() => {
+const updateData = () => {
   try {
     data.sync()
   } catch (err) {
@@ -40,7 +29,10 @@ setInterval(() => {
 
     process.exit(1)
   }
-}, config.dataUpdateInterval * 1000)
+}
+
+updateData()
+setInterval(updateData, config.dataUpdateInterval * 1000)
 
 if (process.env.NODE_ENV === 'development') {
   app.use(logger('dev'))
