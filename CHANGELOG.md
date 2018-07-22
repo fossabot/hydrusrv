@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
++ Fixed potential issues with incorrect data by locking the database when
+  creating temporary data tables
++ Corrected and simplified the selection of files when creating temporary data
+  tables
+
 ## [2.5.1] - 2018-07-17
 
 ### Fixed

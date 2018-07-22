@@ -168,10 +168,7 @@ following are all the available settings (along with their default values):
   should sync its data with hydrus server (after the initial sync when starting
   hydrusrv). Updates are locked, so it is not possible to set this value too
   low – the minimum time between updates will always be the time it takes to
-  complete the update. However, reading from hydrus server happens in a
-  transaction to prevent it from changing any data during the read process
-  (which would threaten the integrity). Therefore, this value should still not
-  be set too low, otherwise hydrus server will not have enough breathing room.
+  complete the update.
 + `RESULTS_PER_PAGE=42`: the results per page when dealing with paginated lists
   (files and tags).
 + `LOGGING_ENABLED=false`: setting this to `false` disables access logging when
@@ -693,6 +690,22 @@ features others might want to see. Some of these could be:
 + The available API routes are currently limited to what I personally need. I
   might expand these in the future (e.g., user listing, token listing etc.) but
   I am also happy to accept pull requests.
+
+In addition, you might run into issues or limitations when using hydrusrv. Here
+are the ones I am currently aware of:
+
++ When hydrusrv updates its copy of the hydrus server data, it does so without
+  locking the database to prevent issues in hydrus server (which most likely
+  does not expect another application to randomly lock the database when it is
+  trying to write). The update can also take a while on larger databases, which
+  might lead to hydrus server changing or adding data while hydrusrv is still
+  in the update process. When this happens, hydrusrv _should_ not crash, but
+  it will stick to the data it currently has and try again after the period set
+  via `DATA_UPDATE_INTERVAL`. This means that on a busy hydrus server
+  installation, hydrusrv might not often find the time to complete an update.
+  This can be somewhat alleviated by setting a shorter interval, but I still
+  would not recommend running it on a public hydrus server installation where
+  multiple users might add or change data at any moment in time.
 + hydrus client/server is updated frequently (usually once a week) and while I
   try to keep hydrusrv up-to-date with any database changes (that thankfully do
   not occur very frequently), I suggest keeping an old copy of hydrus server
