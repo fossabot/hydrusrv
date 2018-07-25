@@ -527,7 +527,8 @@ __Output on success:__
 ```json5
 [
   {
-    "name": <name of the tag>
+    "name": <name of the tag>,
+    "files": <amount of files having the tag>
   }
   // […]
 ]

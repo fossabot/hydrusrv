@@ -1,6 +1,6 @@
 {
   "name": "hydrusrv",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "description": "A small application for serving media handled with hydrus server via API",
   "keywords": [
     "hydrus",
