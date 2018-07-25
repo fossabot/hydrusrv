@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
++ Added files count to tag autocompletion results
+
 ## [2.7.0] - 2018-07-25
 
 ### Added
