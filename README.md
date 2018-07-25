@@ -276,6 +276,7 @@ __Output on success:__
 
 __Possible errors:__
 
++ `ShuttingDownError`
 + `InternalServerError`
 
 ##### Users
@@ -309,6 +310,7 @@ __Possible errors:__
 + `MissingPasswordFieldError`
 + `InvalidPasswordFieldError`
 + `UsernameExistsError`
++ `ShuttingDownError`
 + `InternalServerError`
 
 ###### Updating users
@@ -346,6 +348,7 @@ __Possible errors:__
 + `InvalidCurrentPasswordFieldError`
 + `InvalidUserError`
 + `UsernameExistsError`
++ `ShuttingDownError`
 + `InternalServerError`
 
 ###### Deleting users
@@ -366,6 +369,7 @@ __Possible errors:__
 
 + `MissingTokenError`
 + `InvalidTokenError`
++ `ShuttingDownError`
 + `InternalServerError`
 
 ##### Tokens
@@ -400,6 +404,7 @@ __Possible errors:__
 + `InvalidPasswordFieldError`
 + `InvalidLongFieldError`
 + `InvalidUserError`
++ `ShuttingDownError`
 + `InternalServerError`
 
 ###### Deleting tokens
@@ -427,6 +432,7 @@ __Possible errors:__
 + `MissingTokenError`
 + `InvalidTokenError`
 + `InvalidAllFieldError`
++ `ShuttingDownError`
 + `InternalServerError`
 
 ##### Info
@@ -448,6 +454,7 @@ __Possible errors:__
 
 + `MissingTokenError`
 + `InvalidTokenError`
++ `ShuttingDownError`
 + `InternalServerError`
 
 ##### Namespaces
@@ -471,6 +478,7 @@ __Possible errors:__
 
 + `MissingTokenError`
 + `InvalidTokenError`
++ `ShuttingDownError`
 + `InternalServerError`
 
 ##### Tags
@@ -498,6 +506,7 @@ __Possible errors:__
 + `InvalidTokenError`
 + `MissingPageParameterError`
 + `InvalidPageParameterError`
++ `ShuttingDownError`
 + `InternalServerError`
 
 ###### Autocompleting tags
@@ -529,6 +538,7 @@ __Possible errors:__
 + `InvalidTokenError`
 + `MissingPartialTagFieldError`
 + `InvalidPartialTagFieldError`
++ `ShuttingDownError`
 + `InternalServerError`
 
 ##### Files
@@ -595,6 +605,7 @@ __Possible errors:__
 + `InvalidSortParameterError`
 + `MissingNamespaceParameterError`
 + `InvalidNamespaceParameterError`
++ `ShuttingDownError`
 + `InternalServerError`
 
 ###### Viewing files
@@ -638,6 +649,7 @@ __Possible errors:__
 + `MissingIdParameterError`
 + `InvalidIdParameterError`
 + `NotFoundError`
++ `ShuttingDownError`
 + `InternalServerError`
 
 ##### Media
@@ -655,6 +667,7 @@ __Possible errors:__
 + `MissingMediaHashParameterError`
 + `InvalidMediaHashParameterError`
 + `NotFoundError`
++ `ShuttingDownError`
 + `InternalServerError`
 
 ###### Getting media thumbnails
@@ -670,6 +683,7 @@ __Possible errors:__
 + `MissingMediaHashParameterError`
 + `InvalidMediaHashParameterError`
 + `NotFoundError`
++ `ShuttingDownError`
 + `InternalServerError`
 
 ### Caveats

@@ -32,7 +32,9 @@ const updateData = () => {
 }
 
 updateData()
-setInterval(updateData, config.dataUpdateInterval * 1000)
+const updateInterval = setInterval(
+  updateData, config.dataUpdateInterval * 1000
+)
 
 if (process.env.NODE_ENV === 'development') {
   app.use(logger('dev'))
@@ -55,8 +57,44 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(bodyParser.json())
 
+app.shuttingDown = false
+
+app.shutDown = (server) => {
+  if (app.shuttingDown) {
+    return
+  }
+
+  app.shuttingDown = true
+
+  console.info('Received kill signal, shutting down gracefully.')
+
+  clearInterval(updateInterval)
+
+  db.close()
+
+  server.close(() => {
+    process.exit(0)
+  })
+
+  setTimeout(() => {
+    console.error('Could not shut down in time, shutting down forcefully.')
+
+    process.exit(1)
+  }, 10000)
+}
+
+app.use((req, res, next) => {
+  if (!app.shuttingDown) {
+    return next()
+  }
+
+  res.status(503).json({
+    error: 'ShuttingDownError'
+  })
+})
+
 if (config.allowCrossDomain) {
-  const allowCrossDomain = (req, res, next) => {
+  app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', req.header('Origin') || '*')
 
     res.header(
@@ -75,9 +113,7 @@ if (config.allowCrossDomain) {
     }
 
     next()
-  }
-
-  app.use(allowCrossDomain)
+  })
 }
 
 require('./server/routes')(app)
