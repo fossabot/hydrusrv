@@ -124,8 +124,8 @@ test('database: tag autocompletion', t => {
   t.deepEqual(
     tags.complete('lor'),
     [
-      { name: 'dolor' },
-      { name: 'lorem' }
+      { name: 'dolor', files: 3 },
+      { name: 'lorem', files: 5 }
     ]
   )
 })

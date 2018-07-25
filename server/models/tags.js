@@ -41,7 +41,8 @@ module.exports = {
   complete (partialTag) {
     return db.app.prepare(
       `SELECT
-        name
+        name,
+        files
       FROM
         hydrusrv_tags
       WHERE
