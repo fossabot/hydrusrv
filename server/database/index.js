@@ -20,5 +20,9 @@ module.exports = {
     this.hydrus.prepare(
       `ATTACH '${hydrusConfig.mappingsDbPath}' AS mappings_db`
     ).run()
+  },
+  close () {
+    this.app.close()
+    this.hydrus.close()
   }
 }

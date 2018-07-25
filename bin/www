@@ -10,3 +10,10 @@ app.set('port', port)
 
 const server = http.createServer(app)
 server.listen(port)
+
+const shutDown = () => {
+  app.shutDown(server)
+}
+
+process.on('SIGTERM', shutDown)
+process.on('SIGINT', shutDown)
