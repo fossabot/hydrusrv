@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
++ Added files count to tags
+
 ## [2.6.1] - 2018-07-25
 
 ### Fixed

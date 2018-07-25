@@ -5,7 +5,8 @@ module.exports = {
   get (page) {
     return db.app.prepare(
       `SELECT
-        name
+        name,
+        files
       FROM
         hydrusrv_tags
       ORDER BY
@@ -19,7 +20,8 @@ module.exports = {
   getOfFile (fileId) {
     return db.app.prepare(
       `SELECT
-        hydrusrv_tags.name
+        hydrusrv_tags.name,
+        hydrusrv_tags.files
       FROM
         hydrusrv_tags
       LEFT JOIN
