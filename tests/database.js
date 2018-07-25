@@ -98,10 +98,10 @@ test('database: get tags', t => {
   t.deepEqual(
     tags.get(1),
     [
-      { name: 'amet' },
-      { name: 'dolor' },
-      { name: 'ipsum' },
-      { name: 'lorem' }
+      { name: 'amet', files: 1 },
+      { name: 'dolor', files: 3 },
+      { name: 'ipsum', files: 4 },
+      { name: 'lorem', files: 5 }
     ]
   )
 })
@@ -110,12 +110,12 @@ test('database: get tags of file', t => {
   t.deepEqual(
     tags.getOfFile(1),
     [
-      { name: 'amet' },
-      { name: 'dolor' },
-      { name: 'ipsum' },
-      { name: 'lorem' },
-      { name: 'namespace:e' },
-      { name: 'sit' }
+      { name: 'amet', files: 1 },
+      { name: 'dolor', files: 3 },
+      { name: 'ipsum', files: 4 },
+      { name: 'lorem', files: 5 },
+      { name: 'namespace:e', files: 1 },
+      { name: 'sit', files: 2 }
     ]
   )
 })

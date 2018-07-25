@@ -89,15 +89,16 @@ module.exports = {
     db.app.prepare(
       `CREATE TEMP TABLE hydrusrv_tags_new (
         id INTEGER NOT NULL PRIMARY KEY UNIQUE,
-        name TEXT NOT NULL UNIQUE
+        name TEXT NOT NULL UNIQUE,
+        files INTEGER NOT NULL
       )`
     ).run()
   },
   fillTempTagsTable (tags) {
     for (const tag of tags) {
       db.app.prepare(
-        'INSERT INTO hydrusrv_tags_new (id, name) VALUES (?, ?)'
-      ).run(tag.id, tag.name)
+        'INSERT INTO hydrusrv_tags_new (id, name, files) VALUES (?, ?, ?)'
+      ).run(tag.id, tag.name, tag.files)
     }
   },
   createTempFilesTable (namespaces) {
@@ -223,9 +224,10 @@ module.exports = {
   },
   getTags () {
     return db.hydrus.prepare(
-      `SELECT DISTINCT
+      `SELECT
         ${hydrusTables.currentMappings}.service_tag_id AS id,
-        ${hydrusTables.tags}.tag AS name
+        ${hydrusTables.tags}.tag AS name,
+        COUNT(*) as files
       FROM
         ${hydrusTables.currentMappings}
       NATURAL JOIN
@@ -237,7 +239,9 @@ module.exports = {
       NATURAL JOIN
         ${hydrusTables.filesInfo}
       WHERE
-        ${hydrusTables.filesInfo}.mime IN (${hydrusConfig.supportedMimeTypes})`
+        ${hydrusTables.filesInfo}.mime IN (${hydrusConfig.supportedMimeTypes})
+      GROUP BY
+        ${hydrusTables.tags}.tag`
     ).all()
   },
   getFiles (namespaces) {

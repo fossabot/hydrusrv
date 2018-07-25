@@ -468,7 +468,7 @@ __Output on success:__
 ```json5
 [
   {
-    name: <name of the namespace>
+    "name": <name of the namespace>
   }
   // […]
 ]
@@ -494,7 +494,8 @@ __Output on success:__
 ```json5
 [
   {
-    name: <name of the tag>
+    "name": <name of the tag>
+    "files": <amount of files having the tag>
   }
   // […]
 ]
@@ -526,7 +527,7 @@ __Output on success:__
 ```json5
 [
   {
-    name: <name of the tag>
+    "name": <name of the tag>
   }
   // […]
 ]
@@ -633,7 +634,8 @@ __Output on success:__
     "thumbnailUrl": <thumbnail URL>,
     "tags": [
       {
-        "name": <name of the tag>
+        "name": <name of the tag>,
+        "files": <amount of files having the tag>
       }
       // […]
     ]
