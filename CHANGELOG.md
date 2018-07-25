@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.6.1] - 2018-07-25
+
+### Fixed
+
++ Fixed Docker start command to make sure `SIGTERM` propagates correctly
+
 ## [2.6.0] - 2018-07-25
 
 ### Added
@@ -231,7 +237,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/2.6.0...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/2.6.1...develop
+[2.6.1]: https://github.com/mserajnik/hydrusrv/compare/2.6.0...2.6.1
 [2.6.0]: https://github.com/mserajnik/hydrusrv/compare/2.5.2...2.6.0
 [2.5.2]: https://github.com/mserajnik/hydrusrv/compare/2.5.1...2.5.2
 [2.5.1]: https://github.com/mserajnik/hydrusrv/compare/2.5.0...2.5.1
