@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
++ Refactored files querying
++ Added sorting by `size`, `width` and `height`
+
 ## [2.7.1] - 2018-07-25
 
 ### Fixed

@@ -18,7 +18,9 @@ module.exports = {
         .optional()
         .isString().withMessage('InvalidSortParameterError')
         .isLength({ min: 1 }).withMessage('InvalidSortParameterError')
-        .isIn(['random', 'namespace']).withMessage('InvalidSortParameterError'),
+        .isIn(
+          ['id', 'size', 'width', 'height', 'random', 'namespace']
+        ).withMessage('InvalidSortParameterError'),
       sanitizeQuery('namespace').trim(),
       check('namespace')
         .optional()

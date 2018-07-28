@@ -554,22 +554,33 @@ __Info:__
 The `tags[]` parameter is optional and takes an arbitrary amount of tags (a
 single tag per `tag[]=`), each one limiting the result set further.
 
-The `sort` parameter is also optional and is used to sort the results either
-randomly (with given value `random`) or by the given namespaces (with given
-value `namespace`) instead of their ID (which is the default sort method).
+The `sort` parameter is also optional and is used to sort the results by a
+different field instead of `id` (which is the default sort method).
+
+The available `sort` parameters are:
+
++ `id` (default, does not have to be provided): sorts ascending by `id`
++ `size`: sorts descending by `size`
++ `width`: sorts descending by `width`
++ `height`: sorts descending by `height`
++ `random`: sorts randomly
++ `namespace`: sorts ascending by provided namespaces first and ascending by
+  `id` second
 
 If `sort=namespace` is provided, at least one namespace must be provided via
-`namespace[]=<namespace>`. This then sorts the results by that namespace (e.g.,
-files with tag `creator:a` come before `creator:b` if sorted by `creator`).
+`namespace[]=<namespace>`. This then sorts the results ascending by that
+namespace (e.g., files with tag `creator:a` come before `creator:b` if sorted
+by `creator`).
 
 Providing multiple namespaces to sort by is possible, the order in which they
 are provided then defines the "sub sorting". E.g.,
 `sort=namespace&namespace[]=<namespaceA>&namespace[]=<namespaceB>&namespace[]=<namespaceC>`
-causes files to be sorted by `namespaceA`, then `namespaceB`, then `namespaceC`
-and finally their ID (default).
+causes files to be sorted ascending by `namespaceA`, then `namespaceB`, then
+`namespaceC`.
 
 Files not having one or more of the given sort namespaces are _not_ omitted
-from the results but will be sorted to the end of the (sub) set.
+from the results but will be sorted ascending by `id` to the end of the (sub)
+set.
 
 This route returns the same data for each file as when
 [viewing a file](#viewing-files) but omits the tags to reduce the response size
