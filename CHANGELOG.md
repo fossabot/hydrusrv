@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
++ Namespaces containing other characters than alphanumerics and underscores are
+  now discarded to prevent errors when trying to create colums containing
+  invalid characters and to not falsely assume emote tags like `>:)` have a
+  namespace
++ Fixed tags starting or ending with `:` causing the creation of an empty
+  namespace or a namespace that does not have any tags
+
 ## [2.8.0] - 2018-07-28
 
 ### Changed

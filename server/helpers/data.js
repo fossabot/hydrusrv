@@ -217,6 +217,16 @@ module.exports = {
       WHERE
         ${hydrusTables.tags}.tag LIKE '%:%'
       AND
+        ${hydrusTables.tags}.tag NOT LIKE ':%'
+      AND
+        ${hydrusTables.tags}.tag NOT LIKE '%:'
+      AND
+        SUBSTR(
+          ${hydrusTables.tags}.tag,
+          INSTR(${hydrusTables.tags}.tag, ':'),
+          -INSTR(${hydrusTables.tags}.tag, ':')
+        ) GLOB '*[a-zA-Z0-9_]*'
+      AND
         ${hydrusTables.filesInfo}.mime IN (${hydrusConfig.supportedMimeTypes})
       ORDER BY
         name`
