@@ -196,26 +196,9 @@ test('database: get files', t => {
   )
 })
 
-test('database: get files by tags', t => {
+test('database: get files sorted by size', t => {
   t.deepEqual(
-    files.getByTags(1, ['lorem', 'ipsum', 'dolor', 'sit', 'amet']),
-    [{
-      id: 1,
-      mime: 'image/png',
-      size: 5012,
-      width: 500,
-      height: 500,
-      mediaUrl: originalBaseUrl +
-        '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c',
-      thumbnailUrl: thumbnailsBaseUrl +
-        '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c'
-    }]
-  )
-})
-
-test('database: get files sorted by namespace', t => {
-  t.deepEqual(
-    files.getSortedByNamespaces(1, ['namespace']),
+    files.get(1, 'size'),
     [
       {
         id: 5,
@@ -265,10 +248,358 @@ test('database: get files sorted by namespace', t => {
   )
 })
 
+test('database: get files sorted by width', t => {
+  t.deepEqual(
+    files.get(1, 'width'),
+    [
+      {
+        id: 1,
+        mime: 'image/png',
+        size: 5012,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c'
+      },
+      {
+        id: 2,
+        mime: 'image/png',
+        size: 5779,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55'
+      },
+      {
+        id: 3,
+        mime: 'image/png',
+        size: 6117,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42'
+      },
+      {
+        id: 4,
+        mime: 'image/png',
+        size: 6665,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39'
+      }
+    ]
+  )
+})
+
+test('database: get files sorted by height', t => {
+  t.deepEqual(
+    files.get(1, 'height'),
+    [
+      {
+        id: 1,
+        mime: 'image/png',
+        size: 5012,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c'
+      },
+      {
+        id: 2,
+        mime: 'image/png',
+        size: 5779,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55'
+      },
+      {
+        id: 3,
+        mime: 'image/png',
+        size: 6117,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42'
+      },
+      {
+        id: 4,
+        mime: 'image/png',
+        size: 6665,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39'
+      }
+    ]
+  )
+})
+
+test('database: get files sorted by namespace', t => {
+  t.deepEqual(
+    files.get(1, 'namespace', ['namespace']),
+    [
+      {
+        id: 5,
+        mime: 'image/png',
+        size: 6672,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/d2f5788f623cde1f0fb3dc801396fee235c67ed11d9452bfd765f1331587401d',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/d2f5788f623cde1f0fb3dc801396fee235c67ed11d9452bfd765f1331587401d'
+      },
+      {
+        id: 4,
+        mime: 'image/png',
+        size: 6665,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39'
+      },
+      {
+        id: 3,
+        mime: 'image/png',
+        size: 6117,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42'
+      },
+      {
+        id: 2,
+        mime: 'image/png',
+        size: 5779,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55'
+      }
+    ]
+  )
+})
+
+test('database: get files sorted by invalid namespace', t => {
+  t.deepEqual(
+    files.get(1, 'namespace', ['invalid']),
+    [
+      {
+        id: 1,
+        mime: 'image/png',
+        size: 5012,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c'
+      },
+      {
+        id: 2,
+        mime: 'image/png',
+        size: 5779,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55'
+      },
+      {
+        id: 3,
+        mime: 'image/png',
+        size: 6117,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42'
+      },
+      {
+        id: 4,
+        mime: 'image/png',
+        size: 6665,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/6c358705afeeeb6b75ba725cba10145ae366b6c36fe79aa99c983d354926af39'
+      }
+    ]
+  )
+})
+
+test('database: get files by tags', t => {
+  t.deepEqual(
+    files.getByTags(1, ['lorem', 'ipsum', 'dolor', 'sit', 'amet']),
+    [{
+      id: 1,
+      mime: 'image/png',
+      size: 5012,
+      width: 500,
+      height: 500,
+      mediaUrl: originalBaseUrl +
+        '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c',
+      thumbnailUrl: thumbnailsBaseUrl +
+        '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c'
+    }]
+  )
+})
+
+test('database: get files by tags sorted by size', t => {
+  t.deepEqual(
+    files.getByTags(1, ['lorem', 'ipsum', 'dolor'], 'size'),
+    [
+      {
+        id: 3,
+        mime: 'image/png',
+        size: 6117,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42'
+      },
+      {
+        id: 2,
+        mime: 'image/png',
+        size: 5779,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55'
+      },
+      {
+        id: 1,
+        mime: 'image/png',
+        size: 5012,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c'
+      }
+    ]
+  )
+})
+
+test('database: get files by tags sorted by width', t => {
+  t.deepEqual(
+    files.getByTags(1, ['lorem', 'ipsum', 'dolor'], 'width'),
+    [
+      {
+        id: 1,
+        mime: 'image/png',
+        size: 5012,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c'
+      },
+      {
+        id: 2,
+        mime: 'image/png',
+        size: 5779,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55'
+      },
+      {
+        id: 3,
+        mime: 'image/png',
+        size: 6117,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42'
+      }
+    ]
+  )
+})
+
+test('database: get files by tags sorted by height', t => {
+  t.deepEqual(
+    files.getByTags(1, ['lorem', 'ipsum', 'dolor'], 'height'),
+    [
+      {
+        id: 1,
+        mime: 'image/png',
+        size: 5012,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c'
+      },
+      {
+        id: 2,
+        mime: 'image/png',
+        size: 5779,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55'
+      },
+      {
+        id: 3,
+        mime: 'image/png',
+        size: 6117,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42'
+      }
+    ]
+  )
+})
+
 test('database: get files by tags sorted by namespace', t => {
   t.deepEqual(
-    files.getByTagsSortedByNamespaces(
-      1, ['lorem', 'ipsum', 'dolor'], ['namespace']
+    files.getByTags(
+      1, ['lorem', 'ipsum', 'dolor'], 'namespace', ['namespace']
     ),
     [
       {
@@ -303,6 +634,49 @@ test('database: get files by tags sorted by namespace', t => {
           '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c',
         thumbnailUrl: thumbnailsBaseUrl +
           '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c'
+      }
+    ]
+  )
+})
+
+test('database: get files by tags sorted by invalid namespace', t => {
+  t.deepEqual(
+    files.getByTags(
+      1, ['lorem', 'ipsum', 'dolor'], 'namespace', ['invalid']
+    ),
+    [
+      {
+        id: 1,
+        mime: 'image/png',
+        size: 5012,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/2acedf8e20512a10fc07cceca8d16923e790369b90acebf9efcd926f50dd5c0c'
+      },
+      {
+        id: 2,
+        mime: 'image/png',
+        size: 5779,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/5ef2eac48dd171cf98793df1e123238a61fb8ed766e862042b25467066fabe55'
+      },
+      {
+        id: 3,
+        mime: 'image/png',
+        size: 6117,
+        width: 500,
+        height: 500,
+        mediaUrl: originalBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42',
+        thumbnailUrl: thumbnailsBaseUrl +
+          '/31426ccc8101461ad30806840b29432fb88bb84687ef9e002976551c8aa08e42'
       }
     ]
   )
