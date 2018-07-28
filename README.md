@@ -711,6 +711,12 @@ features others might want to see. Some of these could be:
 + hydrusrv __needs__ one tag and one file repository to work. Trying to run it
   without either will result in errors. It also cannot support additional
   repositories.
++ hydrusrv discards namespaces containing other characters than alphanumerics
+  and underscores to not falsely assume emote tags like `>:)` have a namespace
+  and to prevent errors (namespaces are used as column names and SQLite does
+  not allow most characters aside from alphanumerics in those; mapping such
+  special characters would have been possible, but did not seem worth the
+  effort).
 + hydrus server supports many more MIME types than the ones I have limited
   hydrusrv to. This is due to the fact that determining the MIME type of a file
   is rather difficult in hydrus server and I wanted to keep it as simple as
