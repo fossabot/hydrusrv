@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.8.1] - 2018-07-28
+
+### Fixed
+
++ Namespaces containing other characters than alphanumerics and underscores are
+  now discarded to prevent errors when trying to create colums containing
+  invalid characters and to not falsely assume emote tags like `>:)` have a
+  namespace
++ Fixed tags starting or ending with `:` causing the creation of an empty
+  namespace or a namespace that does not have any tags
+
 ## [2.8.0] - 2018-07-28
 
 ### Changed
@@ -256,7 +267,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/2.8.0...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/2.8.1...develop
+[2.8.1]: https://github.com/mserajnik/hydrusrv/compare/2.8.0...2.8.1
 [2.8.0]: https://github.com/mserajnik/hydrusrv/compare/2.7.1...2.8.0
 [2.7.1]: https://github.com/mserajnik/hydrusrv/compare/2.7.0...2.7.1
 [2.7.0]: https://github.com/mserajnik/hydrusrv/compare/2.6.1...2.7.0
