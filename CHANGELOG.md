@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
++ Set a default value for `RESULTS_PER_PAGE` if not provided via `.env`
+
 ### Fixed
 
 + Fixed potential issues with reading `PORT` configuration
