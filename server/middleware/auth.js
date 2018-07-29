@@ -39,7 +39,7 @@ module.exports = {
       check('username')
         .exists().withMessage('MissingUsernameFieldError')
         .isString().withMessage('InvalidUsernameFieldError')
-        .isLength({ min: 1, max: 128 }).withMessage(
+        .isLength({ min: 1, max: 1024 }).withMessage(
           'InvalidUsernameFieldError'
         ),
       sanitizeBody('password').trim(),
@@ -48,7 +48,7 @@ module.exports = {
         .isString().withMessage('InvalidPasswordFieldError')
         .isLength({
           min: config.minPasswordLength,
-          max: 128
+          max: 1024
         }).withMessage('InvalidPasswordFieldError')
     ],
     validateInput: (req, res, next) => {
@@ -77,7 +77,7 @@ module.exports = {
       check('username')
         .optional()
         .isString().withMessage('InvalidUsernameFieldError')
-        .isLength({ min: 1, max: 128 }).withMessage(
+        .isLength({ min: 1, max: 1024 }).withMessage(
           'InvalidUsernameFieldError'
         ),
       sanitizeBody('password').trim(),
@@ -86,7 +86,7 @@ module.exports = {
         .isString().withMessage('InvalidPasswordFieldError')
         .isLength({
           min: config.minPasswordLength,
-          max: 128
+          max: 1024
         }).withMessage('InvalidPasswordFieldError'),
       sanitizeBody('currentPassword').trim(),
       check('currentPassword')
