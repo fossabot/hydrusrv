@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
++ Fixed potential issues with reading `PORT` configuration
+
 ## [2.8.1] - 2018-07-28
 
 ### Fixed
