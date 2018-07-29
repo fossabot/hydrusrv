@@ -163,7 +163,8 @@ following are all the available settings (along with their default values):
 + `REGISTRATION_ENABLED=true`: setting this to `false` disables the creation of
   new users.
 + `MIN_PASSWORD_LENGTH=16`: sets the minimum password length when creating or
-  updating users.
+  updating users. Providing a higher value than `1024` will discard the value
+  and use `1024` as the minimum length instead.
 + `DATA_UPDATE_INTERVAL=3600`: sets the interval (in seconds) at which hydrusrv
   should sync its data with hydrus server (after the initial sync when starting
   hydrusrv). Updates are locked, so it is not possible to set this value too
@@ -289,8 +290,8 @@ __Input:__
 
 ```json5
 {
-  "username": <desired username>,
-  "password": <desired password>
+  "username": <desired username>, // minimum length of 1 and maximum length of 1024
+  "password": <desired password> // minimum length of MIN_PASSWORD_LENGTH and maximum length of 1024
 }
 ```
 
@@ -321,8 +322,8 @@ __Input:__
 
 ```json5
 {
-  "username": <new username>, // optional – at least one of the two required
-  "password": <new password>, // optional – at least one of the two required
+  "username": <new username>, // optional – at least one of the two required, minimum length of 1 and maximum length of 1024
+  "password": <new password>, // optional – at least one of the two required, minimum length of MIN_PASSWORD_LENGTH and maximum length of 1024
   "currentPassword": <current password>
 }
 ```
