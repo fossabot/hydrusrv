@@ -21,9 +21,9 @@ try {
   process.exit(1)
 }
 
-const updateData = () => {
+const updateData = (keepTablesAfterError = false) => {
   try {
-    data.sync()
+    data.sync(keepTablesAfterError)
   } catch (err) {
     console.error(`Could not create temporary data tables. Error:\n${err}`)
 
@@ -31,7 +31,7 @@ const updateData = () => {
   }
 }
 
-updateData()
+updateData(true)
 const updateInterval = setInterval(
   updateData, config.dataUpdateInterval * 1000
 )
