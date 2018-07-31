@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
++ Fixed temporary data tables not existing after the first sync if it fails,
+  causing requests to generate errors instead of just returning empty data
+
 ## [2.9.0] - 2018-07-29
 
 ### Changed

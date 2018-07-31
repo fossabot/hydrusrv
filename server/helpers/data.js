@@ -4,7 +4,7 @@ const hydrusConfig = require('../config/hydrus')
 const hydrusTables = require('../config/hydrus-db-tables')
 
 module.exports = {
-  sync () {
+  sync (keepTablesAfterError = false) {
     if (db.updatingData) {
       return
     }
@@ -44,6 +44,15 @@ module.exports = {
       this.fillTempMappingsTable(mappings)
 
       this.replaceCurrentTempTables()
+    } else if (keepTablesAfterError) {
+      this.dropTempTables()
+
+      this.createTempNamespacesTable()
+      this.createTempTagsTable()
+      this.createTempFilesTable()
+      this.createTempMappingsTable()
+
+      this.replaceCurrentTempTables()
     }
 
     db.updatingData = false
@@ -69,6 +78,12 @@ module.exports = {
     db.app.prepare(
       'ALTER TABLE hydrusrv_mappings_new RENAME TO hydrusrv_mappings'
     ).run()
+  },
+  dropTempTables () {
+    db.app.prepare('DROP TABLE IF EXISTS hydrusrv_namespaces_new').run()
+    db.app.prepare('DROP TABLE IF EXISTS hydrusrv_mappings_new').run()
+    db.app.prepare('DROP TABLE IF EXISTS hydrusrv_tags_new').run()
+    db.app.prepare('DROP TABLE IF EXISTS hydrusrv_files_new').run()
   },
   createTempNamespacesTable () {
     db.app.prepare(
