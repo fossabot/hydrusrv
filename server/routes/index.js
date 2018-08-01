@@ -31,10 +31,7 @@ module.exports = app => {
 
       res.send({
         tagCount: data.tags.count,
-        fileCount: data.files.count,
-        mediaSecret: (config.mediaSecret !== false)
-          ? config.mediaSecret
-          : ''
+        fileCount: data.files.count
       })
     }
   )
@@ -143,22 +140,15 @@ module.exports = app => {
     middleware.media.get.inputValidationConfig,
     middleware.media.get.validateInput,
     (req, res, next) => {
-      if (config.mediaSecret !== false) {
-        console.log(req.query)
-
-        if (!(req.query && req.query.secret)) {
+      try {
+        if (!controllers.auth.validateMediaToken(req.query.token)) {
           return next({
-            customStatus: 400,
-            customName: 'MissingSecretParameterError'
+            customStatus: 404,
+            customName: 'NotFoundError'
           })
         }
-
-        if (req.query.secret !== config.mediaSecret) {
-          return next({
-            customStatus: 400,
-            customName: 'InvalidSecretParameterError'
-          })
-        }
+      } catch (err) {
+        return next(err)
       }
 
       if (!media.fileExists('original', req.params.mediaHash)) {
@@ -181,6 +171,17 @@ module.exports = app => {
     middleware.media.get.inputValidationConfig,
     middleware.media.get.validateInput,
     (req, res, next) => {
+      try {
+        if (!controllers.auth.validateMediaToken(req.query.token)) {
+          return next({
+            customStatus: 404,
+            customName: 'NotFoundError'
+          })
+        }
+      } catch (err) {
+        return next(err)
+      }
+
       if (!media.fileExists('thumbnail', req.params.mediaHash)) {
         return next()
       }
@@ -331,7 +332,8 @@ module.exports = app => {
       }
 
       res.send({
-        token: data.token.hash
+        token: data.token.hash,
+        mediaToken: data.token.mediaHash
       })
     }
   )

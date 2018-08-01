@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
++ Replaced media secret with user-bound media tokens that are generated
+  alongside authentication tokens
+
 ## [2.11.0] - 2018-08-01
 
 ### Changed

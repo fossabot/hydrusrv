@@ -60,5 +60,17 @@ module.exports = {
     }
 
     return users.getById(token.userId).id
+  },
+  validateMediaToken (hash) {
+    const token = tokens.getByMediaHash(hash)
+
+    if (
+      !token ||
+      (token.expires && token.expires < Math.floor(Date.now() / 1000))
+    ) {
+      return false
+    }
+
+    return true
   }
 }
