@@ -160,6 +160,9 @@ following are all the available settings (along with their default values):
 + `APP_DB_PATH=./storage/app.db`: the application database path. Database must
   exist and the file must be read-/writeable for hydrusrv.
   __Absolute path required when deviating from the default.__
++ `MEDIA_SECRET=allyourbasearebelongtous`: if set, every request for a media
+  file must have the `MEDIA_SECRET` added to its query string or access is
+  otherwise denied. To disable this check, set it empty (`MEDIA_SECRET=`).
 + `REGISTRATION_ENABLED=true`: setting this to `false` disables the creation of
   new users.
 + `MIN_PASSWORD_LENGTH=16`: sets the minimum password length when creating or
@@ -671,7 +674,10 @@ __Possible errors:__
 
 ###### Getting media originals
 
-__Route:__ `GET /media/originals/<media hash>`
+__Route:__ `GET /media/originals/<media hash>?secret=<MEDIA_SECRET>`
+
+The `secret=<MEDIA_SECRET>` parameter only has to be added if `MEDIA_SECRET` is
+not set empty (`MEDIA_SECRET=`).
 
 __Input:__ None
 
@@ -679,6 +685,8 @@ __Output on success:__ The requested media file
 
 __Possible errors:__
 
++ `MissingSecretParameterError`
++ `InvalidSecretParameterError`
 + `MissingMediaHashParameterError`
 + `InvalidMediaHashParameterError`
 + `NotFoundError`
@@ -687,7 +695,12 @@ __Possible errors:__
 
 ###### Getting media thumbnails
 
-__Route:__ `GET /media/thumbnails/<media hash>`
+__Route:__ `GET /media/thumbnails/<media hash>?secret=<MEDIA_SECRET>`
+
+__Info:__
+
+The `secret=<MEDIA_SECRET>` parameter only has to be added as query if
+`MEDIA_SECRET` is not set empty (`MEDIA_SECRET=`).
 
 __Input:__ None
 
@@ -695,6 +708,8 @@ __Output on success:__ The requested media thumbnail
 
 __Possible errors:__
 
++ `MissingSecretParameterError`
++ `InvalidSecretParameterError`
 + `MissingMediaHashParameterError`
 + `InvalidMediaHashParameterError`
 + `NotFoundError`

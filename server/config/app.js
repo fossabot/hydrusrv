@@ -5,6 +5,7 @@ module.exports = {
   port: process.env.PORT || 8000,
   apiBase: process.env.API_BASE || '/api',
   mediaBase: process.env.MEDIA_BASE || '/media',
+  mediaSecret: process.env.MEDIA_SECRET || false,
   registrationEnabled: (process.env.REGISTRATION_ENABLED === 'true'),
   minPasswordLength: process.env.MIN_PASSWORD_LENGTH || 16,
   dataUpdateInterval: process.env.DATA_UPDATE_INTERVAL || 3600,

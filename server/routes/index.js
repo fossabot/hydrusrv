@@ -140,6 +140,24 @@ module.exports = app => {
     middleware.media.get.inputValidationConfig,
     middleware.media.get.validateInput,
     (req, res, next) => {
+      if (config.mediaSecret !== false) {
+        console.log(req.query)
+
+        if (!(req.query && req.query.secret)) {
+          return next({
+            customStatus: 400,
+            customName: 'MissingSecretParameterError'
+          })
+        }
+
+        if (req.query.secret !== config.mediaSecret) {
+          return next({
+            customStatus: 400,
+            customName: 'InvalidSecretParameterError'
+          })
+        }
+      }
+
       if (!media.fileExists('original', req.params.mediaHash)) {
         return next()
       }
