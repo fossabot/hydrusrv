@@ -7,7 +7,7 @@ module.exports = app => {
   app.get(`${config.apiBase}`, (req, res, next) => {
     res.send({
       hydrusrv: {
-        version: '2.10.1'
+        version: '2.11.0'
       }
     })
   })
@@ -31,7 +31,10 @@ module.exports = app => {
 
       res.send({
         tagCount: data.tags.count,
-        fileCount: data.files.count
+        fileCount: data.files.count,
+        mediaSecret: (config.mediaSecret !== false)
+          ? config.mediaSecret
+          : ''
       })
     }
   )

@@ -450,7 +450,8 @@ __Output on success:__
 ```json5
 {
   "tagCount": <total amount of tags in the tag repository>,
-  "fileCount": <total amount of files in the files repository>
+  "fileCount": <total amount of files in the files repository>,
+  "mediaSecret: <MEDIA_SECRET or empty string if not set>
 }
 ```
 
