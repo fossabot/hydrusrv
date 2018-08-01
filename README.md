@@ -204,7 +204,7 @@ First of all, you have several options to start the server:
 + `yarn start-dev`: starts the server in development mode using
   [nodemon][nodemon] to watch for file changes and restarts when necessary.
 + `yarn start`: starts the server in production mode.
-+ `./bin/www`: the file that is run when using both, `start-dev` and `start`.
++ `./bin/www`: the script that is run when using both, `start-dev` and `start`.
   You can also execute it directly to start the server in production mode.
 
 For running in production mode, you will likely want to set up both a reverse
