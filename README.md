@@ -22,6 +22,7 @@ currently in (early) development.
 + [Install](#install)
   + [Dependencies](#dependencies)
   + [Updating](#updating)
+    + [Upgrading from 2.x to 3.x](#upgrading-from-2x-to-3x)
     + [Upgrading from 1.x to 2.x](#upgrading-from-1x-to-2x)
 + [Usage](#usage)
   + [Configuration](#configuration)
@@ -106,6 +107,20 @@ therefore always safe to simply install via the routine mentioned before.
 When necessary, this section will be expanded with upgrade guides to new major
 versions.
 
+#### Upgrading from 2.x to 3.x
+
+Upgrading from `2.x` to `3.x` can be done via `git pull && yarn install`, but
+requires some additional work and considerations.
+
+First of all, the app database structure has changed, with the table `tokens`
+having a new column `media_hash`. You need to either re-create your database
+from the template or add this column to your existing database manually.
+
+Second, accessing media files now requires media tokens that are generated
+alongside authentication tokens and expire together with them. Such a media
+token must be provided as a query parameter in the form `?token=<media token>`
+for every media file request.
+
 #### Upgrading from 1.x to 2.x
 
 Upgrading from `1.x` to `2.x` can be done via `git pull && yarn install` and
@@ -160,9 +175,6 @@ following are all the available settings (along with their default values):
 + `APP_DB_PATH=./storage/app.db`: the application database path. Database must
   exist and the file must be read-/writeable for hydrusrv.
   __Absolute path required when deviating from the default.__
-+ `MEDIA_SECRET=allyourbasearebelongtous`: if set, every request for a media
-  file must have the `MEDIA_SECRET` added to its query string or access is
-  otherwise denied. To disable this check, set it empty (`MEDIA_SECRET=`).
 + `REGISTRATION_ENABLED=true`: setting this to `false` disables the creation of
   new users.
 + `MIN_PASSWORD_LENGTH=16`: sets the minimum password length when creating or
@@ -245,6 +257,11 @@ valid token must be provided via an `Authorization: Bearer <token>` header.
 
 When updating or deleting users and tokens, the provided authentication token
 is also used to identify which user/token(s) are to be modified/deleted.
+
+Media files are protected with media tokens that are created alongside
+authentication tokens. Such a media token must be provided as query parameter
+when trying to access media files and expires alongside the authentication
+token.
 
 #### Errors
 
@@ -396,7 +413,8 @@ __Output on success:__
 
 ```json5
 {
-  "token": <token>
+  "token": <token>,
+  "mediaToken": <media token>
 }
 ```
 
@@ -450,8 +468,7 @@ __Output on success:__
 ```json5
 {
   "tagCount": <total amount of tags in the tag repository>,
-  "fileCount": <total amount of files in the files repository>,
-  "mediaSecret: <MEDIA_SECRET or empty string if not set>
+  "fileCount": <total amount of files in the files repository>
 }
 ```
 
@@ -675,19 +692,14 @@ __Possible errors:__
 
 ###### Getting media originals
 
-__Route:__ `GET /media/originals/<media hash>?secret=<MEDIA_SECRET>`
-
-The `secret=<MEDIA_SECRET>` parameter only has to be added if `MEDIA_SECRET` is
-not set empty (`MEDIA_SECRET=`).
-
-__Input:__ None
+__Route:__ `GET /media/originals/<media hash>?token=<media token>`
 
 __Output on success:__ The requested media file
 
 __Possible errors:__
 
-+ `MissingSecretParameterError`
-+ `InvalidSecretParameterError`
++ `MissingMediaTokenError`
++ `InvalidMediaTokenError`
 + `MissingMediaHashParameterError`
 + `InvalidMediaHashParameterError`
 + `NotFoundError`
@@ -696,12 +708,7 @@ __Possible errors:__
 
 ###### Getting media thumbnails
 
-__Route:__ `GET /media/thumbnails/<media hash>?secret=<MEDIA_SECRET>`
-
-__Info:__
-
-The `secret=<MEDIA_SECRET>` parameter only has to be added if `MEDIA_SECRET` is
-not set empty (`MEDIA_SECRET=`).
+__Route:__ `GET /media/thumbnails/<media hash>?token=<media token>`
 
 __Input:__ None
 
@@ -709,8 +716,8 @@ __Output on success:__ The requested media thumbnail
 
 __Possible errors:__
 
-+ `MissingSecretParameterError`
-+ `InvalidSecretParameterError`
++ `MissingMediaTokenError`
++ `InvalidMediaTokenError`
 + `MissingMediaHashParameterError`
 + `InvalidMediaHashParameterError`
 + `NotFoundError`

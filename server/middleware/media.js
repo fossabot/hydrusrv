@@ -1,5 +1,5 @@
 const { check, validationResult } = require('express-validator/check')
-const { sanitizeParam } = require('express-validator/filter')
+const { sanitizeParam, sanitizeQuery } = require('express-validator/filter')
 
 module.exports = {
   get: {
@@ -8,7 +8,12 @@ module.exports = {
       check('mediaHash')
         .exists().withMessage('MissingMediaHashParameterError')
         .isString().withMessage('InvalidMediaHashParameterError')
-        .isLength({ min: 1 }).withMessage('InvalidMediaHashParameterError')
+        .isLength({ min: 1 }).withMessage('InvalidMediaHashParameterError'),
+      sanitizeQuery('token').trim(),
+      check('token')
+        .exists().withMessage('MissingMediaTokenError')
+        .isString().withMessage('InvalidMediaTokenError')
+        .isLength({ min: 128, max: 128 }).withMessage('InvalidMediaTokenError')
     ],
     validateInput: (req, res, next) => {
       const err = validationResult(req)
