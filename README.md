@@ -94,10 +94,12 @@ If you have installed via cloning the repository, you can update via Git:
 ```zsh
 user@local:hydrusrv$ git pull
 user@local:hydrusrv$ yarn install
+user@local:hydrusrv$ yarn migrate
 ```
 
 Always make sure to run `yarn install` after updating to install any packages
-you might be missing.
+you might be missing. `yarn migrate` updates your database with the latest
+changes.
 
 hydrusrv follows [Semantic Versioning][semantic-versioning] and any breaking
 changes that require additional attention will be released under a new major
@@ -115,6 +117,11 @@ requires some additional work and considerations.
 First of all, the app database structure has changed, with the table `tokens`
 having a new column `media_hash`. You need to either re-create your database
 from the template or add this column to your existing database manually.
+
+It is __strongly recommended__ to re-create the database by copying the
+template and running migrations (`yarn migrate`). This will ensure that any
+future changes will just require running migrations instead of making manual
+adjustments or starting over with an empty database.
 
 Second, accessing media files now requires media tokens that are generated
 alongside authentication tokens and expire together with them. Such a media
@@ -211,6 +218,13 @@ following are all the available settings (along with their default values):
 + `HYDRUS_SUPPORTED_MIME_TYPES=1,2,3,4,9,14,18,20,21,23,25,26,27`: the IDs of
   the MIME types hydrusrv should support. See [here][supported-mime-types] for
   the complete list of MIME types hydrusrv can handle.
+
+After you are done making adjustments, make sure `APP_DB_PATH` points to the
+correct location and run migrations to finish setting up the database:
+
+```zsh
+user@local:hydrusrv$ yarn migrate
+```
 
 ### Running the server
 
