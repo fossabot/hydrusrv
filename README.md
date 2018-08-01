@@ -699,8 +699,8 @@ __Route:__ `GET /media/thumbnails/<media hash>?secret=<MEDIA_SECRET>`
 
 __Info:__
 
-The `secret=<MEDIA_SECRET>` parameter only has to be added as query if
-`MEDIA_SECRET` is not set empty (`MEDIA_SECRET=`).
+The `secret=<MEDIA_SECRET>` parameter only has to be added if `MEDIA_SECRET` is
+not set empty (`MEDIA_SECRET=`).
 
 __Input:__ None
 
