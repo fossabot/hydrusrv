@@ -31,7 +31,10 @@ module.exports = app => {
 
       res.send({
         tagCount: data.tags.count,
-        fileCount: data.files.count
+        fileCount: data.files.count,
+        mediaSecret: (config.mediaSecret !== false)
+          ? config.mediaSecret
+          : ''
       })
     }
   )

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
++ Added media secret to `info` route for easier client-side usage
+
 ## [2.10.1] - 2018-08-01
 
 ### Fixed
