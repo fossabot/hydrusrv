@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.10.1] - 2018-08-01
+
 ### Fixed
 
 + Fixed wrong wording in readme
@@ -301,7 +303,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/2.10.0...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/2.10.1...develop
+[2.10.1]: https://github.com/mserajnik/hydrusrv/compare/2.10.0...2.10.1
 [2.10.0]: https://github.com/mserajnik/hydrusrv/compare/2.9.1...2.10.0
 [2.9.1]: https://github.com/mserajnik/hydrusrv/compare/2.9.0...2.9.1
 [2.9.0]: https://github.com/mserajnik/hydrusrv/compare/2.8.1...2.9.0
