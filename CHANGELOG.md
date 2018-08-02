@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.1.1] - 2018-08-02
+
+### Fixed
+
++ Added missing migration support when running with Docker
+
 ## [3.1.0] - 2018-08-02
 
 ### Added
@@ -333,7 +339,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/3.1.0...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/3.1.1...develop
+[3.1.1]: https://github.com/mserajnik/hydrusrv/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/mserajnik/hydrusrv/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/mserajnik/hydrusrv/compare/2.11.0...3.0.0
 [2.11.0]: https://github.com/mserajnik/hydrusrv/compare/2.10.1...2.11.0
