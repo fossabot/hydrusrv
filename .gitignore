@@ -1,6 +1,8 @@
 /node_modules
 /storage/*.db
+/storage/*.db-journal
 /tests/storage/*.db
+/storage/*.db-journal
 .env
 *.log
 *.db-shm

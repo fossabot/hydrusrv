@@ -5,6 +5,7 @@ const fse = require('fs-extra')
 const portscanner = require('portscanner')
 
 const setup = require('./_setup')
+const migrations = require('../storage/migrations/runner')
 
 setup.setTestEnvironment()
 
@@ -14,7 +15,7 @@ let originalBaseUrl, thumbnailsBaseUrl, testTokenHash
 
 test.before(t => {
   return new Promise(resolve => {
-    portscanner.findAPortNotInUse(8000, 9000, '127.0.0.1', (err, port) => {
+    portscanner.findAPortNotInUse(8000, 9000, '127.0.0.1', async (err, port) => {
       if (err || !port) {
         console.error('Could not determine open port for test instance.')
 
@@ -35,6 +36,8 @@ test.before(t => {
         path.resolve(__dirname, 'storage/app.db.template'),
         path.resolve(__dirname, `storage/app_${port}.db`)
       )
+
+      await migrations.up(process.env.APP_DB_PATH)
 
       app = require('../app')
       users = require('../server/models/users')

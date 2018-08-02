@@ -132,7 +132,7 @@ module.exports = {
       const namespaceOrderBy = this.generateNamespaceOrderBy(namespaces)
 
       if (!namespaceOrderBy.length) {
-        return undefined
+        return null
       }
 
       return `${namespaceOrderBy.join(',')}, hydrusrv_files.id`

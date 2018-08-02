@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.1.0] - 2018-08-02
+
+### Added
+
++ Added migrations to simplify the process of making changes to the database
+  in the future
+
+### Changed
+
++ Changed references from `yarn install` to simply `yarn`
+
+### Fixed
+
++ Removed no longer used `MEDIA_SECRET` setting
++ Return `null` instead of `undefined` when generating `ORDER BY` for
+  namespace sorting and there are none
+
 ## [3.0.0] - 2018-08-01
 
 ### Changed
@@ -316,7 +333,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/3.0.0...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/3.1.0...develop
+[3.1.0]: https://github.com/mserajnik/hydrusrv/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/mserajnik/hydrusrv/compare/2.11.0...3.0.0
 [2.11.0]: https://github.com/mserajnik/hydrusrv/compare/2.10.1...2.11.0
 [2.10.1]: https://github.com/mserajnik/hydrusrv/compare/2.10.0...2.10.1
