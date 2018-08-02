@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 + Removed no longer used `MEDIA_SECRET` setting
++ Return `null` instead of `undefined` when generating `ORDER BY` for
+  namespace sorting and there are none
 
 ## [3.0.0] - 2018-08-01
 
