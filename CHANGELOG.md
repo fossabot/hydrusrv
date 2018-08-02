@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 + Added migrations to simplify the process of making changes to the database
   in the future
 
+### Fixed
+
++ Removed no longer used `MEDIA_SECRET` setting
+
 ## [3.0.0] - 2018-08-01
 
 ### Changed
