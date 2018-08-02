@@ -10,7 +10,8 @@ COPY yarn.lock ./
 RUN yarn
 
 COPY . .
+RUN chmod +x ./docker-bootstrap.sh
 
 EXPOSE 8000
 
-CMD ["node", "bin/www"]
+ENTRYPOINT ["/usr/src/app/docker-bootstrap.sh"]
