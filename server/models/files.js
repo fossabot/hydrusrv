@@ -36,8 +36,8 @@ module.exports = {
 
     return file
   },
-  get (page, sort = 'id', namespaces) {
-    const orderBy = this.generateOrderBy(sort, namespaces)
+  get (page, sort = 'id', direction = null, namespaces = []) {
+    const orderBy = this.generateOrderBy(sort, direction, namespaces)
 
     if (!orderBy) {
       return this.get(page)
@@ -72,10 +72,10 @@ module.exports = {
 
     return files
   },
-  getByTags (page, tags, sort = 'id', namespaces) {
+  getByTags (page, tags, sort = 'id', direction = null, namespaces = []) {
     tags = [...new Set(tags)]
 
-    const orderBy = this.generateOrderBy(sort, namespaces)
+    const orderBy = this.generateOrderBy(sort, direction, namespaces)
 
     if (!orderBy) {
       return this.getByTags(page, tags)
@@ -127,31 +127,37 @@ module.exports = {
       'SELECT COUNT(id) as count FROM hydrusrv_files'
     ).get()
   },
-  generateOrderBy (sort, namespaces) {
+  generateOrderBy (sort, direction, namespaces) {
+    direction = ['asc', 'desc'].includes(direction) ? direction : null
+
     if (sort === 'namespace' && namespaces.length) {
-      const namespaceOrderBy = this.generateNamespaceOrderBy(namespaces)
+      const namespaceOrderBy = this.generateNamespaceOrderBy(
+        namespaces, direction
+      )
 
       if (!namespaceOrderBy.length) {
         return null
       }
 
-      return `${namespaceOrderBy.join(',')}, hydrusrv_files.id`
+      return `${namespaceOrderBy.join(',')}, hydrusrv_files.id ASC`
     }
 
     switch (sort) {
       case 'size':
-        return 'hydrusrv_files.size DESC'
+        return `hydrusrv_files.size ${direction || 'DESC'}`
       case 'width':
-        return 'hydrusrv_files.width DESC'
+        return `hydrusrv_files.width ${direction || 'DESC'}`
       case 'height':
-        return 'hydrusrv_files.height DESC'
+        return `hydrusrv_files.height ${direction || 'DESC'}`
+      case 'mime':
+        return `hydrusrv_files.mime ${direction || 'ASC'}`
       case 'random':
         return 'hydrusrv_files.random ASC'
       default:
-        return 'hydrusrv_files.id ASC'
+        return `hydrusrv_files.id ${direction || 'ASC'}`
     }
   },
-  generateNamespaceOrderBy (namespaces) {
+  generateNamespaceOrderBy (namespaces, direction) {
     namespaces = [...new Set(namespaces)]
 
     const validNamespaces = tagsModel.getNamespaces().map(
@@ -174,7 +180,7 @@ module.exports = {
           WHEN namespace_${namespace.split(' ').join('_')} IS NULL THEN 1
           ELSE 0
         END,
-        namespace_${namespace.split(' ').join('_')}`
+        namespace_${namespace.split(' ').join('_')} ${direction || 'ASC'}`
       )
     }
 

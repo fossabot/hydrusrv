@@ -17,10 +17,14 @@ module.exports = {
       check('sort')
         .optional()
         .isString().withMessage('InvalidSortParameterError')
-        .isLength({ min: 1 }).withMessage('InvalidSortParameterError')
         .isIn(
-          ['id', 'size', 'width', 'height', 'random', 'namespace']
+          ['id', 'size', 'width', 'height', 'mime', 'random', 'namespace']
         ).withMessage('InvalidSortParameterError'),
+      sanitizeQuery('direction').trim(),
+      check('direction')
+        .optional()
+        .isString().withMessage('InvalidDirectionParameterError')
+        .isIn(['asc', 'desc']).withMessage('InvalidDirectionParameterError'),
       sanitizeQuery('namespace').trim(),
       check('namespace')
         .optional()

@@ -180,7 +180,7 @@ module.exports = {
         )`
       ).run(
         file.id,
-        file.mimeType,
+        file.mime,
         file.size,
         file.width,
         file.height,
@@ -275,7 +275,7 @@ module.exports = {
         ${hydrusTables.currentFiles}.service_hash_id AS id,
         ${hydrusTables.hashes}.master_hash_id AS masterHashId,
         ${hydrusTables.hashes}.hash,
-        ${hydrusTables.filesInfo}.mime AS mimeType,
+        ${hydrusTables.filesInfo}.mime,
         ${hydrusTables.filesInfo}.size,
         ${hydrusTables.filesInfo}.width,
         ${hydrusTables.filesInfo}.height
@@ -299,7 +299,7 @@ module.exports = {
         ${hydrusTables.currentFiles}.service_hash_id AS id,
         ${hydrusTables.hashes}.master_hash_id AS masterHashId,
         ${hydrusTables.hashes}.hash,
-        ${hydrusTables.filesInfo}.mime AS mimeType,
+        ${hydrusTables.filesInfo}.mime,
         ${hydrusTables.filesInfo}.size,
         ${hydrusTables.filesInfo}.width,
         ${hydrusTables.filesInfo}.height
