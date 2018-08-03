@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 + Added sorting by `mime`
 + Added option to change sort direction when viewing files
 
+### Changed
+
++ Changed default sorting to `id` descending instead of ascending (to display
+  the latest files first)
+
 ## [3.1.1] - 2018-08-02
 
 ### Fixed

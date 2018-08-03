@@ -594,7 +594,7 @@ different field instead of `id` (which is the default sort method).
 
 The available `sort` parameters are:
 
-+ `id` (default, does not have to be provided): sorts ascending by field `id`
++ `id` (default, does not have to be provided): sorts descending by field `id`
 + `size`: sorts descending by field `size`
 + `width`: sorts descending by field `width`
 + `height`: sorts descending by field `height`
@@ -618,7 +618,7 @@ causes files to be sorted by `namespaceA`, then `namespaceB`, then
 `namespaceC`.
 
 Files not having one or more of the given sort namespaces are _not_ omitted
-from the results but will be sorted ascending by `id` to the end of the (sub)
+from the results but will be sorted descending by `id` to the end of the (sub)
 set.
 
 This route returns the same data for each file as when

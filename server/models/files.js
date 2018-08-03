@@ -139,7 +139,7 @@ module.exports = {
         return null
       }
 
-      return `${namespaceOrderBy.join(',')}, hydrusrv_files.id ASC`
+      return `${namespaceOrderBy.join(',')}, hydrusrv_files.id DESC`
     }
 
     switch (sort) {
@@ -154,7 +154,7 @@ module.exports = {
       case 'random':
         return 'hydrusrv_files.random ASC'
       default:
-        return `hydrusrv_files.id ${direction || 'ASC'}`
+        return `hydrusrv_files.id ${direction || 'DESC'}`
     }
   },
   generateNamespaceOrderBy (namespaces, direction) {
