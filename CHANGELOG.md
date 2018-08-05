@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.2.0] - 2018-08-06
+
 ### Added
 
 + Added sorting by `mime`
@@ -352,7 +354,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/3.1.1...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/3.2.0...develop
+[3.2.0]: https://github.com/mserajnik/hydrusrv/compare/3.1.1...3.2.0
 [3.1.1]: https://github.com/mserajnik/hydrusrv/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/mserajnik/hydrusrv/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/mserajnik/hydrusrv/compare/2.11.0...3.0.0
