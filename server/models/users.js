@@ -1,11 +1,13 @@
-const argon2 = require('argon2')
+const upash = require('upash')
 
 const db = require('../database')
+
+upash.install('argon2', require('@phc/argon2'))
 
 module.exports = {
   async create (username, password) {
     try {
-      const passwordHash = await argon2.hash(password)
+      const passwordHash = await upash.hash(password)
 
       db.app.prepare(
         'INSERT INTO users (username, password, created) VALUES (?, ?, ?)'
@@ -27,7 +29,7 @@ module.exports = {
       placeholders.push('password = ?')
 
       try {
-        params.push(await argon2.hash(data.password))
+        params.push(await upash.hash(data.password))
       } catch (err) {
         throw err
       }
@@ -78,7 +80,7 @@ module.exports = {
     }
 
     try {
-      if (await argon2.verify(user.password, password)) {
+      if (await upash.verify(user.password, password)) {
         return user
       }
 

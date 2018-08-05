@@ -191,8 +191,8 @@ following are all the available settings (along with their default values):
   hydrusrv). Updates are locked, so it is not possible to set this value too
   low – the minimum time between updates will always be the time it takes to
   complete the update.
-+ `RESULTS_PER_PAGE=42`: the results per page when dealing with paginated lists
-  (files and tags).
++ `FILES_PER_PAGE=42`: the results per page when listing files.
++ `TAGS_PER_PAGE=42`: the results per page when listing tags.
 + `LOGGING_ENABLED=false`: setting this to `false` disables access logging when
   `NODE_ENV=production` is set.
 + `OVERRIDE_LOGFILE_PATH=`: overrides the default logfile location
@@ -520,7 +520,25 @@ __Possible errors:__
 
 ###### Listing tags
 
-__Route:__ `GET /api/tags?page=<page>`
+__Route:__ `GET /api/tags?page=<page>&contains=<text>&sort=<method>&direction=<sort direction>`
+
+The `contains` parameter is optional and limits the results to tags containing
+the provided text.
+
+The `sort` parameter is also optional and is used to sort the results by a
+different field instead of `id` (which is the default sort method).
+
+The available `sort` parameters are:
+
++ `id` (default, does not have to be provided): sorts descending by field `id`
++ `name`: sorts ascending by field `name`
++ `files`: sorts descending by field `files`
++ `contains`: sorts tags starting with the text provided via `contains`
+  parameter and everything else ascending by field `name`
++ `random`: sorts randomly
+
+The sort direction for most fields (except `random`) can be changed via
+`direction=asc` and `direction=desc`.
 
 __Input:__ None
 
@@ -542,6 +560,10 @@ __Possible errors:__
 + `InvalidTokenError`
 + `MissingPageParameterError`
 + `InvalidPageParameterError`
++ `MissingContainsParameterError`
++ `InvalidContainsParameterError`
++ `InvalidSortParameterError`
++ `InvalidDirectionParameterError`
 + `ShuttingDownError`
 + `InternalServerError`
 
@@ -582,7 +604,7 @@ __Possible errors:__
 
 ###### Listing files
 
-__Route:__ `GET /api/files?page=<page>&tags[]=<tag>&sort=<method>&namespace[]=<namespace>`
+__Route:__ `GET /api/files?page=<page>&tags[]=<tag>&sort=<method>&direction=<sort direction>&namespace[]=<namespace>`
 
 __Info:__
 
@@ -594,27 +616,31 @@ different field instead of `id` (which is the default sort method).
 
 The available `sort` parameters are:
 
-+ `id` (default, does not have to be provided): sorts ascending by `id`
-+ `size`: sorts descending by `size`
-+ `width`: sorts descending by `width`
-+ `height`: sorts descending by `height`
-+ `random`: sorts randomly
++ `id` (default, does not have to be provided): sorts descending by field `id`
++ `size`: sorts descending by field `size`
++ `width`: sorts descending by field `width`
++ `height`: sorts descending by field `height`
++ `mime`: sorts ascending by field `mime`
 + `namespace`: sorts ascending by provided namespaces first and ascending by
-  `id` second
+  field `id` second
++ `random`: sorts randomly
+
+The sort direction for most fields (except `random`) can be changed via
+`direction=asc` and `direction=desc`.
 
 If `sort=namespace` is provided, at least one namespace must be provided via
-`namespace[]=<namespace>`. This then sorts the results ascending by that
-namespace (e.g., files with tag `creator:a` come before `creator:b` if sorted
-by `creator`).
+`namespace[]=<namespace>`. This then sorts the results  by that namespace
+(e.g., files with tag `creator:a` come before `creator:b` if sorted by
+`creator` and the default direction).
 
 Providing multiple namespaces to sort by is possible, the order in which they
 are provided then defines the "sub sorting". E.g.,
 `sort=namespace&namespace[]=<namespaceA>&namespace[]=<namespaceB>&namespace[]=<namespaceC>`
-causes files to be sorted ascending by `namespaceA`, then `namespaceB`, then
+causes files to be sorted by `namespaceA`, then `namespaceB`, then
 `namespaceC`.
 
 Files not having one or more of the given sort namespaces are _not_ omitted
-from the results but will be sorted ascending by `id` to the end of the (sub)
+from the results but will be sorted descending by `id` to the end of the (sub)
 set.
 
 This route returns the same data for each file as when
@@ -649,8 +675,8 @@ __Possible errors:__
 + `InvalidPageParameterError`
 + `MissingTagsParameterError`
 + `InvalidTagsParameterError`
-+ `MissingSortParameterError`
 + `InvalidSortParameterError`
++ `InvalidDirectionParameterError`
 + `MissingNamespaceParameterError`
 + `InvalidNamespaceParameterError`
 + `ShuttingDownError`

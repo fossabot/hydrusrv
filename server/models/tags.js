@@ -2,7 +2,9 @@ const db = require('../database')
 const config = require('../config/app')
 
 module.exports = {
-  get (page) {
+  get (page, sort = 'id', direction = null) {
+    const orderBy = this.generateOrderBy(sort, direction)
+
     return db.app.prepare(
       `SELECT
         name,
@@ -10,12 +12,31 @@ module.exports = {
       FROM
         hydrusrv_tags
       ORDER BY
-        name
+        ${orderBy.method}
       LIMIT
-        ${config.resultsPerPage}
+        ${config.tagsPerPage}
       OFFSET
-        ${(page - 1) * config.resultsPerPage}`
-    ).all()
+        ${(page - 1) * config.tagsPerPage}`
+    ).all(...orderBy.params)
+  },
+  getContaining (page, contains, sort = 'id', direction = null) {
+    const orderBy = this.generateOrderBy(sort, direction, contains)
+
+    return db.app.prepare(
+      `SELECT
+        name,
+        files
+      FROM
+        hydrusrv_tags
+      WHERE
+        name LIKE ?
+      ORDER BY
+        ${orderBy.method}
+      LIMIT
+        ${config.tagsPerPage}
+      OFFSET
+        ${(page - 1) * config.tagsPerPage}`
+    ).all(`%${contains}%`, ...orderBy.params)
   },
   getOfFile (fileId) {
     return db.app.prepare(
@@ -48,10 +69,14 @@ module.exports = {
       WHERE
         name LIKE ?
       ORDER BY
-        name
+        CASE
+          WHEN name LIKE ? THEN 0
+          ELSE 1
+        END,
+        name ASC
       LIMIT
         10`
-    ).all(`%${partialTag}%`)
+    ).all(`%${partialTag}%`, `${partialTag}%`)
   },
   getNamespaces () {
     return db.app.prepare(
@@ -62,5 +87,44 @@ module.exports = {
     return db.app.prepare(
       'SELECT COUNT(name) as count FROM hydrusrv_tags'
     ).get()
+  },
+  generateOrderBy (sort, direction, contains = null) {
+    direction = ['asc', 'desc'].includes(direction) ? direction : null
+
+    if (sort === 'contains' && contains) {
+      return {
+        method: `
+          CASE
+            WHEN name LIKE ? THEN 0
+            ELSE 1
+          END,
+          name ${direction || 'ASC'}
+        `,
+        params: [`${contains}%`]
+      }
+    }
+
+    switch (sort) {
+      case 'name':
+        return {
+          method: `name ${direction || 'ASC'}`,
+          params: []
+        }
+      case 'files':
+        return {
+          method: `files ${direction || 'DESC'}`,
+          params: []
+        }
+      case 'random':
+        return {
+          method: 'random ASC',
+          params: []
+        }
+      default:
+        return {
+          method: `id ${direction || 'DESC'}`,
+          params: []
+        }
+    }
   }
 }

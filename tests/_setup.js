@@ -12,7 +12,8 @@ module.exports = {
     process.env.REGISTRATION_ENABLED = true
     process.env.MIN_PASSWORD_LENGTH = 16
     process.env.DATA_UPDATE_INTERVAL = 3600
-    process.env.RESULTS_PER_PAGE = 4
+    process.env.FILES_PER_PAGE = 4
+    process.env.TAGS_PER_PAGE = 4
     process.env.LOGGING_ENABLED = false
     process.env.OVERRIDE_LOGFILE_PATH = path.resolve(
       __dirname, '../server/logs/access.log'

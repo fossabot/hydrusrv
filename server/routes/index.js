@@ -7,7 +7,7 @@ module.exports = app => {
   app.get(`${config.apiBase}`, (req, res, next) => {
     res.send({
       hydrusrv: {
-        version: '3.1.1'
+        version: '3.2.0'
       }
     })
   })
@@ -59,7 +59,7 @@ module.exports = app => {
       const data = {}
 
       try {
-        data.tags = controllers.tags.getTags(req.query.page)
+        data.tags = controllers.tags.getTags(req.query)
       } catch (err) {
         return next(err)
       }
