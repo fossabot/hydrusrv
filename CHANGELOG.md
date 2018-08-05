@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Changed default sorting to `id` descending instead of ascending (to display
   the latest files first)
++ Changed password hashing library
++ Updated dependencies
 
 ## [3.1.1] - 2018-08-02
 
