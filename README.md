@@ -191,8 +191,8 @@ following are all the available settings (along with their default values):
   hydrusrv). Updates are locked, so it is not possible to set this value too
   low – the minimum time between updates will always be the time it takes to
   complete the update.
-+ `RESULTS_PER_PAGE=42`: the results per page when dealing with paginated lists
-  (files and tags).
++ `FILES_PER_PAGE=42`: the results per page when listing files.
++ `TAGS_PER_PAGE=42`: the results per page when listing tags.
 + `LOGGING_ENABLED=false`: setting this to `false` disables access logging when
   `NODE_ENV=production` is set.
 + `OVERRIDE_LOGFILE_PATH=`: overrides the default logfile location
@@ -520,7 +520,25 @@ __Possible errors:__
 
 ###### Listing tags
 
-__Route:__ `GET /api/tags?page=<page>`
+__Route:__ `GET /api/tags?page=<page>&contains=<text>&sort=<method>&direction=<sort direction>`
+
+The `contains` parameter is optional and limits the results to tags containing
+the provided text.
+
+The `sort` parameter is also optional and is used to sort the results by a
+different field instead of `id` (which is the default sort method).
+
+The available `sort` parameters are:
+
++ `id` (default, does not have to be provided): sorts descending by field `id`
++ `name`: sorts ascending by field `name`
++ `files`: sorts descending by field `files`
++ `contains`: sorts tags starting with the text provided via `contains`
+  parameter and everything else ascending by field `name`
++ `random`: sorts randomly
+
+The sort direction for most fields (except `random`) can be changed via
+`direction=asc` and `direction=desc`.
 
 __Input:__ None
 
@@ -542,6 +560,10 @@ __Possible errors:__
 + `InvalidTokenError`
 + `MissingPageParameterError`
 + `InvalidPageParameterError`
++ `MissingContainsParameterError`
++ `InvalidContainsParameterError`
++ `InvalidSortParameterError`
++ `InvalidDirectionParameterError`
 + `ShuttingDownError`
 + `InternalServerError`
 
@@ -599,9 +621,9 @@ The available `sort` parameters are:
 + `width`: sorts descending by field `width`
 + `height`: sorts descending by field `height`
 + `mime`: sorts ascending by field `mime`
-+ `random`: sorts randomly
 + `namespace`: sorts ascending by provided namespaces first and ascending by
   field `id` second
++ `random`: sorts randomly
 
 The sort direction for most fields (except `random`) can be changed via
 `direction=asc` and `direction=desc`.
@@ -653,7 +675,6 @@ __Possible errors:__
 + `InvalidPageParameterError`
 + `MissingTagsParameterError`
 + `InvalidTagsParameterError`
-+ `MissingSortParameterError`
 + `InvalidSortParameterError`
 + `InvalidDirectionParameterError`
 + `MissingNamespaceParameterError`

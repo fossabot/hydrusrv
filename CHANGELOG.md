@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Added sorting by `mime`
 + Added option to change sort direction when viewing files
++ Added tags searching and sorting
 
 ### Changed
 

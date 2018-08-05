@@ -105,15 +105,25 @@ module.exports = {
       `CREATE TEMP TABLE hydrusrv_tags_new (
         id INTEGER NOT NULL PRIMARY KEY UNIQUE,
         name TEXT NOT NULL UNIQUE,
-        files INTEGER NOT NULL
+        files INTEGER NOT NULL,
+        random TEXT NOT NULL
       )`
     ).run()
   },
   fillTempTagsTable (tags) {
     for (const tag of tags) {
       db.app.prepare(
-        'INSERT INTO hydrusrv_tags_new (id, name, files) VALUES (?, ?, ?)'
-      ).run(tag.id, tag.name, tag.files)
+        `INSERT INTO hydrusrv_tags_new (
+          id, name, files, random
+        ) VALUES (
+          ?, ?, ?, ?
+        )`
+      ).run(
+        tag.id,
+        tag.name,
+        tag.files,
+        (Math.floor(Math.random() * 10000) + 10000).toString().substring(1)
+      )
     }
   },
   createTempFilesTable (namespaces) {

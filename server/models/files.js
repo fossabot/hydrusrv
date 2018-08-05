@@ -56,9 +56,9 @@ module.exports = {
       ORDER BY
         ${orderBy}
       LIMIT
-        ${config.resultsPerPage}
+        ${config.filesPerPage}
       OFFSET
-        ${(page - 1) * config.resultsPerPage}`
+        ${(page - 1) * config.filesPerPage}`
     ).all()
 
     if (files.length) {
@@ -106,9 +106,9 @@ module.exports = {
       ORDER BY
         ${orderBy}
       LIMIT
-        ${config.resultsPerPage}
+        ${config.filesPerPage}
       OFFSET
-        ${(page - 1) * config.resultsPerPage}`
+        ${(page - 1) * config.filesPerPage}`
     ).all(tags, tags.length)
 
     if (files.length) {

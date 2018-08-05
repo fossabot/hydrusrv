@@ -59,7 +59,7 @@ module.exports = app => {
       const data = {}
 
       try {
-        data.tags = controllers.tags.getTags(req.query.page)
+        data.tags = controllers.tags.getTags(req.query)
       } catch (err) {
         return next(err)
       }
