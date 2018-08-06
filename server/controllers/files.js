@@ -8,13 +8,13 @@ module.exports = {
         query.tags,
         query.sort || 'id',
         query.direction || null,
-        query.namespace || []
+        query.namespaces || []
       )
       : files.get(
         query.page,
         query.sort || 'id',
         query.direction || null,
-        query.namespace || []
+        query.namespaces || []
       )
   },
   getTotalFileCount () {

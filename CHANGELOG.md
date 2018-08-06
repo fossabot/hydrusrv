@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.3.0] - 2018-08-06
+
+### Changed
+
++ Made it necessary to provide the current password when trying to delete a
+  user to prevent token leaks leading to potential loss of accounts
++ Renamed `namespace` parameter to `namespaces`
++ Refactored code
+
 ## [3.2.0] - 2018-08-06
 
 ### Added
@@ -354,7 +363,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/3.2.0...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/3.3.0...develop
+[3.3.0]: https://github.com/mserajnik/hydrusrv/compare/3.2.0...3.3.0
 [3.2.0]: https://github.com/mserajnik/hydrusrv/compare/3.1.1...3.2.0
 [3.1.1]: https://github.com/mserajnik/hydrusrv/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/mserajnik/hydrusrv/compare/3.0.0...3.1.0

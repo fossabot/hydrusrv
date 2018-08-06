@@ -174,13 +174,15 @@ module.exports = {
 
     const namespaceOrderBy = []
 
-    for (const namespace of namespaces) {
+    for (let namespace of namespaces) {
+      namespace = namespace.split(' ').join('_')
+
       namespaceOrderBy.push(
         `CASE
-          WHEN namespace_${namespace.split(' ').join('_')} IS NULL THEN 1
+          WHEN namespace_${namespace} IS NULL THEN 1
           ELSE 0
         END,
-        namespace_${namespace.split(' ').join('_')} ${direction || 'ASC'}`
+        namespace_${namespace} ${direction || 'ASC'}`
       )
     }
 

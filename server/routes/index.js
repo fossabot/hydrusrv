@@ -7,7 +7,7 @@ module.exports = app => {
   app.get(`${config.apiBase}`, (req, res, next) => {
     res.send({
       hydrusrv: {
-        version: '3.2.0'
+        version: '3.3.0'
       }
     })
   })
@@ -141,7 +141,7 @@ module.exports = app => {
     middleware.media.get.validateInput,
     (req, res, next) => {
       try {
-        if (!controllers.auth.validateMediaToken(req.query.token)) {
+        if (!controllers.auth.isValidMediaToken(req.query.token)) {
           return next({
             customStatus: 404,
             customName: 'NotFoundError'
@@ -172,7 +172,7 @@ module.exports = app => {
     middleware.media.get.validateInput,
     (req, res, next) => {
       try {
-        if (!controllers.auth.validateMediaToken(req.query.token)) {
+        if (!controllers.auth.isValidMediaToken(req.query.token)) {
           return next({
             customStatus: 404,
             customName: 'NotFoundError'
@@ -232,13 +232,6 @@ module.exports = app => {
     middleware.auth.updateUser.inputValidationConfig,
     middleware.auth.updateUser.validateInput,
     async (req, res, next) => {
-      if (!(req.body.username || req.body.password)) {
-        return next({
-          customStatus: 400,
-          customName: 'NoUpdateFieldsError'
-        })
-      }
-
       if (req.body.username) {
         try {
           if (controllers.auth.getUserByName(req.body.username)) {
@@ -285,7 +278,26 @@ module.exports = app => {
 
   app.delete(`${config.apiBase}/users`,
     middleware.auth.validateToken,
-    (req, res, next) => {
+    middleware.auth.deleteUser.inputValidationConfig,
+    middleware.auth.deleteUser.validateInput,
+    async (req, res, next) => {
+      let validUser
+
+      try {
+        validUser = await controllers.auth.getValidUser(
+          res.locals.userId, req.body.password
+        )
+
+        if (!validUser) {
+          return next({
+            customStatus: 400,
+            customName: 'InvalidUserError'
+          })
+        }
+      } catch (err) {
+        return next(err)
+      }
+
       try {
         controllers.auth.deleteUser(
           res.locals.userId

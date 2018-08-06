@@ -296,8 +296,6 @@ be dealt with one after another.
 
 __Route:__ `GET /api`
 
-__Input:__ None
-
 __Output on success:__
 
 ```json5
@@ -389,7 +387,13 @@ __Possible errors:__
 
 __Route:__ `DELETE /api/users`
 
-__Input:__ None
+__Input:__
+
+```json5
+{
+  "password": <current password>
+}
+```
 
 __Output on success:__
 
@@ -403,6 +407,9 @@ __Possible errors:__
 
 + `MissingTokenError`
 + `InvalidTokenError`
++ `MissingPasswordFieldError`
++ `InvalidPasswordFieldError`
++ `InvalidUserError`
 + `ShuttingDownError`
 + `InternalServerError`
 
@@ -474,8 +481,6 @@ __Possible errors:__
 
 __Route:__ `GET /api/info`
 
-__Input:__ None
-
 __Output on success:__
 
 ```json5
@@ -495,8 +500,6 @@ __Possible errors:__
 ##### Namespaces
 
 __Route:__ `GET /api/namespaces`
-
-__Input:__ None
 
 __Output on success:__
 
@@ -539,8 +542,6 @@ The available `sort` parameters are:
 
 The sort direction for most fields (except `random`) can be changed via
 `direction=asc` and `direction=desc`.
-
-__Input:__ None
 
 __Output on success:__
 
@@ -604,7 +605,7 @@ __Possible errors:__
 
 ###### Listing files
 
-__Route:__ `GET /api/files?page=<page>&tags[]=<tag>&sort=<method>&direction=<sort direction>&namespace[]=<namespace>`
+__Route:__ `GET /api/files?page=<page>&tags[]=<tag>&sort=<method>&direction=<sort direction>&namespaces[]=<namespace>`
 
 __Info:__
 
@@ -629,13 +630,13 @@ The sort direction for most fields (except `random`) can be changed via
 `direction=asc` and `direction=desc`.
 
 If `sort=namespace` is provided, at least one namespace must be provided via
-`namespace[]=<namespace>`. This then sorts the results  by that namespace
+`namespaces[]=<namespace>`. This then sorts the results  by that namespace
 (e.g., files with tag `creator:a` come before `creator:b` if sorted by
 `creator` and the default direction).
 
 Providing multiple namespaces to sort by is possible, the order in which they
 are provided then defines the "sub sorting". E.g.,
-`sort=namespace&namespace[]=<namespaceA>&namespace[]=<namespaceB>&namespace[]=<namespaceC>`
+`sort=namespace&namespaces[]=<namespaceA>&namespaces[]=<namespaceB>&namespaces[]=<namespaceC>`
 causes files to be sorted by `namespaceA`, then `namespaceB`, then
 `namespaceC`.
 
@@ -647,8 +648,6 @@ This route returns the same data for each file as when
 [viewing a file](#viewing-files) but omits the tags to reduce the response size
 when dealing with possible cases where many files that each have many tags are
 displayed on a single page.
-
-__Input:__ None
 
 __Output on success:__
 
@@ -677,8 +676,8 @@ __Possible errors:__
 + `InvalidTagsParameterError`
 + `InvalidSortParameterError`
 + `InvalidDirectionParameterError`
-+ `MissingNamespaceParameterError`
-+ `InvalidNamespaceParameterError`
++ `MissingNamespacesParameterError`
++ `InvalidNamespacesParameterError`
 + `ShuttingDownError`
 + `InternalServerError`
 
@@ -690,8 +689,6 @@ __Info:__
 
 This route returns the same data as when [listing files](#listing-files) but
 also includes a files' tags.
-
-__Input:__ None
 
 __Output on success:__
 
@@ -748,8 +745,6 @@ __Possible errors:__
 ###### Getting media thumbnails
 
 __Route:__ `GET /media/thumbnails/<media hash>?token=<media token>`
-
-__Input:__ None
 
 __Output on success:__ The requested media thumbnail
 
