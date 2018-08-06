@@ -141,7 +141,7 @@ module.exports = app => {
     middleware.media.get.validateInput,
     (req, res, next) => {
       try {
-        if (!controllers.auth.validateMediaToken(req.query.token)) {
+        if (!controllers.auth.isValidMediaToken(req.query.token)) {
           return next({
             customStatus: 404,
             customName: 'NotFoundError'
@@ -172,7 +172,7 @@ module.exports = app => {
     middleware.media.get.validateInput,
     (req, res, next) => {
       try {
-        if (!controllers.auth.validateMediaToken(req.query.token)) {
+        if (!controllers.auth.isValidMediaToken(req.query.token)) {
           return next({
             customStatus: 404,
             customName: 'NotFoundError'

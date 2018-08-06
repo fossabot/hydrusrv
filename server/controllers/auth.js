@@ -61,7 +61,7 @@ module.exports = {
 
     return users.getById(token.userId).id
   },
-  validateMediaToken (hash) {
+  isValidMediaToken (hash) {
     const token = tokens.getByMediaHash(hash)
 
     if (

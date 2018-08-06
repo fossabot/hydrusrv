@@ -41,7 +41,7 @@ module.exports = {
         })
       }
 
-      if (req.query.sort === 'namespace' && (!req.query.namespaces)) {
+      if (req.query.sort === 'namespace' && !req.query.namespaces) {
         return next({
           customStatus: 400,
           customName: 'MissingNamespacesParameterError'

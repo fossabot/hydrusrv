@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 + Made it necessary to provide the current password when trying to delete a
   user to prevent token leaks leading to potential loss of accounts
 + Renamed `namespace` parameter to `namespaces`
++ Refactored code
 
 ## [3.2.0] - 2018-08-06
 
