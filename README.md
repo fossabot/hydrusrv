@@ -296,8 +296,6 @@ be dealt with one after another.
 
 __Route:__ `GET /api`
 
-__Input:__ None
-
 __Output on success:__
 
 ```json5
@@ -389,7 +387,13 @@ __Possible errors:__
 
 __Route:__ `DELETE /api/users`
 
-__Input:__ None
+__Input:__
+
+```json5
+{
+  "password": <current password>
+}
+```
 
 __Output on success:__
 
@@ -403,6 +407,9 @@ __Possible errors:__
 
 + `MissingTokenError`
 + `InvalidTokenError`
++ `MissingPasswordFieldError`
++ `InvalidPasswordFieldError`
++ `InvalidUserError`
 + `ShuttingDownError`
 + `InternalServerError`
 
@@ -474,8 +481,6 @@ __Possible errors:__
 
 __Route:__ `GET /api/info`
 
-__Input:__ None
-
 __Output on success:__
 
 ```json5
@@ -495,8 +500,6 @@ __Possible errors:__
 ##### Namespaces
 
 __Route:__ `GET /api/namespaces`
-
-__Input:__ None
 
 __Output on success:__
 
@@ -539,8 +542,6 @@ The available `sort` parameters are:
 
 The sort direction for most fields (except `random`) can be changed via
 `direction=asc` and `direction=desc`.
-
-__Input:__ None
 
 __Output on success:__
 
@@ -648,8 +649,6 @@ This route returns the same data for each file as when
 when dealing with possible cases where many files that each have many tags are
 displayed on a single page.
 
-__Input:__ None
-
 __Output on success:__
 
 ```json5
@@ -690,8 +689,6 @@ __Info:__
 
 This route returns the same data as when [listing files](#listing-files) but
 also includes a files' tags.
-
-__Input:__ None
 
 __Output on success:__
 
@@ -748,8 +745,6 @@ __Possible errors:__
 ###### Getting media thumbnails
 
 __Route:__ `GET /media/thumbnails/<media hash>?token=<media token>`
-
-__Input:__ None
 
 __Output on success:__ The requested media thumbnail
 

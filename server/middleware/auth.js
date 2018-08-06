@@ -107,6 +107,33 @@ module.exports = {
         })
       }
 
+      if (!(req.body.username || req.body.password)) {
+        return next({
+          customStatus: 400,
+          customName: 'NoUpdateFieldsError'
+        })
+      }
+
+      next()
+    }
+  },
+  deleteUser: {
+    inputValidationConfig: [
+      sanitizeBody('password').trim(),
+      check('password')
+        .exists().withMessage('MissingPasswordFieldError')
+        .isString().withMessage('InvalidPasswordFieldError')
+    ],
+    validateInput: (req, res, next) => {
+      const err = validationResult(req)
+
+      if (!err.isEmpty()) {
+        return next({
+          customStatus: 400,
+          customName: err.array()[0].msg
+        })
+      }
+
       next()
     }
   },
