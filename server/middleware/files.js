@@ -25,11 +25,11 @@ module.exports = {
         .optional()
         .isString().withMessage('InvalidDirectionParameterError')
         .isIn(['asc', 'desc']).withMessage('InvalidDirectionParameterError'),
-      sanitizeQuery('namespace').trim(),
-      check('namespace')
+      sanitizeQuery('namespaces').trim(),
+      check('namespaces')
         .optional()
-        .isArray().withMessage('InvalidNamespaceParameterError')
-        .isLength({ min: 1 }).withMessage('InvalidNamespaceParameterError')
+        .isArray().withMessage('InvalidNamespacesParameterError')
+        .isLength({ min: 1 }).withMessage('InvalidNamespacesParameterError')
     ],
     validateInput: (req, res, next) => {
       const err = validationResult(req)
@@ -41,10 +41,10 @@ module.exports = {
         })
       }
 
-      if (req.query.sort === 'namespace' && (!req.query.namespace)) {
+      if (req.query.sort === 'namespace' && (!req.query.namespaces)) {
         return next({
           customStatus: 400,
-          customName: 'MissingNamespaceParameterError'
+          customName: 'MissingNamespacesParameterError'
         })
       }
 
