@@ -7,7 +7,7 @@ const hydrusConfig = require('../config/hydrus')
 module.exports = {
   fileExists (type, hash) {
     const directory = hash.substring(0, 2)
-    const extension = (type === 'thumbnail') ? '.thumbnail' : ''
+    const extension = type === 'thumbnail' ? '.thumbnail' : ''
     const filePath =
       `${hydrusConfig.filesPath}/${directory}/${hash}${extension}`
 
@@ -15,7 +15,7 @@ module.exports = {
   },
   getFileData (type, hash) {
     const directory = hash.substring(0, 2)
-    const extension = (type === 'thumbnail') ? '.thumbnail' : ''
+    const extension = type === 'thumbnail' ? '.thumbnail' : ''
     const filePath =
       `${hydrusConfig.filesPath}/${directory}/${hash}${extension}`
 

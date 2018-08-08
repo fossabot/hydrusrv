@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Renamed `sort` parameter from `namespace` to `namespaces` to be more
   consistent with the recent changes
++ Refactored code
 
 ## [3.3.0] - 2018-08-06
 

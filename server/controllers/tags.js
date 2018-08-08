@@ -2,7 +2,7 @@ const tags = require('../models/tags')
 
 module.exports = {
   getTags (query) {
-    return (query.contains)
+    return query.contains
       ? tags.getContaining(
         query.page,
         query.contains,

@@ -2,7 +2,7 @@ const files = require('../models/files')
 
 module.exports = {
   getFiles (query) {
-    return (query.tags)
+    return query.tags
       ? files.getByTags(
         query.page,
         query.tags,
