@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   user to prevent token leaks leading to potential loss of accounts
 + Renamed `namespace` parameter to `namespaces`
 + Refactored code
++ Updated dependencies
 
 ## [3.2.0] - 2018-08-06
 
