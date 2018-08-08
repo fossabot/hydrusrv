@@ -622,14 +622,14 @@ The available `sort` parameters are:
 + `width`: sorts descending by field `width`
 + `height`: sorts descending by field `height`
 + `mime`: sorts ascending by field `mime`
-+ `namespace`: sorts ascending by provided namespaces first and ascending by
++ `namespaces`: sorts ascending by provided namespaces first and ascending by
   field `id` second
 + `random`: sorts randomly
 
 The sort direction for most fields (except `random`) can be changed via
 `direction=asc` and `direction=desc`.
 
-If `sort=namespace` is provided, at least one namespace must be provided via
+If `sort=namespaces` is set, at least one namespace must be provided via
 `namespaces[]=<namespace>`. This then sorts the results  by that namespace
 (e.g., files with tag `creator:a` come before `creator:b` if sorted by
 `creator` and the default direction).

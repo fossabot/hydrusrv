@@ -130,16 +130,16 @@ module.exports = {
   generateOrderBy (sort, direction, namespaces) {
     direction = ['asc', 'desc'].includes(direction) ? direction : null
 
-    if (sort === 'namespace' && namespaces.length) {
-      const namespaceOrderBy = this.generateNamespaceOrderBy(
+    if (sort === 'namespaces' && namespaces.length) {
+      const namespacesOrderBy = this.generateNamespacesOrderBy(
         namespaces, direction
       )
 
-      if (!namespaceOrderBy.length) {
+      if (!namespacesOrderBy.length) {
         return null
       }
 
-      return `${namespaceOrderBy.join(',')}, hydrusrv_files.id DESC`
+      return `${namespacesOrderBy.join(',')}, hydrusrv_files.id DESC`
     }
 
     switch (sort) {
@@ -157,7 +157,7 @@ module.exports = {
         return `hydrusrv_files.id ${direction || 'DESC'}`
     }
   },
-  generateNamespaceOrderBy (namespaces, direction) {
+  generateNamespacesOrderBy (namespaces, direction) {
     namespaces = [...new Set(namespaces)]
 
     const validNamespaces = tagsModel.getNamespaces().map(
@@ -172,12 +172,12 @@ module.exports = {
       return []
     }
 
-    const namespaceOrderBy = []
+    const namespacesOrderBy = []
 
     for (let namespace of namespaces) {
       namespace = namespace.split(' ').join('_')
 
-      namespaceOrderBy.push(
+      namespacesOrderBy.push(
         `CASE
           WHEN namespace_${namespace} IS NULL THEN 1
           ELSE 0
@@ -186,6 +186,6 @@ module.exports = {
       )
     }
 
-    return namespaceOrderBy
+    return namespacesOrderBy
   }
 }

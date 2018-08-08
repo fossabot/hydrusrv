@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.4.0] - 2018-08-08
+
+### Changed
+
++ Renamed `sort` parameter from `namespace` to `namespaces` to be more
+  consistent with the recent changes
++ Refactored code
+
 ## [3.3.0] - 2018-08-06
 
 ### Changed
@@ -15,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   user to prevent token leaks leading to potential loss of accounts
 + Renamed `namespace` parameter to `namespaces`
 + Refactored code
++ Updated dependencies
 
 ## [3.2.0] - 2018-08-06
 
@@ -363,7 +372,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/3.3.0...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/3.4.0...develop
+[3.4.0]: https://github.com/mserajnik/hydrusrv/compare/3.3.0...3.4.0
 [3.3.0]: https://github.com/mserajnik/hydrusrv/compare/3.2.0...3.3.0
 [3.2.0]: https://github.com/mserajnik/hydrusrv/compare/3.1.1...3.2.0
 [3.1.1]: https://github.com/mserajnik/hydrusrv/compare/3.1.0...3.1.1

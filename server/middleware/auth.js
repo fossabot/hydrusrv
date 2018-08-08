@@ -47,7 +47,7 @@ module.exports = {
         .exists().withMessage('MissingPasswordFieldError')
         .isString().withMessage('InvalidPasswordFieldError')
         .isLength({
-          min: (config.minPasswordLength < 1024)
+          min: config.minPasswordLength < 1024
             ? config.minPasswordLength
             : 1024,
           max: 1024
@@ -87,7 +87,7 @@ module.exports = {
         .optional()
         .isString().withMessage('InvalidPasswordFieldError')
         .isLength({
-          min: (config.minPasswordLength < 1024)
+          min: config.minPasswordLength < 1024
             ? config.minPasswordLength
             : 1024,
           max: 1024

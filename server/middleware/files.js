@@ -18,7 +18,7 @@ module.exports = {
         .optional()
         .isString().withMessage('InvalidSortParameterError')
         .isIn(
-          ['id', 'size', 'width', 'height', 'mime', 'namespace', 'random']
+          ['id', 'size', 'width', 'height', 'mime', 'namespaces', 'random']
         ).withMessage('InvalidSortParameterError'),
       sanitizeQuery('direction').trim(),
       check('direction')
@@ -41,7 +41,7 @@ module.exports = {
         })
       }
 
-      if (req.query.sort === 'namespace' && !req.query.namespaces) {
+      if (req.query.sort === 'namespaces' && !req.query.namespaces) {
         return next({
           customStatus: 400,
           customName: 'MissingNamespacesParameterError'

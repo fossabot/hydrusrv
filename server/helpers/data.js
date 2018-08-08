@@ -146,7 +146,7 @@ module.exports = {
         height INTEGER NOT NULL,
         hash BLOB_BYTES UNIQUE NOT NULL,
         random TEXT NOT NULL
-        ${(namespaceColumns.length) ? ',' + namespaceColumns.join(',') : ''}
+        ${namespaceColumns.length ? ',' + namespaceColumns.join(',') : ''}
       )`
     ).run()
   },
@@ -177,7 +177,7 @@ module.exports = {
           height,
           hash,
           random
-          ${(namespaceColumns.length) ? ',' + namespaceColumns.join(',') : ''}
+          ${namespaceColumns.length ? ',' + namespaceColumns.join(',') : ''}
         ) VALUES (
           ?,
           ?,

@@ -809,7 +809,7 @@ test('database: get files sorted by mime descending', t => {
 
 test('database: get files sorted by namespace', t => {
   t.deepEqual(
-    files.get(1, 'namespace', null, ['namespace']),
+    files.get(1, 'namespaces', null, ['namespace']),
     [
       {
         id: 5,
@@ -861,7 +861,7 @@ test('database: get files sorted by namespace', t => {
 
 test('database: get files sorted by namespace descending', t => {
   t.deepEqual(
-    files.get(1, 'namespace', 'desc', ['namespace']),
+    files.get(1, 'namespaces', 'desc', ['namespace']),
     [
       {
         id: 1,
@@ -913,7 +913,7 @@ test('database: get files sorted by namespace descending', t => {
 
 test('database: get files sorted by invalid namespace', t => {
   t.deepEqual(
-    files.get(1, 'namespace', null, ['invalid']),
+    files.get(1, 'namespaces', null, ['invalid']),
     [
       {
         id: 5,
@@ -1328,7 +1328,7 @@ test('database: get files by tags sorted by mime descending', t => {
 test('database: get files by tags sorted by namespace', t => {
   t.deepEqual(
     files.getByTags(
-      1, ['lorem', 'ipsum', 'dolor'], 'namespace', null, ['namespace']
+      1, ['lorem', 'ipsum', 'dolor'], 'namespaces', null, ['namespace']
     ),
     [
       {
@@ -1371,7 +1371,7 @@ test('database: get files by tags sorted by namespace', t => {
 test('database: get files by tags sorted by namespace descending', t => {
   t.deepEqual(
     files.getByTags(
-      1, ['lorem', 'ipsum', 'dolor'], 'namespace', 'desc', ['namespace']
+      1, ['lorem', 'ipsum', 'dolor'], 'namespaces', 'desc', ['namespace']
     ),
     [
       {
@@ -1414,7 +1414,7 @@ test('database: get files by tags sorted by namespace descending', t => {
 test('database: get files by tags sorted by invalid namespace', t => {
   t.deepEqual(
     files.getByTags(
-      1, ['lorem', 'ipsum', 'dolor'], 'namespace', null, ['invalid']
+      1, ['lorem', 'ipsum', 'dolor'], 'namespaces', null, ['invalid']
     ),
     [
       {
