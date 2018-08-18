@@ -106,6 +106,7 @@ module.exports = {
 
     switch (sort) {
       case 'name':
+      case 'contains':
         return {
           method: `name ${direction || 'ASC'}`,
           params: []

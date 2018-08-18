@@ -36,13 +36,6 @@ module.exports = {
         })
       }
 
-      if (req.query.sort === 'contains' && !req.query.contains) {
-        return next({
-          customStatus: 400,
-          customName: 'MissingContainsParameterError'
-        })
-      }
-
       next()
     }
   },

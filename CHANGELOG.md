@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
++ Removed requirement to provide `contains` parameter when sorting tags by
+  `contains` and instead added fallback sorting by `name`
 + Updated dependencies
 
 ### Fixed
