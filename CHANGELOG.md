@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
++ Removed non-existing error `MissingTagsParameterError` from readme
+
 ## [3.4.0] - 2018-08-08
 
 ### Changed
