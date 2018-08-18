@@ -1,6 +1,6 @@
 const path = require('path')
 const http = require('http')
-const { test } = require('ava')
+const test = require('ava')
 const fse = require('fs-extra')
 const portscanner = require('portscanner')
 

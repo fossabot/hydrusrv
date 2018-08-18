@@ -561,7 +561,6 @@ __Possible errors:__
 + `InvalidTokenError`
 + `MissingPageParameterError`
 + `InvalidPageParameterError`
-+ `MissingContainsParameterError`
 + `InvalidContainsParameterError`
 + `InvalidSortParameterError`
 + `InvalidDirectionParameterError`
@@ -672,7 +671,6 @@ __Possible errors:__
 + `InvalidTokenError`
 + `MissingPageParameterError`
 + `InvalidPageParameterError`
-+ `MissingTagsParameterError`
 + `InvalidTagsParameterError`
 + `InvalidSortParameterError`
 + `InvalidDirectionParameterError`

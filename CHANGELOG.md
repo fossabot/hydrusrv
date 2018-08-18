@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.5.0] - 2018-08-18
+
+### Changed
+
++ Removed requirement to provide `contains` parameter when sorting tags by
+  `contains` and instead added fallback sorting by `name`
++ Updated dependencies
+
+### Fixed
+
++ Removed non-existing error `MissingTagsParameterError` from readme
+
 ## [3.4.0] - 2018-08-08
 
 ### Changed
@@ -372,7 +384,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 + Initial release
 
-[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/3.4.0...develop
+[Unreleased]: https://github.com/mserajnik/hydrusrv/compare/3.5.0...develop
+[3.5.0]: https://github.com/mserajnik/hydrusrv/compare/3.4.0...3.5.0
 [3.4.0]: https://github.com/mserajnik/hydrusrv/compare/3.3.0...3.4.0
 [3.3.0]: https://github.com/mserajnik/hydrusrv/compare/3.2.0...3.3.0
 [3.2.0]: https://github.com/mserajnik/hydrusrv/compare/3.1.1...3.2.0
