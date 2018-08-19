@@ -7,7 +7,7 @@ module.exports = app => {
   app.get(`${config.apiBase}`, (req, res, next) => {
     res.send({
       hydrusrv: {
-        version: '3.5.0'
+        version: '3.5.1'
       }
     })
   })
