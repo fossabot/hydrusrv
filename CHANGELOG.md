@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Removed
+
++ Removed info about hydrusrvue being in development (as it has been released)
+
 ## [3.5.0] - 2018-08-18
 
 ### Changed

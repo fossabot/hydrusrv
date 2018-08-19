@@ -15,7 +15,7 @@ data, not as an alternative way to manage it. It therefore does not have any
 features that require more than read access.
 
 A [Vue][vue]-based Web client for hydrusrv called [hydrusrvue][hydrusrvue] is
-currently in (early) development.
+also available.
 
 ## Table of contents
 
@@ -252,7 +252,7 @@ hydrusrv provides a REST-like API that a client can connect to to request data
 from the server. Such a client could for example be a simple script that
 "syncs" the media of a hydrus server installation with your local machine or an
 application with a GUI that behaves like a booru (like
-[hydrusrvue][hydrusrvue], which is currently in development).
+[hydrusrvue][hydrusrvue]).
 
 #### General
 
