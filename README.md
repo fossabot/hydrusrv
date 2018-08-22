@@ -178,9 +178,9 @@ following are all the available settings (along with their default values):
   __slashes.__
 + `MEDIA_BASE=/media`: the base path of all the media routes. __No trailing__
   __slashes.__
-+ `APP_DB_PATH=./storage/app.db`: the application database path. Database must
-  exist and the file must be read-/writeable for hydrusrv.
-  __Absolute path required when deviating from the default.__
++ `APP_DB_PATH=./storage/app.db`: the application database path (absolute or
+  relative). The database must exist and the file must be read-/writeable for
+  hydrusrv.
 + `REGISTRATION_ENABLED=true`: setting this to `false` disables the creation of
   new users.
 + `MIN_PASSWORD_LENGTH=16`: sets the minimum password length when creating or
@@ -535,7 +535,7 @@ The available `sort` parameters are:
 
 + `id` (default, does not have to be provided): sorts descending by field `id`
 + `name`: sorts ascending by field `name`
-+ `files`: sorts descending by field `files`
++ `files`: sorts descending by field `file_count`
 + `contains`: sorts tags starting with the text provided via `contains`
   parameter and everything else ascending by field `name`
 + `random`: sorts randomly
@@ -549,7 +549,7 @@ __Output on success:__
 [
   {
     "name": <name of the tag>
-    "files": <amount of files having the tag>
+    "fileCount": <amount of files having the tag>
   }
   // […]
 ]
@@ -585,7 +585,7 @@ __Output on success:__
 [
   {
     "name": <name of the tag>,
-    "files": <amount of files having the tag>
+    "fileCount": <amount of files having the tag>
   }
   // […]
 ]

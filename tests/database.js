@@ -101,10 +101,10 @@ test('database: get tags', t => {
   t.deepEqual(
     tags.get(1),
     [
-      { name: 'namespace:e', files: 1 },
-      { name: 'namespace:d', files: 1 },
-      { name: 'namespace:c', files: 1 },
-      { name: 'namespace:b', files: 1 },
+      { name: 'namespace:e', fileCount: 1 },
+      { name: 'namespace:d', fileCount: 1 },
+      { name: 'namespace:c', fileCount: 1 },
+      { name: 'namespace:b', fileCount: 1 },
     ]
   )
 })
@@ -113,10 +113,10 @@ test('database: get tags sorted ascending', t => {
   t.deepEqual(
     tags.get(1, 'id', 'asc'),
     [
-      { name: 'lorem', files: 5 },
-      { name: 'ipsum', files: 4 },
-      { name: 'dolor', files: 3 },
-      { name: 'sit', files: 2 }
+      { name: 'lorem', fileCount: 5 },
+      { name: 'ipsum', fileCount: 4 },
+      { name: 'dolor', fileCount: 3 },
+      { name: 'sit', fileCount: 2 }
     ]
   )
 })
@@ -125,10 +125,10 @@ test('database: get tags sorted by name', t => {
   t.deepEqual(
     tags.get(1, 'name'),
     [
-      { name: 'amet', files: 1 },
-      { name: 'dolor', files: 3 },
-      { name: 'ipsum', files: 4 },
-      { name: 'lorem', files: 5 }
+      { name: 'amet', fileCount: 1 },
+      { name: 'dolor', fileCount: 3 },
+      { name: 'ipsum', fileCount: 4 },
+      { name: 'lorem', fileCount: 5 }
     ]
   )
 })
@@ -137,10 +137,10 @@ test('database: get tags sorted by name descending', t => {
   t.deepEqual(
     tags.get(1, 'name', 'desc'),
     [
-      { name: 'sit', files: 2 },
-      { name: 'namespace:e', files: 1 },
-      { name: 'namespace:d', files: 1 },
-      { name: 'namespace:c', files: 1 }
+      { name: 'sit', fileCount: 2 },
+      { name: 'namespace:e', fileCount: 1 },
+      { name: 'namespace:d', fileCount: 1 },
+      { name: 'namespace:c', fileCount: 1 }
     ]
   )
 })
@@ -149,10 +149,10 @@ test('database: get tags sorted by files', t => {
   t.deepEqual(
     tags.get(1, 'files'),
     [
-      { name: 'lorem', files: 5 },
-      { name: 'ipsum', files: 4 },
-      { name: 'dolor', files: 3 },
-      { name: 'sit', files: 2 }
+      { name: 'lorem', fileCount: 5 },
+      { name: 'ipsum', fileCount: 4 },
+      { name: 'dolor', fileCount: 3 },
+      { name: 'sit', fileCount: 2 }
     ]
   )
 })
@@ -161,10 +161,10 @@ test('database: get tags sorted by files ascending', t => {
   t.deepEqual(
     tags.get(1, 'files', 'asc'),
     [
-      { name: 'amet', files: 1 },
-      { name: 'namespace:a', files: 1 },
-      { name: 'namespace:b', files: 1 },
-      { name: 'namespace:c', files: 1 }
+      { name: 'amet', fileCount: 1 },
+      { name: 'namespace:a', fileCount: 1 },
+      { name: 'namespace:b', fileCount: 1 },
+      { name: 'namespace:c', fileCount: 1 }
     ]
   )
 })
@@ -173,8 +173,8 @@ test('database: get tags containing', t => {
   t.deepEqual(
     tags.getContaining(1, 'lor'),
     [
-      { name: 'dolor', files: 3 },
-      { name: 'lorem', files: 5 }
+      { name: 'dolor', fileCount: 3 },
+      { name: 'lorem', fileCount: 5 }
     ]
   )
 })
@@ -183,8 +183,8 @@ test('database: get tags containing sorted ascending', t => {
   t.deepEqual(
     tags.getContaining(1, 'lor', 'id', 'asc'),
     [
-      { name: 'lorem', files: 5 },
-      { name: 'dolor', files: 3 }
+      { name: 'lorem', fileCount: 5 },
+      { name: 'dolor', fileCount: 3 }
     ]
   )
 })
@@ -193,8 +193,8 @@ test('database: get tags containing sorted by name', t => {
   t.deepEqual(
     tags.getContaining(1, 'lor', 'name'),
     [
-      { name: 'dolor', files: 3 },
-      { name: 'lorem', files: 5 }
+      { name: 'dolor', fileCount: 3 },
+      { name: 'lorem', fileCount: 5 }
     ]
   )
 })
@@ -203,8 +203,8 @@ test('database: get tags containing sorted by name descending', t => {
   t.deepEqual(
     tags.getContaining(1, 'lor', 'name', 'desc'),
     [
-      { name: 'lorem', files: 5 },
-      { name: 'dolor', files: 3 }
+      { name: 'lorem', fileCount: 5 },
+      { name: 'dolor', fileCount: 3 }
     ]
   )
 })
@@ -213,8 +213,8 @@ test('database: get tags containing sorted by files', t => {
   t.deepEqual(
     tags.getContaining(1, 'lor', 'files'),
     [
-      { name: 'lorem', files: 5 },
-      { name: 'dolor', files: 3 }
+      { name: 'lorem', fileCount: 5 },
+      { name: 'dolor', fileCount: 3 }
     ]
   )
 })
@@ -223,8 +223,8 @@ test('database: get tags containing sorted by files ascending', t => {
   t.deepEqual(
     tags.getContaining(1, 'lor', 'files', 'asc'),
     [
-      { name: 'dolor', files: 3 },
-      { name: 'lorem', files: 5 }
+      { name: 'dolor', fileCount: 3 },
+      { name: 'lorem', fileCount: 5 }
     ]
   )
 })
@@ -233,8 +233,8 @@ test('database: get tags containing sorted by contains', t => {
   t.deepEqual(
     tags.getContaining(1, 'lor', 'contains'),
     [
-      { name: 'lorem', files: 5 },
-      { name: 'dolor', files: 3 }
+      { name: 'lorem', fileCount: 5 },
+      { name: 'dolor', fileCount: 3 }
     ]
   )
 })
@@ -243,8 +243,8 @@ test('database: get tags containing sorted by contains descending', t => {
   t.deepEqual(
     tags.getContaining(1, 'lor', 'contains', 'desc'),
     [
-      { name: 'lorem', files: 5 },
-      { name: 'dolor', files: 3 }
+      { name: 'lorem', fileCount: 5 },
+      { name: 'dolor', fileCount: 3 }
     ]
   )
 })
@@ -253,12 +253,12 @@ test('database: get tags of file', t => {
   t.deepEqual(
     tags.getOfFile(1),
     [
-      { name: 'amet', files: 1 },
-      { name: 'dolor', files: 3 },
-      { name: 'ipsum', files: 4 },
-      { name: 'lorem', files: 5 },
-      { name: 'namespace:e', files: 1 },
-      { name: 'sit', files: 2 }
+      { name: 'amet', fileCount: 1 },
+      { name: 'dolor', fileCount: 3 },
+      { name: 'ipsum', fileCount: 4 },
+      { name: 'lorem', fileCount: 5 },
+      { name: 'namespace:e', fileCount: 1 },
+      { name: 'sit', fileCount: 2 }
     ]
   )
 })
@@ -267,8 +267,8 @@ test('database: tag autocompletion', t => {
   t.deepEqual(
     tags.complete('lor'),
     [
-      { name: 'lorem', files: 5 },
-      { name: 'dolor', files: 3 }
+      { name: 'lorem', fileCount: 5 },
+      { name: 'dolor', fileCount: 3 }
     ]
   )
 })

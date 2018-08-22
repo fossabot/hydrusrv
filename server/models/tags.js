@@ -8,7 +8,7 @@ module.exports = {
     return db.app.prepare(
       `SELECT
         name,
-        files
+        file_count AS fileCount
       FROM
         hydrusrv_tags
       ORDER BY
@@ -25,7 +25,7 @@ module.exports = {
     return db.app.prepare(
       `SELECT
         name,
-        files
+        file_count AS fileCount
       FROM
         hydrusrv_tags
       WHERE
@@ -42,7 +42,7 @@ module.exports = {
     return db.app.prepare(
       `SELECT
         hydrusrv_tags.name,
-        hydrusrv_tags.files
+        hydrusrv_tags.file_count AS fileCount
       FROM
         hydrusrv_tags
       LEFT JOIN
@@ -63,7 +63,7 @@ module.exports = {
     return db.app.prepare(
       `SELECT
         name,
-        files
+        file_count AS fileCount
       FROM
         hydrusrv_tags
       WHERE
@@ -113,7 +113,7 @@ module.exports = {
         }
       case 'files':
         return {
-          method: `files ${direction || 'DESC'}`,
+          method: `file_count ${direction || 'DESC'}`,
           params: []
         }
       case 'random':
