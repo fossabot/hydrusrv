@@ -105,7 +105,7 @@ module.exports = {
       `CREATE TEMP TABLE hydrusrv_tags_new (
         id INTEGER NOT NULL PRIMARY KEY UNIQUE,
         name TEXT NOT NULL UNIQUE,
-        files INTEGER NOT NULL,
+        file_count INTEGER NOT NULL,
         random TEXT NOT NULL
       )`
     ).run()
@@ -114,14 +114,14 @@ module.exports = {
     for (const tag of tags) {
       db.app.prepare(
         `INSERT INTO hydrusrv_tags_new (
-          id, name, files, random
+          id, name, file_count, random
         ) VALUES (
           ?, ?, ?, ?
         )`
       ).run(
         tag.id,
         tag.name,
-        tag.files,
+        tag.fileCount,
         (Math.floor(Math.random() * 10000) + 10000).toString().substring(1)
       )
     }
@@ -262,7 +262,7 @@ module.exports = {
       `SELECT
         ${hydrusTables.currentMappings}.service_tag_id AS id,
         ${hydrusTables.tags}.tag AS name,
-        COUNT(*) as files
+        COUNT(*) as fileCount
       FROM
         ${hydrusTables.currentMappings}
       NATURAL JOIN

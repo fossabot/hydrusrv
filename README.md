@@ -535,7 +535,7 @@ The available `sort` parameters are:
 
 + `id` (default, does not have to be provided): sorts descending by field `id`
 + `name`: sorts ascending by field `name`
-+ `files`: sorts descending by field `files`
++ `files`: sorts descending by field `file_count`
 + `contains`: sorts tags starting with the text provided via `contains`
   parameter and everything else ascending by field `name`
 + `random`: sorts randomly
@@ -549,7 +549,7 @@ __Output on success:__
 [
   {
     "name": <name of the tag>
-    "files": <amount of files having the tag>
+    "fileCount": <amount of files having the tag>
   }
   // […]
 ]
@@ -585,7 +585,7 @@ __Output on success:__
 [
   {
     "name": <name of the tag>,
-    "files": <amount of files having the tag>
+    "fileCount": <amount of files having the tag>
   }
   // […]
 ]

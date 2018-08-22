@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
++ Renamed the field `files` in `hydrusrv_tags` to `file_count` (`fileCount` when
+  sending it over the API)
 + Changed Docker configuration to run container as non-root user
 + Updated dependencies
 
