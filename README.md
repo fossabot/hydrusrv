@@ -791,11 +791,11 @@ are the ones I am currently aware of:
   might lead to hydrus server changing or adding data while hydrusrv is still
   in the update process. When this happens, hydrusrv _should_ not crash, but
   it will stick to the data it currently has and try again after the period set
-  via `DATA_UPDATE_INTERVAL`. This means that on a busy hydrus server
-  installation, hydrusrv might not often find the time to complete an update.
-  This can be somewhat alleviated by setting a shorter interval, but I still
-  would not recommend running it on a public hydrus server installation where
-  multiple users might add or change data at any moment in time.
+  via `DATA_UPDATE_INTERVAL` has passed. This means that on a busy hydrus
+  server installation, hydrusrv might not often find the time to complete an
+  update. This can be somewhat alleviated by setting a shorter interval, but I
+  still would not recommend running it on a public hydrus server installation
+  where multiple users might add or change data at any moment in time.
 + hydrus client/server is updated frequently (usually once a week) and while I
   try to keep hydrusrv up-to-date with any database changes (that thankfully do
   not occur very frequently), I suggest keeping an old copy of hydrus server

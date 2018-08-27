@@ -30,10 +30,11 @@ module.exports = {
 
       console.warn(
         'hydrus server has no repositories set up yet or there has been an ' +
-          'error (this can for example happen if hydrus server was in the ' +
-          'process of writing while hydrusrv tried to read data). It will ' +
-          'try updating again after the period set via ' +
-          `\`DATA_UPDATE_INTERVAL\` (${config.dataUpdateInterval} seconds).`
+          'error. This can happen if, for example, hydrus server was in the ' +
+          'process of writing data while hydrusrv tried to read. hydrusrv ' +
+          'will try updating again after the period set via ' +
+          `\`DATA_UPDATE_INTERVAL\` (${config.dataUpdateInterval} seconds) ` +
+          'has passed.'
       )
     }
 
