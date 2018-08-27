@@ -51,7 +51,8 @@ also available.
       + [Media](#files)
         + [Getting media originals](#getting-media-originals)
         + [Getting media thumbnails](#getting-media-thumbnails)
-  + [Caveats](#caveats)
++ [Demo](#demo)
++ [Caveats](#caveats)
 + [Donate](#donate)
 + [Maintainer](#maintainer)
 + [Contribute](#contribute)
@@ -756,7 +757,25 @@ __Possible errors:__
 + `ShuttingDownError`
 + `InternalServerError`
 
-### Caveats
+## Demo
+
+You can find a demo installation of [hydrusrvue][hydrusrvue] at
+[https://hydrusrvue.mser.at][hydrusrvue-demo]. The hydrusrv API is available
+under [https://hydrusrvue.mser.at/api][hydrusrvue-demo-api].
+
+Please take note that I am running this installation using
+[hydrusrv-docker][hydrusrv-docker] on a small
+[Vultr Cloud Compute][vultr-cloud-compute] instance with limited performance,
+bandwidth and traffic (meaning the demo could go down until the next month if
+the traffic limit gets exceeded).
+
+It contains only safe for work images tagged with `scenery` (take a look at the
+[hydrusrvue screenshots][hydrusrvue-screenshots] for some examples).
+
+Registration is enabled, so feel free to create as many users as you would
+like. __Created users are deleted at 12am every day.__
+
+## Caveats
 
 hydrusrv was mainly developed for my personal use and might therefore lack some
 features others might want to see. Some of these could be:
@@ -858,6 +877,10 @@ You are welcome to help out!
 [docker]: https://www.docker.com/
 [hydrusrv-docker]: https://github.com/mserajnik/hydrusrv-docker
 [docker-compose]: https://docs.docker.com/compose/
+[hydrusrvue-demo]: https://hydrusrvue.mser.at
+[hydrusrvue-demo-api]: https://hydrusrvue.mser.at/api
+[vultr-cloud-compute]: https://www.vultr.com/pricing/
+[hydrusrvue-screenshots]: https://github.com/mserajnik/hydrusrvue#screenshots
 
 [paypal-url]: https://www.paypal.me/mserajnik
 [paypal-image]: https://www.paypalobjects.com/webstatic/en_US/i/btn/png/blue-rect-paypal-26px.png
