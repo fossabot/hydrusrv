@@ -1,4 +1,5 @@
 # hydrusrv [![Build status][travis-badge]][travis-url] [![Known vulnerabilities][snyk-badge]][snyk-url] [![JavaScript Standard Style][standardjs-badge]][standardjs-url]
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmserajnik%2Fhydrusrv.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmserajnik%2Fhydrusrv?ref=badge_shield)
 
 > A small application for serving media managed with
 > [hydrus server][hydrus-server] via API
@@ -888,3 +889,6 @@ You are welcome to help out!
 
 [maintainer-url]: https://github.com/mserajnik
 [issues-url]: https://github.com/mserajnik/hydrusrv/issues/new
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmserajnik%2Fhydrusrv.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmserajnik%2Fhydrusrv?ref=badge_large)
